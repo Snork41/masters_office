@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block title %} Кабинет {{ master }} {% endblock title %}
+
+{% block content %}
+<h1>КАБИНЕТ - {{ master }}</h1>
+<br>
+<ul>
+  <h4>
+  <li>
+    <a href="{% url 'office:journals' user.username %}"><h2>Журналы</h2></a>
+  </li>
+  <li>Паспорта объектов</li>
+  <li>Схемы</li>
+  <li>Бригады</li>
+  <li>СИЗ</li>
+  <li>Справочники</li>
+  </h4>
+</ul>
+
+{% endblock content %}

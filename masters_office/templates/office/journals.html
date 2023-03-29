@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block title %} Журналы {% endblock title %}
+
+{% block content %}
+<h1>ЖУРНАЛЫ</h1>
+<br>
+{% for journal in all_journals %}
+<ul>
+  <h4>
+    <li>
+      <a href="{% url 'office:districts' user.username journal.slug %}"><h2>{{ journal }}</h2></a>
+    </li>
+  </h4>
+</ul>
+{% endfor %}
+
+{% endblock content %}

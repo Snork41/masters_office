@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% block content %}
+
+{% comment %} <li class="text-center">  {% endcomment %}
+  {% comment %} <a href="{% url 'admin' %}">Администрирование</a> {% endcomment %}
+{% if not user.is_authenticated %}
+<li class="text-center"> 
+  <a href="{% url 'login' %}">Войти</a>
+<li class="text-center"> 
+  <a href="{% url 'users:signup' %}">Регистрация</a>
+{% else %}  
+  <a class="text-center" href="{% url 'office:cabinet' user.username %}"><h2>В КАБИНЕТ</h2></a>
+{% endif %}
+{% endblock content %}

@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}
+Запись № {{ post.number_post }}
+{% endblock title %}
+
+{% block content %}
+<main>
+  <div class="post-detail">
+    <h1>Журнал обходов тепловых сетей {{ post.district }}</h1>
+    <h2>
+        <p> Запись № {{ post.number_post }} от {{ post.time_create }}</p>
+        {% if post.time_update != post.time_create %}
+        <p> Запись изменена {{ post.time_update }}</p>
+        {% endif %}
+    </h2>
+        <b> Дата обхода:</b> {{ post.pub_date|date:"d E Y" }}
+        <br>
+        <b>Автор:</b>{{ post.author.get_full_name }}
+        <br>
+        <b>Ф.И.О обходчиков:</b> 
+            {% for member in post.members.all %}
+                {{ member }}
+                {% if not forloop.last %} , {% endif %}
+            {% endfor %}
+        <br>
+        <b>Участок теплотрассы, задание мастера:</b> {{ post.task }}
+        <br>
+        <b>Замечания, выявленные при обходе:</b> {{ post.text }}
+        <br>
+        <b>Организационные мероприятия по устранению:</b> {{ post.plan }}
+        <br>
+        <b>Резолюция начальника энергорайона:</b> {{ post.resolution }}
+        {% if post.fix_date %}
+        <br>
+        <b>Дата устранения замечания:</b> {{ post.fix_date }}
+        {% endif %}
+        <br>
+        <b>Перенос на ремонт в план на следующий месяц или на межотопительный период:</b> {{ post.transfer }}
+        <br>
+        {% if  post.author.id == user.id %}
+        <a class="btn btn-primary" href="{% url 'office:edit_post_walking' post.id %}">редактировать запись</a>
+        {% endif %}
+  </div>
+</main>
+{% endblock content %}
