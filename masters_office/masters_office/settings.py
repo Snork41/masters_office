@@ -1,4 +1,5 @@
 from pathlib import Path
+import datetime
 import os
 from decouple import config
 
@@ -139,3 +140,10 @@ LOGIN_REDIRECT_URL = 'office:index'
 EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
 # указываем директорию, в которую будут складываться файлы писем
 EMAIL_FILE_PATH = os.path.join(BASE_DIR, 'sent_emails')
+
+
+# for tests
+TAB_NUMBER = 1
+BRGD_NUMBER = 1
+POST_WLK_NUM = 1
+WALK_DATE = datetime.datetime(year=2010, month=2, day=2)

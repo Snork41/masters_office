@@ -10,7 +10,7 @@ class PostWalkingForm(forms.ModelForm):
             'district',
             'planned',
             'not_planned',
-            'pub_date',    
+            'walk_date',    
             'members',
             'task',
             'text',

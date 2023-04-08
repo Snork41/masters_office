@@ -12,7 +12,7 @@ class PostWalkingAdmin(admin.ModelAdmin):
         'district',
         'planned',
         'not_planned',
-        'pub_date',
+        'walk_date',
         'task',
         'text_for_display',
         'author',
@@ -22,7 +22,7 @@ class PostWalkingAdmin(admin.ModelAdmin):
         'district',
         ('time_create', 'time_update'),
         ('planned', 'not_planned'),
-        'pub_date',    
+        'walk_date',    
         'members',
         'task',
         'text',
@@ -32,8 +32,8 @@ class PostWalkingAdmin(admin.ModelAdmin):
         'transfer',
     )
     list_display_links = ('number_post', 'task')
-    search_fields = ('text', 'pub_date')
-    list_filter = ('pub_date',)
+    search_fields = ('text', 'walk_date')
+    list_filter = ('walk_date',)
     empty_value_display = '-пусто-'
     save_on_top = True
     readonly_fields = ('time_create', 'time_update', 'number_post')
@@ -90,7 +90,7 @@ class PersonalAdmin(admin.ModelAdmin):
         'energy_district',
     )
 #     list_editable = ('journal',)
-#     search_fields = ('text', 'pub_date')
+#     search_fields = ('text', 'walk_date')
 #     list_filter = ('tab_number',)
     list_display_links = ('first_name', 'last_name', 'middle_name')
     empty_value_display = '-пусто-'

@@ -189,7 +189,7 @@ class PostWalking(models.Model):
     number_post = models.PositiveIntegerField(
         verbose_name='Номер записи'
     )
-    pub_date = models.DateTimeField(
+    walk_date = models.DateTimeField(
         verbose_name='Дата обхода',
         help_text='Введите дату в формате "ДД.ММ.ГГГГ"'
     )
@@ -259,7 +259,7 @@ class PostWalking(models.Model):
         ordering = ['number_post']
 
     def __str__(self):
-        return f"Запись № {self.pk}"
+        return f'Запись № {self.pk}'
 
     @admin.display(description='Замечания, выявленные при обходе')
     def text_for_display(self):
