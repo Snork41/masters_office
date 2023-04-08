@@ -50,6 +50,7 @@ class JournalAdmin(admin.ModelAdmin):
     )
     list_display_links = ('title',)
     empty_value_display = '-пусто-'
+    prepopulated_fields = {'slug': ('title',)}
 
 
 class BrigadeAdmin(admin.ModelAdmin):
@@ -75,6 +76,7 @@ class DistrictAdmin(admin.ModelAdmin):
     # list_filter = ('master',)
     list_display_links = ('title',)
     empty_value_display = '-пусто-'
+    prepopulated_fields = {'slug': ('title',)}
 
 
 class PersonalAdmin(admin.ModelAdmin):

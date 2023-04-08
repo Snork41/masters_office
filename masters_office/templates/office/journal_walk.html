@@ -40,11 +40,11 @@
         </p>
         {% if not forloop.last %} <hr> {% endif %}
     {% endfor %}
-    <p>
-    <h3><a href="{% url 'office:create_post_walking' %}">Новая запись</a></h3>
-    </p>
+
     {% else %}
     <h2>Записей нет.</h2>
 {% endif %}
-
+    <p>
+    <h3><a href="{% url 'office:create_post_walking' master.username journal.slug district.slug %}">Новая запись</a></h3>
+    </p>
 {% endblock content %}

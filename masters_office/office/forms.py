@@ -1,6 +1,6 @@
 from django import forms
 
-from .models import PostWalking
+from .models import PostWalking, Personal
 
 
 class PostWalkingForm(forms.ModelForm):
@@ -27,6 +27,7 @@ class PostWalkingForm(forms.ModelForm):
 
     def save(self, username=None, *args, commit=True, **kwargs):
         """Сохранение записи с автоматической нумерацией, учитывая район."""
+
         obj = super().save(commit=False, *args, **kwargs)
         if not obj.number_post:
             most_recent = PostWalking.objects.filter(
@@ -36,4 +37,5 @@ class PostWalkingForm(forms.ModelForm):
                 obj.author = username
         if commit:
             obj.save()
+            self._save_m2m()
         return obj

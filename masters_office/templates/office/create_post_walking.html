@@ -15,7 +15,8 @@
         <div class="card">
           <div class="card-header">       
             {% if is_edit %}
-              Редактировать запись в журнале обходов
+              Редактировать запись № {{ post.number_post }} от {{ post.pub_date|date:"d E Y" }}
+              ({{ post.district }})
             {% else %}
               Новая запись в журнале обходов
             {% endif %}         
