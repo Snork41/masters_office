@@ -1,13 +1,15 @@
 import datetime
-from django.urls import reverse
 
+from django.urls import reverse
 
 USERNAME = 'User'
 USERNAME_AUTHOR = 'authorUser'
 SLUG_JOURNAL = 'test-slug-journal'
 SLUG_DISTRICT = 'test-slug-district'
+SLUG_DISTRICT_2 = 'test-slug-district-2'
 TITLE_ENERGY_DISTRICT = 'Тестовый энергорайон'
 TITLE_DISTRICT = 'Тестовый район(источник)'
+TITLE_DISTRICT_2 = 'Тестовый район(источник)-2'
 TITLE_JOURNAL = 'Тестовый журнал'
 NAME_POSITION = 'Тестовая должность'
 FIRST_NAME_1 = 'Тестовое имя'

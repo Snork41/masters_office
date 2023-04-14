@@ -1,7 +1,9 @@
 from django.contrib import admin
 
 from .forms import PostWalkingForm
-from .models import Journal, PostWalking, Personal, District, Position, EnergyDistrict, Brigade
+from .models import (Journal, PostWalking,
+                     Personal, District, Position,
+                     EnergyDistrict, Brigade)
 
 
 class PostWalkingAdmin(admin.ModelAdmin):
@@ -22,7 +24,7 @@ class PostWalkingAdmin(admin.ModelAdmin):
         'district',
         ('time_create', 'time_update'),
         ('planned', 'not_planned'),
-        'walk_date',    
+        'walk_date',
         'members',
         'task',
         'text',
@@ -59,7 +61,6 @@ class BrigadeAdmin(admin.ModelAdmin):
         'master',
         'brigadier',
     )
-    # list_display_links = ('',)
     filter_horizontal = ('members',)
     empty_value_display = '-пусто-'
 
@@ -72,8 +73,6 @@ class DistrictAdmin(admin.ModelAdmin):
         'slug',
     )
     list_editable = ('master',)
-    # search_fields = ('title', 'master')
-    # list_filter = ('master',)
     list_display_links = ('title',)
     empty_value_display = '-пусто-'
     prepopulated_fields = {'slug': ('title',)}
@@ -89,10 +88,16 @@ class PersonalAdmin(admin.ModelAdmin):
         'rank',
         'energy_district',
     )
-#     list_editable = ('journal',)
-#     search_fields = ('text', 'walk_date')
-#     list_filter = ('tab_number',)
     list_display_links = ('first_name', 'last_name', 'middle_name')
+
+
+class PositionAdmin(admin.ModelAdmin):
+    list_display = (
+        'name_position',
+        'walker',
+    )
+    list_editable = ('walker',)
+    list_display_links = ('name_position',)
     empty_value_display = '-пусто-'
 
 
@@ -100,7 +105,7 @@ admin.site.register(PostWalking, PostWalkingAdmin)
 admin.site.register(Journal, JournalAdmin)
 admin.site.register(District, DistrictAdmin)
 admin.site.register(Personal, PersonalAdmin)
-admin.site.register(Position)
+admin.site.register(Position, PositionAdmin)
 admin.site.register(EnergyDistrict)
 admin.site.register(Brigade, BrigadeAdmin)
 

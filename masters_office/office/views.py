@@ -1,13 +1,8 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404, redirect, render
-from django.views.generic import ListView, TemplateView
 
-from .models import District, User, Journal, PostWalking
+from .models import District, Journal, PostWalking
 from .forms import PostWalkingForm
-
-
-class Index(TemplateView):
-    template_name = 'office/index.html'
 
 
 def index(request):
@@ -17,24 +12,8 @@ def index(request):
 
 @login_required
 def cabinet(request, username):
-    master = get_object_or_404(User, username=username)
-    context = {
-        'master': master,
-    }
+    context = {}
     return render(request, 'office/cabinet.html', context)
-
-
-@login_required
-def districts_list(request, username, slug_journal):
-    districts = District.objects.all()
-    journal = get_object_or_404(Journal, slug=slug_journal)
-    master = get_object_or_404(User, username=username)
-    context = {
-        'districts': districts,
-        'journal': journal,
-        'master': master,
-    }
-    return render(request, 'office/districts.html', context)
 
 
 @login_required
@@ -47,15 +26,24 @@ def journals_list(request, username):
 
 
 @login_required
+def districts_list(request, username, slug_journal):
+    districts = District.objects.all()
+    journal = get_object_or_404(Journal, slug=slug_journal)
+    context = {
+        'districts': districts,
+        'journal': journal,
+    }
+    return render(request, 'office/districts.html', context)
+
+
+@login_required
 def journal_walk(request, username, slug_journal, slug_district):
     district = get_object_or_404(District, slug=slug_district)
     posts = PostWalking.objects.filter(district_id=district.id)
-    master = get_object_or_404(User, username=username)
     journal = get_object_or_404(Journal, slug=slug_journal)
     context = {
         'posts': posts,
         'district': district,
-        'master': master,
         'journal': journal,
     }
     return render(request, 'office/journal_walk.html', context)
@@ -64,11 +52,11 @@ def journal_walk(request, username, slug_journal, slug_district):
 @login_required
 def create_post_walking(request, username, slug_journal, slug_district):
     district = get_object_or_404(District, slug=slug_district)
-    initial_data = {'district': district,}
+    initial_data = {'district': district, }
     form = PostWalkingForm(
         request.POST or None,
         files=request.FILES or None,
-        initial = initial_data,
+        initial=initial_data,
     )
     context = {
         'form': form,
@@ -91,7 +79,7 @@ def edit_post_walking(request, username, slug_journal, slug_district, post_id):
         instance=post,
     )
     fields_hidden = form.fields['district']
-    fields_hidden.widget =  fields_hidden.hidden_widget()
+    fields_hidden.widget = fields_hidden.hidden_widget()
     context = {
         'post': post,
         'form': form,
@@ -108,12 +96,10 @@ def edit_post_walking(request, username, slug_journal, slug_district, post_id):
 def post_detail(request, username, slug_journal, slug_district, post_id):
     post = get_object_or_404(PostWalking, id=post_id)
     district = get_object_or_404(District, slug=slug_district)
-    master = get_object_or_404(User, username=username)
     journal = get_object_or_404(Journal, slug=slug_journal)
     context = {
         'post': post,
         'district': district,
-        'master': master,
         'journal': journal,
     }
     return render(request, 'office/post_walking_detail.html', context)

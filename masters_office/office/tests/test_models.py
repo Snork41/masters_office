@@ -3,14 +3,13 @@ from django.test import TestCase
 
 from ..models import (Brigade, District, EnergyDistrict, Journal, Personal,
                       Position, PostWalking)
-from .consts import (BRGD_NUMBER, DESCRIPTION_JOURNAL, FIRST_NAME_1, FIRST_NAME_2,
-                     LAST_NAME_1, LAST_NAME_2, MIDDLE_NAME_1, MIDDLE_NAME_2,
-                     NAME_POSITION, PLAN_WLK,
-                     POST_WLK_NUMBER, RANK, RESOLUTION_WALK, SLUG_DISTRICT,
-                     SLUG_JOURNAL, TAB_NUMBER_1, TAB_NUMBER_2, TASK_WLK,
-                     TEXT_WLK, TITLE_DISTRICT, TITLE_ENERGY_DISTRICT,
-                     TITLE_JOURNAL, TRANSFER_WLK, USERNAME,WALK_DATE)
-
+from .consts import (BRGD_NUMBER, DESCRIPTION_JOURNAL, FIRST_NAME_1,
+                     FIRST_NAME_2, LAST_NAME_1, LAST_NAME_2, MIDDLE_NAME_1,
+                     MIDDLE_NAME_2, NAME_POSITION, PLAN_WLK, POST_WLK_NUMBER,
+                     RANK, RESOLUTION_WALK, SLUG_DISTRICT, SLUG_JOURNAL,
+                     TAB_NUMBER_1, TAB_NUMBER_2, TASK_WLK, TEXT_WLK,
+                     TITLE_DISTRICT, TITLE_ENERGY_DISTRICT, TITLE_JOURNAL,
+                     TRANSFER_WLK, USERNAME, WALK_DATE)
 
 User = get_user_model()
 

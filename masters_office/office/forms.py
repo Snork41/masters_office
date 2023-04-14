@@ -1,4 +1,5 @@
 from django import forms
+from django.contrib.admin.widgets import FilteredSelectMultiple
 
 from .models import PostWalking, Personal
 
@@ -10,7 +11,7 @@ class PostWalkingForm(forms.ModelForm):
             'district',
             'planned',
             'not_planned',
-            'walk_date',    
+            'walk_date',
             'members',
             'task',
             'text',
@@ -19,11 +20,24 @@ class PostWalkingForm(forms.ModelForm):
             'fix_date',
             'transfer',
         )
+    members = forms.ModelMultipleChoiceField(
+        queryset=Personal.objects.filter(position__walker=True),
+        widget=FilteredSelectMultiple(
+            verbose_name='Члены бригады',
+            is_stacked=False
+        ),
+        label='Члены бригады',
+    )
+
+    class Media:
+        css = {
+            'all': ('/static/admin/css/widgets.css',),
+        }
+        js = ('/admin/jsi18n',)
 
     def __init__(self, *args, **kwargs):
         self.instance = kwargs.get('instance')
         super().__init__(*args, **kwargs)
-   
 
     def save(self, username=None, *args, commit=True, **kwargs):
         """Сохранение записи с автоматической нумерацией, учитывая район."""

@@ -3,6 +3,6 @@
 {% block content %}
 <h1>Открываем журнал района...</h1>
 {% for district in districts %}
-<a href="{% url 'office:journal_walk' master.username journal.slug district.slug %}"><p>{{ district }}</p></a>
+<a href="{% url 'office:journal_walk' user.username journal.slug district.slug %}"><p>{{ district }}</p></a>
 {% endfor %}
 {% endblock content %}

@@ -14,7 +14,7 @@
         <p> Запись изменена {{ post.time_update }}</p>
         {% endif %}
     </h2>
-        <b> Дата обхода:</b> {{ post.pub_date|date:"d E Y" }}
+        <b> Дата обхода:</b> {{ post.walk_date|date:"d E Y" }}
         <br>
         <b>Автор:</b>
         {% if post.author.get_full_name %}
@@ -44,7 +44,7 @@
         <b>Перенос на ремонт в план на следующий месяц или на межотопительный период:</b> {{ post.transfer }}
         <br>
         {% if  post.author.id == user.id %}
-        <a class="btn btn-primary" href="{% url 'office:edit_post_walking' master.username journal.slug district.slug post.id %}">редактировать запись</a>
+        <a class="btn btn-primary" href="{% url 'office:edit_post_walking' user.username journal.slug district.slug post.id %}">редактировать запись</a>
         {% endif %}
   </div>
 </main>

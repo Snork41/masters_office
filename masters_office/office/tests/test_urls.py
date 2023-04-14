@@ -6,19 +6,20 @@ from django.urls import reverse
 
 from ..models import (Brigade, District, EnergyDistrict, Journal, Personal,
                       Position, PostWalking)
-from .consts import (BRGD_NUMBER, DESCRIPTION_JOURNAL,
-                     EDIT_POST_WLK_REVERSE, FIRST_NAME_1, FIRST_NAME_2,
-                     LAST_NAME_1, LAST_NAME_2, MIDDLE_NAME_1, MIDDLE_NAME_2,
-                     NAME_POSITION, PLAN_WLK, POST_WLK_DETAIL_REVERSE,
+from .consts import (BRGD_NUMBER, CABINET_TMPLT, CABINET_URL,
+                     CREATE_POST_WLK_TMPLT, CREATE_POST_WLK_URL,
+                     DESCRIPTION_JOURNAL, DISTRICTS_TMPLT, DISTRICTS_URL,
+                     EDIT_POST_WLK_REVERSE, EDIT_POST_WLK_TMPLT, FIRST_NAME_1,
+                     FIRST_NAME_2, INDEX_TMPLT, INDEX_URL, JOURNALS_TMPLT,
+                     JOURNALS_URL, JRNL_WLK_TMPLT, JRNL_WLK_URL, LAST_NAME_1,
+                     LAST_NAME_2, LOGIN_PAGE_REDIRECT, MIDDLE_NAME_1,
+                     MIDDLE_NAME_2, NAME_POSITION, PLAN_WLK,
+                     POST_WLK_DETAIL_REVERSE, POST_WLK_DETAIL_TMPLT,
                      POST_WLK_NUMBER, RANK, RESOLUTION_WALK, SLUG_DISTRICT,
                      SLUG_JOURNAL, TAB_NUMBER_1, TAB_NUMBER_2, TASK_WLK,
                      TEXT_WLK, TITLE_DISTRICT, TITLE_ENERGY_DISTRICT,
                      TITLE_JOURNAL, TRANSFER_WLK, UNEXISTING_PAGE, USERNAME,
-                     USERNAME_AUTHOR, WALK_DATE, LOGIN_PAGE_REDIRECT, INDEX_TMPLT,
-                     CABINET_TMPLT, JOURNALS_TMPLT, DISTRICTS_TMPLT, JRNL_WLK_TMPLT,
-                     CREATE_POST_WLK_TMPLT,POST_WLK_DETAIL_TMPLT, EDIT_POST_WLK_TMPLT, INDEX_URL,
-                     CABINET_URL, JOURNALS_URL, DISTRICTS_URL, JRNL_WLK_URL, CREATE_POST_WLK_URL,)
-
+                     USERNAME_AUTHOR, WALK_DATE)
 
 User = get_user_model()
 
@@ -107,7 +108,7 @@ class OfficeURLTest(TestCase):
         self.authorized_client.force_login(self.user)
         self.author_client = Client()
         self.author_client.force_login(self.user_author)
-    
+
     def test_urls_access_for_anonymous(self):
         """Доступ страниц для анонимного пользователя"""
         url = {
@@ -144,7 +145,7 @@ class OfficeURLTest(TestCase):
                     self.assertEqual(
                         self.authorized_client.get(url_name).status_code,
                         expected_code)
-                    
+
     def test_urls_access_for_author_client(self):
         """Доступ страниц для пользователя-автора"""
         url = {
@@ -165,7 +166,8 @@ class OfficeURLTest(TestCase):
                     expected_code)
 
     def test_urls_redirect_anonymous_to_login(self):
-        """Страница по любому адресу, кроме index, перенаправит анонимного пользователя на страницу логина
+        """Страница по любому адресу, кроме index, перенаправит
+        анонимного пользователя на страницу логина
         """
         urls = [
             CABINET_URL,

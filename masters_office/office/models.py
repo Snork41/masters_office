@@ -57,6 +57,9 @@ class Position(models.Model):
         verbose_name='Должность',
         max_length=50
     )
+    walker = models.BooleanField(
+        verbose_name='Может участвовать в обходах'
+    )
 
     class Meta:
         verbose_name = 'Должность'
@@ -101,8 +104,8 @@ class Personal(models.Model):
         verbose_name='Разряд'
     )
     tab_number = models.SmallIntegerField(
-        null=True,
-        blank=True,
+        null=False,
+        blank=False,
         unique=True,
         verbose_name='Табельный номер'
     )
@@ -221,8 +224,7 @@ class PostWalking(models.Model):
         default='Обход тепловой сети'
     )
     text = models.TextField(
-        verbose_name='Замечания, выявленные при обходе',
-        help_text='Введите текст записи'
+        verbose_name='Замечания, выявленные при обходе'
     )
     plan = models.TextField(
         default='---',
@@ -237,7 +239,8 @@ class PostWalking(models.Model):
     fix_date = models.DateField(
         null=True,
         blank=True,
-        verbose_name='Дата устранения замечания'
+        verbose_name='Дата устранения замечания',
+        help_text='При отсутствии замечаний не заполняется'
     )
     transfer = models.CharField(
         max_length=150,
@@ -253,6 +256,7 @@ class PostWalking(models.Model):
         verbose_name='Автор',
         related_name='posts'
     )
+
     class Meta:
         verbose_name = 'Запись в журнале обхода'
         verbose_name_plural = 'Записи в Журналах обходов'

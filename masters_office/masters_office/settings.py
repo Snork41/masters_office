@@ -26,6 +26,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'mptt',
     'about.apps.AboutConfig',
     'office.apps.OfficeConfig',
     'users.apps.UsersConfig',

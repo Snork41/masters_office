@@ -11,7 +11,7 @@
     {% for post in posts %}
         <b>Номер записи:</b> {{ post.number_post }}
         <br>
-        <b>Дата обхода:</b> {{ post.pub_date|date:"d E Y" }}
+        <b>Дата обхода:</b> {{ post.walk_date|date:"d E Y" }}
         <br>
         <b>Ф.И.О обходчиков:</b>
         {% for member in post.members.all %}
@@ -36,7 +36,7 @@
         <br>
         <b>Автор:</b> {{ post.author }}
         <p>
-          <a href="{% url 'office:post_walking_detail' master.username journal.slug district.slug post.id %} ">подробная информация </a>
+          <a href="{% url 'office:post_walking_detail' user.username journal.slug district.slug post.id %} ">подробная информация </a>
         </p>
         {% if not forloop.last %} <hr> {% endif %}
     {% endfor %}
@@ -45,6 +45,6 @@
     <h2>Записей нет.</h2>
 {% endif %}
     <p>
-    <h3><a href="{% url 'office:create_post_walking' master.username journal.slug district.slug %}">Новая запись</a></h3>
+    <h3><a href="{% url 'office:create_post_walking' user.username journal.slug district.slug %}">Новая запись</a></h3>
     </p>
 {% endblock content %}

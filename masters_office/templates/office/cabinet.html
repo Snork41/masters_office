@@ -1,9 +1,9 @@
 {% extends 'base.html' %}
 
-{% block title %} Кабинет {{ master }} {% endblock title %}
+{% block title %} Кабинет {{ user }} {% endblock title %}
 
 {% block content %}
-<h1>КАБИНЕТ - {{ master }}</h1>
+<h1>КАБИНЕТ - {{ user.get_full_name }}</h1>
 <br>
 <ul>
   <h4>
