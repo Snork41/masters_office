@@ -15,5 +15,5 @@ urlpatterns = [
     path('cabinet/<str:username>/journals/<slug:slug_journal>/districts/<slug:slug_district>/create-post-walking/', views.create_post_walking, name='create_post_walking'),
     path('cabinet/<str:username>/journals/<slug:slug_journal>/districts/<slug:slug_district>/<int:post_id>/edit-post-walking/', views.edit_post_walking, name='edit_post_walking'),
     path('cabinet/<str:username>/journals/<slug:slug_journal>/districts/<slug:slug_district>/<int:post_id>/', views.post_detail, name='post_walking_detail'),
-
+    path('cabinet/<str:username>/journals/<slug:slug_journal>/districts/<slug:slug_district>/<int:post_id>/resolution/', views.add_resolution, name='add_resolution'),
 ]

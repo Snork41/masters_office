@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.admin.widgets import FilteredSelectMultiple
 
-from .models import PostWalking, Personal
+from .models import PostWalking, Personal, Resolution
 
 
 class PostWalkingForm(forms.ModelForm):
@@ -16,7 +16,6 @@ class PostWalkingForm(forms.ModelForm):
             'task',
             'text',
             'plan',
-            'resolution',
             'fix_date',
             'transfer',
         )
@@ -53,3 +52,9 @@ class PostWalkingForm(forms.ModelForm):
             obj.save()
             self._save_m2m()
         return obj
+    
+
+class ResolutionForm(forms.ModelForm):
+    class Meta:
+        model = Resolution
+        fields = ('text',)

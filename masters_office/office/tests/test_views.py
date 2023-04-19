@@ -3,22 +3,21 @@ from django.contrib.auth import get_user_model
 from django.test import Client, TestCase
 from django.urls import reverse
 
-from ..models import (Brigade, District, EnergyDistrict, Journal, Personal,
-                      Position, PostWalking)
-from .consts import (BRGD_NUMBER, CABINET_TMPLT, CABINET_URL,
-                     CREATE_POST_WLK_TMPLT, CREATE_POST_WLK_URL,
-                     DESCRIPTION_JOURNAL, DISTRICTS_TMPLT, DISTRICTS_URL,
-                     EDIT_POST_WLK_REVERSE, EDIT_POST_WLK_TMPLT, FIRST_NAME_1,
-                     FIRST_NAME_2, INDEX_TMPLT, INDEX_URL, JOURNALS_TMPLT,
-                     JOURNALS_URL, JRNL_WLK_TMPLT, JRNL_WLK_URL, LAST_NAME_1,
-                     LAST_NAME_2, LOGIN_PAGE_REDIRECT, MIDDLE_NAME_1,
+from office.models import (Brigade, District, EnergyDistrict, Journal, Personal,
+                      Position, PostWalking, Resolution)
+from .consts import (BRGD_NUMBER, CREATE_POST_WLK_URL,
+                     DESCRIPTION_JOURNAL, DISTRICTS_URL,
+                     EDIT_POST_WLK_REVERSE, FIRST_NAME_1,
+                     FIRST_NAME_2, JOURNALS_URL, JRNL_WLK_URL, LAST_NAME_1,
+                     LAST_NAME_2, MIDDLE_NAME_1,
                      MIDDLE_NAME_2, NAME_POSITION, PLAN_WLK,
-                     POST_WLK_DETAIL_REVERSE, POST_WLK_DETAIL_TMPLT,
-                     POST_WLK_NUMBER, RANK, RESOLUTION_WALK, SLUG_DISTRICT,
+                     POST_WLK_DETAIL_REVERSE,
+                     POST_WLK_NUMBER, RANK, SLUG_DISTRICT,
                      SLUG_JOURNAL, TAB_NUMBER_1, TAB_NUMBER_2, TASK_WLK,
                      TEXT_WLK, TITLE_DISTRICT, TITLE_ENERGY_DISTRICT,
-                     TITLE_JOURNAL, TRANSFER_WLK, UNEXISTING_PAGE, USERNAME,
-                     USERNAME_AUTHOR, WALK_DATE, TITLE_DISTRICT_2, SLUG_DISTRICT_2)
+                     TITLE_JOURNAL, TRANSFER_WLK, USERNAME,
+                     USERNAME_AUTHOR, WALK_DATE, TITLE_DISTRICT_2, SLUG_DISTRICT_2,
+                     RESOLUTION_WALK, RESOLUTION_WALK_2)
 
 User = get_user_model()
 
@@ -28,6 +27,7 @@ class OfficeViewsTest(TestCase):
     def setUpClass(cls):
         super().setUpClass()
         cls.user = User.objects.create_user(username=USERNAME)
+        cls.user_author = User.objects.create_user(username=USERNAME_AUTHOR, is_staff=True)
         cls.energy_district = EnergyDistrict.objects.create(
             title=TITLE_ENERGY_DISTRICT,
         )
@@ -43,6 +43,7 @@ class OfficeViewsTest(TestCase):
         )
         cls.position = Position.objects.create(
             name_position=NAME_POSITION,
+            walker=True,
         )
         cls.workman = Personal.objects.create(
             first_name=FIRST_NAME_1,
@@ -80,7 +81,6 @@ class OfficeViewsTest(TestCase):
             task=TASK_WLK,
             text=TEXT_WLK,
             plan=PLAN_WLK,
-            resolution=RESOLUTION_WALK,
             fix_date=WALK_DATE,
             transfer=TRANSFER_WLK,
             author=cls.user,
@@ -93,13 +93,16 @@ class OfficeViewsTest(TestCase):
             task=TASK_WLK,
             text=TEXT_WLK,
             plan=PLAN_WLK,
-            resolution=RESOLUTION_WALK,
             fix_date=WALK_DATE,
             transfer=TRANSFER_WLK,
             author=cls.user,
         )
         cls.post_walking_2.members.set([cls.workman_2])
-
+        cls.resolution = Resolution.objects.create(
+            post_walking=cls.post_walking,
+            author=cls.user,
+            text=RESOLUTION_WALK,
+        )
         cls.POST_WLK_DETAIL_URL = reverse(
             POST_WLK_DETAIL_REVERSE,
             kwargs={
@@ -107,6 +110,15 @@ class OfficeViewsTest(TestCase):
                 'slug_journal': cls.journal.slug,
                 'slug_district': cls.district.slug,
                 'post_id': cls.post_walking.id
+            }
+        )
+        cls.POST_WLK_2_DETAIL_URL = reverse(
+            POST_WLK_DETAIL_REVERSE,
+            kwargs={
+                'username': cls.user,
+                'slug_journal': cls.journal.slug,
+                'slug_district': cls.district.slug,
+                'post_id': cls.post_walking_2.id
             }
         )
         cls.EDIT_POST_WLK_URL = reverse(
@@ -122,8 +134,10 @@ class OfficeViewsTest(TestCase):
     def setUp(self):
         self.authorized_client = Client()
         self.authorized_client.force_login(self.user)
+        self.author_client = Client()
+        self.author_client.force_login(self.user_author)
 
-    def test_journal_page_show_correct_context(self):
+    def test_journals_page_show_correct_context(self):
         """Шаблон journals сформирован с правильным контекстом."""
         response = self.authorized_client.get(JOURNALS_URL)
         first_object = response.context.get('all_journals').first()
@@ -157,7 +171,6 @@ class OfficeViewsTest(TestCase):
             'task': forms.fields.CharField,
             'text': forms.fields.CharField,
             'plan': forms.fields.CharField,
-            'resolution': forms.fields.CharField,
             'fix_date': forms.fields.DateField,
             'transfer': forms.fields.CharField,
         }
@@ -165,3 +178,33 @@ class OfficeViewsTest(TestCase):
             with self.subTest(value=value):
                 form_field = response.context.get('form').fields.get(value)
                 self.assertIsInstance(form_field, expected)
+
+    def test_post_walking_detail_page_show_correct_context(self):
+        """Шаблон post_walking_detail сформирован с правильным контекстом."""
+        response = self.authorized_client.get(self.POST_WLK_DETAIL_URL)
+        expected_post = PostWalking.objects.filter(id=self.post_walking.id).first()
+        expected_district = District.objects.filter(id=self.district.id).first()
+        expected_journal = Journal.objects.filter(id=self.journal.id).first()
+        self.assertEqual(response.context.get('post'), expected_post)
+        self.assertEqual(response.context.get('district'), expected_district)
+        self.assertEqual(response.context.get('journal'), expected_journal)
+
+    def test_resolution_show_in_post(self):
+        """При создании резолюции, она появляется в записи"""
+        response = self.authorized_client.get(self.POST_WLK_DETAIL_URL)
+        self.assertEqual(self.resolution, response.context.get('resolution'))
+
+    def test_resolution_can_be_only_one_for_post(self):
+        """Для одного поста можно создать только одну резолюцию."""
+        response_1 = len(Resolution.objects.filter(post_walking_id=self.post_walking))
+        Resolution.objects.create(
+            post_walking=self.post_walking,
+            author=self.user_author,
+            text=RESOLUTION_WALK_2
+        )
+        response_2 = len(Resolution.objects.filter(post_walking_id=self.post_walking))
+        self.assertEqual(response_1, response_2)
+
+    def test_posts_show_only_in_their_journal(self):
+        """Записи появляются только в своём журнале."""
+        pass

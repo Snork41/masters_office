@@ -11,7 +11,7 @@
     <h2>
         <p> Запись № {{ post.number_post }} от {{ post.time_create }}</p>
         {% if post.time_update != post.time_create %}
-        <p> Запись изменена {{ post.time_update }}</p>
+        <p> Запись изменена {{ post.time_update }} пользователем {{ post.author.get_full_name }} ({{ post.author }})</p>
         {% endif %}
     </h2>
         <b> Дата обхода:</b> {{ post.walk_date|date:"d E Y" }}
@@ -35,7 +35,12 @@
         <br>
         <b>Организационные мероприятия по устранению:</b> {{ post.plan }}
         <br>
-        <b>Резолюция начальника энергорайона:</b> {{ post.resolution }}
+        <b>Резолюция начальника энергорайона:</b> 
+        {% if resolution %}
+          {{ resolution.text }}
+        {% else %}
+          Отсутствует
+        {% endif %}
         {% if post.fix_date %}
         <br>
         <b>Дата устранения замечания:</b> {{ post.fix_date }}
@@ -46,6 +51,10 @@
         {% if  post.author.id == user.id %}
         <a class="btn btn-primary" href="{% url 'office:edit_post_walking' user.username journal.slug district.slug post.id %}">редактировать запись</a>
         {% endif %}
+      {% if not resolution %}
+        {% include 'office/includes/add_resolution.html' %}
+      {% endif %}
+
   </div>
 </main>
 {% endblock content %}

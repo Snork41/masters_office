@@ -2,7 +2,7 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404, redirect, render
 
 from .models import District, Journal, PostWalking
-from .forms import PostWalkingForm
+from .forms import PostWalkingForm, ResolutionForm
 
 
 def index(request):
@@ -97,9 +97,25 @@ def post_detail(request, username, slug_journal, slug_district, post_id):
     post = get_object_or_404(PostWalking, id=post_id)
     district = get_object_or_404(District, slug=slug_district)
     journal = get_object_or_404(Journal, slug=slug_journal)
+    form = ResolutionForm(request.POST or None)
+    resolution = post.resolution.first()
     context = {
         'post': post,
         'district': district,
         'journal': journal,
+        'form': form,
+        'resolution': resolution,
     }
     return render(request, 'office/post_walking_detail.html', context)
+
+
+@login_required
+def add_resolution(request, username, slug_journal, slug_district, post_id):
+    post = get_object_or_404(PostWalking, id=post_id)
+    form = ResolutionForm(request.POST or None)
+    if form.is_valid():
+        resolution = form.save(commit=False)
+        resolution.author = request.user
+        resolution.post_walking = post
+        resolution.save()
+    return redirect('office:post_walking_detail', username, slug_journal, slug_district, post_id)

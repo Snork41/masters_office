@@ -15,7 +15,7 @@ from .consts import (BRGD_NUMBER, CABINET_TMPLT, CABINET_URL,
                      LAST_NAME_2, LOGIN_PAGE_REDIRECT, MIDDLE_NAME_1,
                      MIDDLE_NAME_2, NAME_POSITION, PLAN_WLK,
                      POST_WLK_DETAIL_REVERSE, POST_WLK_DETAIL_TMPLT,
-                     POST_WLK_NUMBER, RANK, RESOLUTION_WALK, SLUG_DISTRICT,
+                     POST_WLK_NUMBER, RANK, SLUG_DISTRICT,
                      SLUG_JOURNAL, TAB_NUMBER_1, TAB_NUMBER_2, TASK_WLK,
                      TEXT_WLK, TITLE_DISTRICT, TITLE_ENERGY_DISTRICT,
                      TITLE_JOURNAL, TRANSFER_WLK, UNEXISTING_PAGE, USERNAME,
@@ -40,6 +40,7 @@ class OfficeURLTest(TestCase):
         )
         cls.position = Position.objects.create(
             name_position=NAME_POSITION,
+            walker=True,
         )
         cls.workman = Personal.objects.create(
             first_name=FIRST_NAME_1,
@@ -77,7 +78,6 @@ class OfficeURLTest(TestCase):
             task=TASK_WLK,
             text=TEXT_WLK,
             plan=PLAN_WLK,
-            resolution=RESOLUTION_WALK,
             fix_date=WALK_DATE,
             transfer=TRANSFER_WLK,
             author=cls.user_author,

@@ -6,7 +6,7 @@ from ..models import (Brigade, District, EnergyDistrict, Journal, Personal,
 from .consts import (BRGD_NUMBER, DESCRIPTION_JOURNAL, FIRST_NAME_1,
                      FIRST_NAME_2, LAST_NAME_1, LAST_NAME_2, MIDDLE_NAME_1,
                      MIDDLE_NAME_2, NAME_POSITION, PLAN_WLK, POST_WLK_NUMBER,
-                     RANK, RESOLUTION_WALK, SLUG_DISTRICT, SLUG_JOURNAL,
+                     RANK, SLUG_DISTRICT, SLUG_JOURNAL,
                      TAB_NUMBER_1, TAB_NUMBER_2, TASK_WLK, TEXT_WLK,
                      TITLE_DISTRICT, TITLE_ENERGY_DISTRICT, TITLE_JOURNAL,
                      TRANSFER_WLK, USERNAME, WALK_DATE)
@@ -29,6 +29,7 @@ class OfficeModelTest(TestCase):
         )
         cls.position = Position.objects.create(
             name_position=NAME_POSITION,
+            walker=True,
         )
         cls.workman = Personal.objects.create(
             first_name=FIRST_NAME_1,
@@ -66,7 +67,6 @@ class OfficeModelTest(TestCase):
             task=TASK_WLK,
             text=TEXT_WLK,
             plan=PLAN_WLK,
-            resolution=RESOLUTION_WALK,
             fix_date=WALK_DATE,
             transfer=TRANSFER_WLK,
             author=cls.user,

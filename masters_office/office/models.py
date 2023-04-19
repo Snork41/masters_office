@@ -231,11 +231,6 @@ class PostWalking(models.Model):
         blank=True,
         verbose_name='Организационные мероприятия по устранению'
     )
-    resolution = models.TextField(
-        default='---',
-        blank=True,
-        verbose_name='Резолюция начальника энергорайона'
-    )
     fix_date = models.DateField(
         null=True,
         blank=True,
@@ -260,7 +255,7 @@ class PostWalking(models.Model):
     class Meta:
         verbose_name = 'Запись в журнале обхода'
         verbose_name_plural = 'Записи в Журналах обходов'
-        ordering = ['number_post']
+        ordering = ['-number_post']
 
     def __str__(self):
         return f'Запись № {self.pk}'
@@ -270,3 +265,40 @@ class PostWalking(models.Model):
         if len(self.text) > 15:
             return f'{self.text[:20]}...'
         return self.text
+
+
+class Resolution(models.Model):
+    """Резолюция начальника района."""
+
+    post_walking = models.ForeignKey(
+        'PostWalking',
+        verbose_name='Резолюция записи',
+        on_delete=models.CASCADE,
+        related_name='resolution',
+        blank=True,
+        null=True,
+    )
+    author = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        verbose_name='Автор',
+        related_name='resolution',
+    )
+    text = models.TextField(
+        verbose_name='Резолюция начальника энергорайона',
+    )
+    created = models.DateTimeField(
+        verbose_name='Дата создания резолюции',
+        auto_now_add=True,
+    )
+
+    class Meta:
+        verbose_name = 'Резолюция'
+        verbose_name_plural = 'Резолюции'
+        
+    def __str__(self):
+        return self.text
+    
+    def save(self,*args,**kwargs):
+        if Resolution.objects.filter(id=self.id) or not Resolution.objects.filter(post_walking_id=self.post_walking_id):
+            super(Resolution,self).save(*args,**kwargs)

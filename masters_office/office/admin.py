@@ -3,11 +3,14 @@ from django.contrib import admin
 from .forms import PostWalkingForm
 from .models import (Journal, PostWalking,
                      Personal, District, Position,
-                     EnergyDistrict, Brigade)
+                     EnergyDistrict, Brigade, Resolution)
 
+class ResolutionInline(admin.TabularInline):
+    model = Resolution
 
 class PostWalkingAdmin(admin.ModelAdmin):
     form = PostWalkingForm
+    inlines = (ResolutionInline,)
     list_display = (
         'pk',
         'number_post',
@@ -29,7 +32,6 @@ class PostWalkingAdmin(admin.ModelAdmin):
         'task',
         'text',
         'plan',
-        'resolution',
         'fix_date',
         'transfer',
     )
@@ -101,6 +103,16 @@ class PositionAdmin(admin.ModelAdmin):
     empty_value_display = '-пусто-'
 
 
+class ResolutionAdmin(admin.ModelAdmin):
+    list_display = (
+        'author',
+        'post_walking',
+        'text',
+    )
+    list_display_links = ('author', 'post_walking', 'text')
+    empty_value_display = '-пусто-'
+
+
 admin.site.register(PostWalking, PostWalkingAdmin)
 admin.site.register(Journal, JournalAdmin)
 admin.site.register(District, DistrictAdmin)
@@ -108,5 +120,7 @@ admin.site.register(Personal, PersonalAdmin)
 admin.site.register(Position, PositionAdmin)
 admin.site.register(EnergyDistrict)
 admin.site.register(Brigade, BrigadeAdmin)
+admin.site.register(Resolution, ResolutionAdmin)
+
 
 admin.site.site_header = '"Кабинет мастера" | Администрирование'
