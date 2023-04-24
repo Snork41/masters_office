@@ -43,7 +43,6 @@ JRNL_WLK_REVERSE = 'office:journal_walk'
 CREATE_POST_WLK_REVERSE = 'office:create_post_walking'
 POST_WLK_DETAIL_REVERSE = 'office:post_walking_detail'
 EDIT_POST_WLK_REVERSE = 'office:edit_post_walking'
-# RESOLUTION_REVERSE = 'office:add_resolution'
 
 
 INDEX_URL = reverse(INDEX_REVERSE)
@@ -57,8 +56,6 @@ JRNL_WLK_URL = reverse(JRNL_WLK_REVERSE,
                        kwargs={'username': USERNAME, 'slug_journal': SLUG_JOURNAL, 'slug_district': SLUG_DISTRICT})
 CREATE_POST_WLK_URL = reverse(CREATE_POST_WLK_REVERSE,
                               kwargs={'username': USERNAME, 'slug_journal': SLUG_JOURNAL, 'slug_district': SLUG_DISTRICT})
-# RESOLUTION_URL= reverse(RESOLUTION_REVERSE,
-                            #   kwargs={'username': USERNAME, 'slug_journal': SLUG_JOURNAL, 'slug_district': SLUG_DISTRICT})
 
 
 INDEX_TMPLT = 'office/index.html'

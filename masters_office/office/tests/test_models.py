@@ -63,6 +63,7 @@ class OfficeModelTest(TestCase):
         cls.post_walking = PostWalking.objects.create(
             number_post=POST_WLK_NUMBER,
             walk_date=WALK_DATE,
+            journal=cls.journal,
             district=cls.district,
             task=TASK_WLK,
             text=TEXT_WLK,
@@ -90,7 +91,7 @@ class OfficeModelTest(TestCase):
             workman: f'{workman.last_name} {workman.first_name} {workman.middle_name}',
             brigade: f'Бригада № {brigade.number}. Мастера {brigade.master}',
             journal: journal.title,
-            post_walking: f'Запись № {post_walking.pk}',
+            post_walking: f'{district.title}, Запись № {post_walking.pk} от {post_walking.time_create.date()}',
         }
         for field, expected_value in object_names.items():
             with self.subTest(field=field):

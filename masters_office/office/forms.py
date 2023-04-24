@@ -52,7 +52,7 @@ class PostWalkingForm(forms.ModelForm):
             obj.save()
             self._save_m2m()
         return obj
-    
+
 
 class ResolutionForm(forms.ModelForm):
     class Meta:

@@ -7,13 +7,24 @@
 {% block content %}
 <main>
   <div class="post-detail">
+    {% if messages %}
+    {% for message in messages %}
+          <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+    {% endfor %}
+    {% endif %}
     <h1>Журнал обходов тепловых сетей {{ post.district }}</h1>
+    <div class="row justify-content-center">
+      <div class="col-md-20 p-5">
+        <div class="card">
+          <div class="card-header">
     <h2>
-        <p> Запись № {{ post.number_post }} от {{ post.time_create }}</p>
-        {% if post.time_update != post.time_create %}
-        <p> Запись изменена {{ post.time_update }} пользователем {{ post.author.get_full_name }} ({{ post.author }})</p>
-        {% endif %}
+      <p> Запись № {{ post.number_post }} от {{ post.time_create }}</p>
     </h2>
+    <h5>
+      {% if post.time_update != post.time_create %}
+      <p> Запись была изменена {{ post.time_update }} пользователем {{ post.author.get_full_name }} ({{ post.author }})</p>
+      {% endif %}
+    </h5>
         <b> Дата обхода:</b> {{ post.walk_date|date:"d E Y" }}
         <br>
         <b>Автор:</b>
@@ -22,6 +33,10 @@
         {% else %}
           {{ post.author }}
         {% endif %}
+        <br>
+        <b>Причина обхода:</b>
+        {% if post.planned %} Плановый {% endif %}
+        {% if post.not_planned %} Внеплановый {% endif %}
         <br>
         <b>Ф.И.О обходчиков:</b> 
             {% for member in post.members.all %}
@@ -37,7 +52,7 @@
         <br>
         <b>Резолюция начальника энергорайона:</b> 
         {% if resolution %}
-          {{ resolution.text }}
+          {{ resolution.text }} ({{ resolution.author.get_full_name }})
         {% else %}
           Отсутствует
         {% endif %}
@@ -49,12 +64,19 @@
         <b>Перенос на ремонт в план на следующий месяц или на межотопительный период:</b> {{ post.transfer }}
         <br>
         {% if  post.author.id == user.id %}
-        <a class="btn btn-primary" href="{% url 'office:edit_post_walking' user.username journal.slug district.slug post.id %}">редактировать запись</a>
+        <br>
+        <a class="btn btn-primary" href="{% url 'office:edit_post_walking' user.username journal.slug district.slug post.id %}">Редактировать запись</a>
         {% endif %}
+
       {% if not resolution %}
         {% include 'office/includes/add_resolution.html' %}
+      {% elif resolution.author.id == user.id %}
+        {% include 'office/includes/edit_resolution.html' %}
       {% endif %}
-
+    </div>
+  </div>
+</div>
+</div>
   </div>
 </main>
 {% endblock content %}

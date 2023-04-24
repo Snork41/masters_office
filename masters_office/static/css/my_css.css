@@ -23,3 +23,8 @@ body {
 .post-detail {
     font-size: 1.5em;
 }
+
+.center-img {
+    text-align: center;
+    margin-top: 5em;
+}

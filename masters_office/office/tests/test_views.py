@@ -77,6 +77,7 @@ class OfficeViewsTest(TestCase):
         cls.post_walking = PostWalking.objects.create(
             number_post=POST_WLK_NUMBER,
             walk_date=WALK_DATE,
+            journal=cls.journal,
             district=cls.district,
             task=TASK_WLK,
             text=TEXT_WLK,

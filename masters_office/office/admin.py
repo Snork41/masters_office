@@ -1,12 +1,15 @@
 from django.contrib import admin
+from django.contrib import messages
 
 from .forms import PostWalkingForm
 from .models import (Journal, PostWalking,
                      Personal, District, Position,
                      EnergyDistrict, Brigade, Resolution)
 
+
 class ResolutionInline(admin.TabularInline):
     model = Resolution
+
 
 class PostWalkingAdmin(admin.ModelAdmin):
     form = PostWalkingForm
@@ -23,6 +26,7 @@ class PostWalkingAdmin(admin.ModelAdmin):
         'author',
     )
     fields = (
+        'journal',
         'author',
         'district',
         ('time_create', 'time_update'),
@@ -111,6 +115,12 @@ class ResolutionAdmin(admin.ModelAdmin):
     )
     list_display_links = ('author', 'post_walking', 'text')
     empty_value_display = '-пусто-'
+
+    def save_model(self, request, obj, form, change):
+        if PostWalking.objects.get(id=request.POST['post_walking']).resolution.all() and not change:
+            messages.set_level(request, messages.ERROR)
+            messages.error(request, 'Резолюция не добавлена, у записи уже есть резолюция!')
+        super().save_model(request, obj, form, change)
 
 
 admin.site.register(PostWalking, PostWalkingAdmin)

@@ -1,8 +1,15 @@
 {% comment %} {% load user_filters %} {% endcomment %}
 
 {% if user.is_staff %}
+<p>
+<p>
+  <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+    Добавить резолюцию:
+  </button>
+</p>
+<div class="collapse" id="collapseExample">
   <div class="card my-4">
-    <h5 class="card-header">Добавить резолюцию:</h5>
+    <h5 class="card-header">Создание резолюции:</h5>
     <div class="card-body">
       <form method="post" action="{% url 'office:add_resolution' user.username journal.slug district.slug post.id %}">
         {% csrf_token %}      
@@ -14,4 +21,5 @@
       </form>
     </div>
   </div>
+</div>
 {% endif %}

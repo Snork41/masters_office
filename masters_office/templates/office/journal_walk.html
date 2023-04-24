@@ -20,6 +20,10 @@
                   <br>
                   <b>Дата обхода:</b> {{ post.walk_date|date:"d E Y" }}
                   <br>
+                  <b>Причина обхода:</b>
+                  {% if post.planned %} Плановый {% endif %}
+                  {% if post.not_planned %} Внеплановый {% endif %}
+                  <br>
                   <b>Ф.И.О обходчиков:</b>
                   {% for member in post.members.all %}
                       {{ member }}
@@ -45,7 +49,7 @@
                   <br>
                   <b>Перенос на ремонт в план на следующий месяц или на межотопительный период:</b> {{ post.transfer }}
                   <br>
-                  <b>Автор:</b> {{ post.author }}
+                  <b>Автор:</b> {{ post.author.get_full_name }} ({{ post.author }})
                   <p>
                     <a href="{% url 'office:post_walking_detail' user.username journal.slug district.slug post.id %} ">подробная информация </a>
                   </p>

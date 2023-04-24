@@ -1,7 +1,8 @@
 from django.contrib.auth.decorators import login_required
+from django.contrib import messages
 from django.shortcuts import get_object_or_404, redirect, render
 
-from .models import District, Journal, PostWalking
+from .models import District, Journal, PostWalking, Resolution
 from .forms import PostWalkingForm, ResolutionForm
 
 
@@ -39,8 +40,8 @@ def districts_list(request, username, slug_journal):
 @login_required
 def journal_walk(request, username, slug_journal, slug_district):
     district = get_object_or_404(District, slug=slug_district)
-    posts = PostWalking.objects.filter(district_id=district.id)
     journal = get_object_or_404(Journal, slug=slug_journal)
+    posts = PostWalking.objects.filter(journal_id=journal.id, district_id=district.id)
     context = {
         'posts': posts,
         'district': district,
@@ -52,6 +53,7 @@ def journal_walk(request, username, slug_journal, slug_district):
 @login_required
 def create_post_walking(request, username, slug_journal, slug_district):
     district = get_object_or_404(District, slug=slug_district)
+    journal = get_object_or_404(Journal, slug=slug_journal)
     initial_data = {'district': district, }
     form = PostWalkingForm(
         request.POST or None,
@@ -62,7 +64,10 @@ def create_post_walking(request, username, slug_journal, slug_district):
         'form': form,
     }
     if form.is_valid():
-        form.save(request.user)
+        post = form.save(False)
+        post.author = request.user
+        post.journal = journal
+        form.save()
         return redirect('office:journal_walk', username, slug_journal, slug_district)
     return render(request, 'office/create_post_walking.html', context)
 
@@ -94,9 +99,9 @@ def edit_post_walking(request, username, slug_journal, slug_district, post_id):
 
 @login_required
 def post_detail(request, username, slug_journal, slug_district, post_id):
-    post = get_object_or_404(PostWalking, id=post_id)
     district = get_object_or_404(District, slug=slug_district)
     journal = get_object_or_404(Journal, slug=slug_journal)
+    post = get_object_or_404(PostWalking, id=post_id, journal_id=journal.id)
     form = ResolutionForm(request.POST or None)
     resolution = post.resolution.first()
     context = {
@@ -118,4 +123,24 @@ def add_resolution(request, username, slug_journal, slug_district, post_id):
         resolution.author = request.user
         resolution.post_walking = post
         resolution.save()
+        messages.success(request, 'Резолюция успешно добавлена')
+    return redirect('office:post_walking_detail', username, slug_journal, slug_district, post_id)
+
+
+@login_required
+def edit_resolution(request, username, slug_journal, slug_district, post_id):
+    resolution = get_object_or_404(Resolution, post_walking_id=post_id)
+
+    if resolution.author != request.user:
+        return redirect('office:post_walking_detail', username, slug_journal, slug_district, post_id)
+
+    form = ResolutionForm(
+        request.POST or None,
+        files=request.FILES or None,
+        instance=resolution,
+    )
+
+    if form.is_valid():
+        form.save(request.user)
+        messages.success(request, 'Резолюция успешно изменена')
     return redirect('office:post_walking_detail', username, slug_journal, slug_district, post_id)

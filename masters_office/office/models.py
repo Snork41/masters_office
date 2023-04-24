@@ -251,6 +251,14 @@ class PostWalking(models.Model):
         verbose_name='Автор',
         related_name='posts'
     )
+    journal = models.ForeignKey(
+        'Journal',
+        null=True,
+        on_delete=models.SET_NULL,
+        related_name='posts',
+        verbose_name='Журнал',
+        help_text='Журнал, в котором будет запись'
+    )
 
     class Meta:
         verbose_name = 'Запись в журнале обхода'
@@ -258,7 +266,7 @@ class PostWalking(models.Model):
         ordering = ['-number_post']
 
     def __str__(self):
-        return f'Запись № {self.pk}'
+        return f'{self.district.title}, Запись № {self.number_post} от {self.time_create.date()}'
 
     @admin.display(description='Замечания, выявленные при обходе')
     def text_for_display(self):
@@ -272,7 +280,7 @@ class Resolution(models.Model):
 
     post_walking = models.ForeignKey(
         'PostWalking',
-        verbose_name='Резолюция записи',
+        verbose_name='Резолюция для записи',
         on_delete=models.CASCADE,
         related_name='resolution',
         blank=True,
@@ -295,10 +303,13 @@ class Resolution(models.Model):
     class Meta:
         verbose_name = 'Резолюция'
         verbose_name_plural = 'Резолюции'
-        
+
     def __str__(self):
         return self.text
-    
-    def save(self,*args,**kwargs):
-        if Resolution.objects.filter(id=self.id) or not Resolution.objects.filter(post_walking_id=self.post_walking_id):
-            super(Resolution,self).save(*args,**kwargs)
+
+    def save(self, *args, **kwargs):
+        if (Resolution.objects.filter(id=self.id) or
+            not Resolution.objects.filter(
+                post_walking_id=self.post_walking_id
+            )):
+            super(Resolution, self).save(*args, **kwargs)
