@@ -8,8 +8,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = config("SECRET_KEY")
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = config("DEBUG", default=False, cast=bool)
 
 ALLOWED_HOSTS = [
     'localhost',
@@ -69,7 +68,7 @@ WSGI_APPLICATION = 'masters_office.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
 
@@ -98,7 +97,7 @@ USE_I18N = True
 
 USE_TZ = True
 
-# User
+
 AUTH_USER_MODEL = 'users.CustomUser'
 
 
@@ -121,7 +120,11 @@ LOGIN_URL = 'users:login'
 LOGIN_REDIRECT_URL = 'office:index'
 # LOGOUT_REDIRECT_URL = 'office:index'
 
-#  подключаем движок filebased.EmailBackend
+
+# подключаем движок filebased.EmailBackend
 EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
 # указываем директорию, в которую будут складываться файлы писем
 EMAIL_FILE_PATH = os.path.join(BASE_DIR, 'sent_emails')
+
+
+CSRF_FAILURE_VIEW = 'core.views.csrf_failure'

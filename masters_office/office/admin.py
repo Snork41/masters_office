@@ -10,7 +10,12 @@ from .models import (Journal, PostWalking,
 class ResolutionInline(admin.TabularInline):
     model = Resolution
 
+    def get_max_num(self, request, obj=None, **kwargs):
+        max_num = 1
+        return max_num
 
+
+@admin.register(PostWalking)
 class PostWalkingAdmin(admin.ModelAdmin):
     form = PostWalkingForm
     inlines = (ResolutionInline,)
@@ -49,6 +54,7 @@ class PostWalkingAdmin(admin.ModelAdmin):
     list_per_page = 20
 
 
+@admin.register(Journal)
 class JournalAdmin(admin.ModelAdmin):
     list_display = (
         'pk',
@@ -61,6 +67,7 @@ class JournalAdmin(admin.ModelAdmin):
     prepopulated_fields = {'slug': ('title',)}
 
 
+@admin.register(Brigade)
 class BrigadeAdmin(admin.ModelAdmin):
     list_display = (
         'number',
@@ -71,6 +78,7 @@ class BrigadeAdmin(admin.ModelAdmin):
     empty_value_display = '-пусто-'
 
 
+@admin.register(District)
 class DistrictAdmin(admin.ModelAdmin):
     list_display = (
         'pk',
@@ -84,6 +92,7 @@ class DistrictAdmin(admin.ModelAdmin):
     prepopulated_fields = {'slug': ('title',)}
 
 
+@admin.register(Personal)
 class PersonalAdmin(admin.ModelAdmin):
     list_display = (
         'tab_number',
@@ -97,6 +106,7 @@ class PersonalAdmin(admin.ModelAdmin):
     list_display_links = ('first_name', 'last_name', 'middle_name')
 
 
+@admin.register(Position)
 class PositionAdmin(admin.ModelAdmin):
     list_display = (
         'name_position',
@@ -107,6 +117,7 @@ class PositionAdmin(admin.ModelAdmin):
     empty_value_display = '-пусто-'
 
 
+@admin.register(Resolution)
 class ResolutionAdmin(admin.ModelAdmin):
     list_display = (
         'author',
@@ -123,14 +134,5 @@ class ResolutionAdmin(admin.ModelAdmin):
         super().save_model(request, obj, form, change)
 
 
-admin.site.register(PostWalking, PostWalkingAdmin)
-admin.site.register(Journal, JournalAdmin)
-admin.site.register(District, DistrictAdmin)
-admin.site.register(Personal, PersonalAdmin)
-admin.site.register(Position, PositionAdmin)
 admin.site.register(EnergyDistrict)
-admin.site.register(Brigade, BrigadeAdmin)
-admin.site.register(Resolution, ResolutionAdmin)
-
-
 admin.site.site_header = '"Кабинет мастера" | Администрирование'
