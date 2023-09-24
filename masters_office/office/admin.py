@@ -7,6 +7,10 @@ from .models import (Journal, PostWalking,
                      EnergyDistrict, Brigade, Resolution)
 
 
+admin.site.site_header = '"Кабинет мастера" | Администрирование'
+admin.site.register(EnergyDistrict)
+
+
 class ResolutionInline(admin.TabularInline):
     model = Resolution
 
@@ -132,7 +136,3 @@ class ResolutionAdmin(admin.ModelAdmin):
             messages.set_level(request, messages.ERROR)
             messages.error(request, 'Резолюция не добавлена, у записи уже есть резолюция!')
         super().save_model(request, obj, form, change)
-
-
-admin.site.register(EnergyDistrict)
-admin.site.site_header = '"Кабинет мастера" | Администрирование'
