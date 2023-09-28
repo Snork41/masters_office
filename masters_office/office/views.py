@@ -1,40 +1,38 @@
+from typing import Any
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.shortcuts import get_object_or_404, redirect, render
+from django.views.generic import ListView, TemplateView
+
 
 from .models import District, Journal, PostWalking, Resolution
 from .forms import PostWalkingForm, ResolutionForm
 
 
-def index(request):
-    context = {}
-    return render(request, 'office/index.html', context)
+class HomePage(TemplateView):
+    template_name = 'office/index.html'
 
 
-@login_required
-def cabinet(request, username):
-    context = {}
-    return render(request, 'office/cabinet.html', context)
+class Cabinet(LoginRequiredMixin, TemplateView):
+    template_name = 'office/cabinet.html'
 
 
-@login_required
-def journals_list(request, username):
-    all_journals = Journal.objects.all()
-    context = {
-        'all_journals': all_journals,
-    }
-    return render(request, 'office/journals.html', context)
+class JournalsList(LoginRequiredMixin, ListView):
+    model = Journal
+    template_name = 'office/journals.html'
+    context_object_name = 'all_journals'
 
 
-@login_required
-def districts_list(request, username, slug_journal):
-    districts = District.objects.all()
-    journal = get_object_or_404(Journal, slug=slug_journal)
-    context = {
-        'districts': districts,
-        'journal': journal,
-    }
-    return render(request, 'office/districts.html', context)
+class DistrictsList(LoginRequiredMixin, ListView):
+    model = District
+    template_name = 'office/districts.html'
+    context_object_name = 'districts'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['journal'] = get_object_or_404(Journal, slug=self.kwargs.get('slug_journal'))
+        return context
 
 
 @login_required

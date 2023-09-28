@@ -13,7 +13,7 @@
       <div class="row justify-content-center">
         <div class="col-md-8 p-5">
           <div class="card">
-            <div class="card-header">
+            <div class="card-header text-center">
               {% if is_edit %}
                 Редактировать запись № {{ post.number_post }} от {{ post.pub_date|date:'d E Y' }}
                 ({{ post.district }})
@@ -22,7 +22,6 @@
               {% endif %}
             </div>
             <div class="card-body">
-              {% comment %} {% load user_filters %} {% endcomment %}
               <form method="post" enctype="multipart/form-data">
                 {% csrf_token %}
                 <div class="form-error">{{ form.non_field_errors }}</div>
@@ -34,10 +33,9 @@
                         <span class="required text-danger">*</span>
                       {% endif %}
                     </label>
-                    {% comment %} {{ field|addclass:'form-control' }} {% endcomment %}
                     {{ field }}
                     {{ form.media }}
-                    <script type="text/javascript" src="{% url 'office:jsi18n' %}"></script>
+                      <script type="text/javascript" src="{% url 'office:jsi18n' %}"></script>
 
                     {% if field.help_text %}
                       <small id="{{ field.id_for_label }}-help" class="form-text text-muted">{{ field.help_text|safe }}</small>
@@ -45,8 +43,8 @@
                     <div class="form-error">{{ field.errors }}</div>
                   </div>
                 {% endfor %}
-                <div class="d-flex justify-content-end">
-                  <button type="submit" class="btn btn-primary">
+                <div class="d-grid gap-2 col-2 mx-auto">
+                  <button type="submit" class="btn btn-outline-dark btn-lg">
                     {% if is_edit %}
                       Сохранить
                     {% else %}

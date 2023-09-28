@@ -5,65 +5,49 @@
 {% block content %}
 
 {% if posts %}
-    <h1>Журнал обходов тепловых сетей
-        <p>{{ district }}</p>
-    </h1>
-    <div class="text-center">
-      <h3><a class="btn btn-primary btn-lg" href="{% url 'office:create_post_walking' user.username journal.slug district.slug %}">Новая запись</a></h3>
-    </div>
-    <div class="row justify-content-center">
-        <div class="col-md-20 p-5">
-          <div class="card">
-            <div class="card-header">
-              {% for post in posts %}
-                  <b>Номер записи:</b> {{ post.number_post }}
-                  <br>
-                  <b>Дата обхода:</b> {{ post.walk_date|date:"d E Y" }}
-                  <br>
-                  <b>Причина обхода:</b>
-                  {% if post.planned %} Плановый {% endif %}
-                  {% if post.not_planned %} Внеплановый {% endif %}
-                  <br>
-                  <b>Ф.И.О обходчиков:</b>
-                  {% for member in post.members.all %}
-                      {{ member }}
-                      {% if not forloop.last %} , {% endif %}
-                  {% endfor %}    
-                  <br>
-                  <b>Участок теплотрассы, задание мастера:</b> {{ post.task }}
-                  <br>
-                  <b>Замечания, выявленные при обходе:</b> {{ post.text }}
-                  <br>
-                  <b>Организационные мероприятия по устранению:</b> {{ post.plan }}
-                  <br>
-                  <b>Резолюция начальника энергорайона:</b>
-                  {% if post.resolution.first.text %}
-                    {{ post.resolution.first.text }}
-                  {% else %}
-                    Отсутствует
-                  {% endif %}
-                  {% if post.fix_date %}
-                  <br>
-                  <b>Дата устранения замечания:</b> {{ post.fix_date }}
-                  {% endif %}
-                  <br>
-                  <b>Перенос на ремонт в план на следующий месяц или на межотопительный период:</b> {{ post.transfer }}
-                  <br>
-                  <b>Автор:</b> {{ post.author.get_full_name }} ({{ post.author }})
-                  <p>
-                    <a href="{% url 'office:post_walking_detail' user.username journal.slug district.slug post.id %} ">подробная информация </a>
-                  </p>
-                  {% if not forloop.last %} <hr> {% endif %}
-              {% endfor %}
-              {% else %}
-              <h2>Записей нет.</h2>
-          {% endif %}
+<br>
+<h1 class="text-center fw-light">Журнал обходов тепловых сетей</h1>
+<h1 class="text-center fw-medium">{{ district }}</h1>
+<br>
+<div class="d-grid gap-2 col-2 mx-auto">
+    <a class="btn btn-outline-dark btn-lg fs-3" href="{% url 'office:create_post_walking' user.username journal.slug district.slug %}">Новая запись</a>
+</div>
+<div class="row justify-content-center">
+    <div class="col-md-20 p-5">
+      <div class="card">
+        <div class="card-header fs-4">
+          {% for post in posts %}
+              <b>Номер записи:</b> {{ post.number_post }}
+              <br>
+              <b>Дата обхода:</b> {{ post.walk_date|date:"d E Y" }}
+              <br>
+              <b>Причина обхода:</b>
+              {% if post.planned %} Плановый {% endif %}
+              {% if post.not_planned %} Внеплановый {% endif %}
+              <br>
+              <b>Ф.И.О обходчиков:</b>
+              {% for member in post.members.all %}
+                  {{ member }}
+                  {% if not forloop.last %} , {% endif %}
+              {% endfor %}    
+              <br>
+              <b>Участок теплотрассы, задание мастера:</b> {{ post.task }}
+              <br>      
+              <b>Автор:</b> {{ post.author.get_full_name }} ({{ post.author }})
+              <p>
+                <a class="btn btn-outline-dark btn-sm" href="{% url 'office:post_walking_detail' user.username journal.slug district.slug post.id %} ">подробная информация </a>
+              </p>
+              {% if not forloop.last %} <hr> {% endif %}
+          {% endfor %}
+          {% else %}
+          <h2>Записей нет.</h2>
+      {% endif %}
 
-           </div>
-          </div>
         </div>
       </div>
-      <div class="text-center py-3">
-        <h3><a class="btn btn-primary btn-lg" href="{% url 'office:create_post_walking' user.username journal.slug district.slug %}">Новая запись</a></h3>
-      </div>
+    </div>
+  </div>
+  <div class="d-grid gap-2 col-2 mx-auto">
+    <a class="btn btn-outline-dark btn-lg fs-3" href="{% url 'office:create_post_walking' user.username journal.slug district.slug %}">Новая запись</a>
+  </div>
 {% endblock content %}

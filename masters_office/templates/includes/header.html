@@ -4,28 +4,28 @@
     <nav class="navbar navbar-expand-lg bg-dark bg-gradient">
       <div class="container-fluid">
         <a class="navbar-brand" href="{% url 'office:index' %}">
-          <img src="{% static 'img/logo_face_2.png' %}" alt="logo" class="d-inline-block align-text-center" />
+          <img src="{% static 'img/logo_face_2.png' %}" alt="logo" class="d-inline-block align-text-center ">
           Кабинет мастера
         </a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-          <ul class="navbar-nav">
+        <ul class="navbar-nav navbar-center">
+          {% if user.is_staff or user.is_superuser %}
             <li class="nav-item">
-              <a class="nav-link {% if view_name == 'about:help' %}{% endif %}" href="{% url 'about:help' %}">Помощь</a>
+              <a class="nav-link" href="/admin">Администрирование</a>
             </li>
-            {% if user.is_active %}
-              <span class="navbar-text">Пользователь: {{ user.username }}</span>
-              <li class="nav-item">
-                <a class="nav-link" href="{% url 'logout' %}">Выйти</a>
-              </li>
-            {% endif %}
-            {% if user.is_staff or user.is_superuser %}
-              <li class="nav-item">
-                <a class="nav-link" href="/admin">Администрирование</a>
-              </li>
-            {% endif %}
-          </ul>
-        </div>
+          {% endif %}
+        </ul>
+        <a href="javascript:history.go(-1)" class="btn btn-default">Cancel</a>
+        <ul class="navbar-nav navbar-right">
+          {% if user.is_active %}
+            <span class="navbar-text">Пользователь: {{ user.username }}</span>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'logout' %}">Выйти</a>
+            </li>
+          {% endif %}
+          <li class="nav-item">
+            <a class="nav-link {% if view_name == 'about:help' %}{% endif %}" href="{% url 'about:help' %}">Помощь</a>
+          </li>
+        </ul>
       </div>
     </nav>
   </header>

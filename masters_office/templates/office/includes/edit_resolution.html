@@ -1,25 +1,22 @@
-{% comment %} {% load user_filters %} {% endcomment %}
-
 {% if user.is_staff %}
 <p>
 <p>
-    <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
-      Редактировать резолюцию:
-    </button>
-  </p>
-  <div class="collapse" id="collapseExample">
+  <button class="btn btn-outline-dark" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+    Редактировать резолюцию:
+  </button>
+</p>
+<div class="collapse" id="collapseExample">
   <div class="card my-4">
     <h5 class="card-header">Редактирование резолюции:</h5>
     <div class="card-body">
       <form method="post" action="{% url 'office:edit_resolution' user.username journal.slug district.slug post.id %}">
         {% csrf_token %}      
         <div class="form-group mb-2">
-          {% comment %} {{ form.text|addclass:"form-control" }} {% endcomment %}
           {{ form.text }}          
         </div>
-        <button type="submit" class="btn btn-primary">Отправить</button>
+        <button type="submit" class="btn btn-outline-dark">Сохранить</button>
       </form>
-      </div>
     </div>
   </div>
+</div>
 {% endif %}

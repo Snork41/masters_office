@@ -1,82 +1,81 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block title %}
-Запись № {{ post.number_post }}
-{% endblock title %}
+  Запись № {{ post.number_post }}
+{% endblock %}
 
 {% block content %}
-<main>
-  <div class="post-detail">
-    {% if messages %}
-    {% for message in messages %}
+  <main>
+    <div class="post-detail">
+      {% if messages %}
+        {% for message in messages %}
           <div class="alert alert-{{ message.tags }}">{{ message }}</div>
-    {% endfor %}
-    {% endif %}
-    <h1>Журнал обходов тепловых сетей {{ post.district }}</h1>
-    <div class="row justify-content-center">
-      <div class="col-md-20 p-5">
-        <div class="card">
-          <div class="card-header">
-    <h2>
-      <p> Запись № {{ post.number_post }} от {{ post.time_create }}</p>
-    </h2>
-    <h5>
-      {% if post.time_update != post.time_create %}
-      <p> Запись была изменена {{ post.time_update }} пользователем {{ post.author.get_full_name }} ({{ post.author }})</p>
+        {% endfor %}
       {% endif %}
-    </h5>
-        <b> Дата обхода:</b> {{ post.walk_date|date:"d E Y" }}
-        <br>
-        <b>Автор:</b>
-        {% if post.author.get_full_name %}
-          {{ post.author.get_full_name }}
-        {% else %}
-          {{ post.author }}
-        {% endif %}
-        <br>
-        <b>Причина обхода:</b>
-        {% if post.planned %} Плановый {% endif %}
-        {% if post.not_planned %} Внеплановый {% endif %}
-        <br>
-        <b>Ф.И.О обходчиков:</b> 
-            {% for member in post.members.all %}
-                {{ member }}
-                {% if not forloop.last %} , {% endif %}
-            {% endfor %}
-        <br>
-        <b>Участок теплотрассы, задание мастера:</b> {{ post.task }}
-        <br>
-        <b>Замечания, выявленные при обходе:</b> {{ post.text }}
-        <br>
-        <b>Организационные мероприятия по устранению:</b> {{ post.plan }}
-        <br>
-        <b>Резолюция начальника энергорайона:</b> 
-        {% if resolution %}
-          {{ resolution.text }} ({{ resolution.author.get_full_name }})
-        {% else %}
-          Отсутствует
-        {% endif %}
-        {% if post.fix_date %}
-        <br>
-        <b>Дата устранения замечания:</b> {{ post.fix_date }}
-        {% endif %}
-        <br>
-        <b>Перенос на ремонт в план на следующий месяц или на межотопительный период:</b> {{ post.transfer }}
-        <br>
-        {% if  post.author.id == user.id %}
-        <br>
-        <a class="btn btn-primary" href="{% url 'office:edit_post_walking' user.username journal.slug district.slug post.id %}">Редактировать запись</a>
-        {% endif %}
+      <br>
+      <h2 class="text-center fw-light">Журнал обходов тепловых сетей</h2>
+      <h2 class="text-center fw-medium">{{ district }}</h2>
+      <div class="row justify-content-center">
+        <div class="col-md-20 p-5">
+          <div class="card">
+            <div class="card-header">
+              <h2 class="text-center fw-medium">Запись № {{ post.number_post }} от {{ post.time_create }}</h2>
+              {% if post.time_update != post.time_create %}
+                <p class="text-center fw-light fs-4">запись была изменена {{ post.time_update|date:'d.m.Y' }} пользователем {{ post.author.get_full_name }} ({{ post.author }})</p>
+              {% endif %}
+                <ul>
+                  <li><b>Дата обхода:</b> {{ post.walk_date|date:'d.m.Y' }}</li>
+                  <li>
+                    <b>Автор записи:</b>
+                    {% if post.author.get_full_name %}
+                      {{ post.author.get_full_name }}
+                    {% else %}
+                      {{ post.author }}
+                    {% endif %}
+                  </li>
+                  <li>
+                    <b>Причина обхода:</b>
+                    {% if post.planned %} Плановый {% endif %}
+                    {% if post.not_planned %} Внеплановый {% endif %}
+                  </li>
+                  <p>
+                    <li><b>Ф.И.О обходчиков:</b>
+                    {% for member in post.members.all %}
+                      <br>{{ member }}
+                    {% endfor %}
+                    </li>
+                  </p>
+                  <li><b>Участок теплотрассы, задание мастера:</b><p>{{ post.task }}</p></li>
+                  <li><b>Замечания, выявленные при обходе:</b><p>{{ post.text }}</p></li>
+                  <li><b>Организационные мероприятия по устранению:</b><p>{{ post.plan }}</p></li>
+                  <li>
+                    <b>Резолюция начальника энергорайона:</b>
+                    <p>
+                      {% if resolution %}
+                        {{ resolution.text }} ({{ resolution.author.get_full_name }})
+                      {% else %}
+                        Отсутствует
+                      {% endif %}
+                    </p>
+                  </li>
+                  {% if post.fix_date %}
+                  <li><b>Дата устранения замечания:</b> {{ post.fix_date|date:"d.m.Y" }}</li>
+                  {% endif %}
+                  <li><b>Перенос на ремонт в план на следующий месяц или на межотопительный период:</b><p>{{ post.transfer }}</p></li>
+                  {% if post.author.id == user.id %}
+                    <a class="btn btn-outline-dark" href="{% url 'office:edit_post_walking' user.username journal.slug district.slug post.id %}">Редактировать запись</a>
+                  {% endif %}
 
-      {% if not resolution %}
-        {% include 'office/includes/add_resolution.html' %}
-      {% elif resolution.author.id == user.id %}
-        {% include 'office/includes/edit_resolution.html' %}
-      {% endif %}
+                  {% if not resolution %}
+                    {% include 'office/includes/add_resolution.html' %}
+                  {% elif resolution.author.id == user.id %}
+                    {% include 'office/includes/edit_resolution.html' %}
+                  {% endif %}
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-  </div>
-</div>
-</div>
-  </div>
-</main>
-{% endblock content %}
+  </main>
+{% endblock %}

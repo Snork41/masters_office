@@ -5,18 +5,15 @@
 {% endblock %}
 
 {% block content %}
-  <h1>КАБИНЕТ - {{ user.get_full_name }}</h1>
-  <br />
-  <div class="d-grid gap-2 col-6 mx-auto">
-    <a class="d-grid gap-2 col-6 mx-auto" style="text-decoration: none" href="{% url 'office:journals' user.username %}">
-      <button class="btn btn-outline-primary btn-lg" type="button">Журналы</button>
-    </a>
-    <button class="btn btn-outline-primary btn-lg" type="button">Паспорта объектов</button>
-    <button class="btn btn-outline-primary btn-lg" type="button">Бригады</button>
-    <button class="btn btn-outline-primary btn-lg" type="button">СИЗ</button>
-    <button class="btn btn-outline-primary btn-lg" type="button">Справочники</button>
-  <p>
-  </div>
-
-
+<br>
+<h1 class="text-center fw-light">{{ user.get_full_name }}</h1>
+<br>
+<div class="d-grid gap-2 col-6 mx-auto">
+  <a href="{% url 'office:journals' user.username %}" class="btn btn-outline-dark btn-lg" role="button">Журналы</a>
+  <button class="btn btn-outline-dark btn-lg" type="button">Паспорта объектов</button>
+  <button class="btn btn-outline-dark btn-lg" type="button">Бригады</button>
+  <button class="btn btn-outline-dark btn-lg" type="button">СИЗ</button>
+  <button class="btn btn-outline-dark btn-lg" type="button">Справочники</button>
+<p>
+</div>
 {% endblock %}
