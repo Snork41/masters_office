@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block title %} Журнал ремонтных работ {% endblock title %}
+
+{% block content %}
+<br>
+<h1 class="text-center fw-light">Журнал ремонтных работ</h1>
+<h1 class="text-center fw-medium">{{ district }}</h1>
+<br>
+{% if posts %}
+<div class="d-grid gap-2 col-2 mx-auto">
+    <a class="btn btn-outline-dark btn-lg fs-3" href="{% url 'office:create_post_walking' user.username journal.slug district.slug %}">Новая запись</a>
+</div>
+<div class="row justify-content-center">
+    <div class="col-md-20 p-5">
+      <div class="card">
+        <div class="card-header fs-4">
+          {% for post in posts %}
+              Запись
+              <br>
+            {% endfor %}
+          {% else %}
+          <p class="text-center fs-1">Записей нет.</p>
+{% endif %}
+
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="d-grid gap-2 col-2 mx-auto">
+    <a class="btn btn-outline-dark btn-lg fs-3" href="{% url 'office:create_post_walking' user.username journal.slug district.slug %}">Новая запись</a>
+  </div>
+{% endblock content %}

@@ -1,6 +1,7 @@
 from django.contrib import admin
 from django.contrib.auth import get_user_model
 from django.db import models
+from django.urls import reverse
 
 from masters_office.settings import RANK
 
@@ -265,6 +266,14 @@ class PostWalking(models.Model):
         verbose_name_plural = 'Записи в Журналах обходов'
         ordering = ['-number_post']
 
+    def get_absolute_url(self):
+        return reverse('office:post_walking_detail', kwargs={
+                 'username': self.kwargs.get('username'),
+                 'slug_journal': self.kwargs.get('slug_journal'),
+                 'slug_district': self.kwargs.get('slug_district'),
+                 'post_id': self.kwargs.get('post_id')
+            })
+
     def __str__(self):
         return f'{self.district.title}, Запись № {self.number_post} от {self.time_create.date()}'
 
@@ -313,3 +322,12 @@ class Resolution(models.Model):
                 post_walking_id=self.post_walking_id
             )):
             super(Resolution, self).save(*args, **kwargs)
+
+    def get_absolute_url(self):
+        return reverse('office:post_walking_detail', kwargs={
+            'username': self.author.username,
+            'slug_journal': self.post_walking.journal.slug,
+            'slug_district': self.post_walking.district.slug,
+            'post_id': self.post_walking.id
+            }
+        )

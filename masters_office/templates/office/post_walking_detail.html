@@ -23,6 +23,7 @@
               {% if post.time_update != post.time_create %}
                 <p class="text-center fw-light fs-4">запись была изменена {{ post.time_update|date:'d.m.Y' }} пользователем {{ post.author.get_full_name }} ({{ post.author }})</p>
               {% endif %}
+            </div>
                 <ul>
                   <li><b>Дата обхода:</b> {{ post.walk_date|date:'d.m.Y' }}</li>
                   <li>
@@ -72,7 +73,6 @@
                     {% include 'office/includes/edit_resolution.html' %}
                   {% endif %}
               </ul>
-            </div>
           </div>
         </div>
       </div>

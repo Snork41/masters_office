@@ -11,10 +11,10 @@ urlpatterns = [
     path('cabinet/<str:username>/', views.Cabinet.as_view(), name='cabinet'),
     path('cabinet/<str:username>/journals/', views.JournalsList.as_view(), name='journals'),
     path('cabinet/<str:username>/journals/<slug:slug_journal>/districts/', views.DistrictsList.as_view(), name='districts'),
-    path('cabinet/<str:username>/journals/<slug:slug_journal>/districts/<slug:slug_district>/', views.journal_walk, name='journal_walk'),
+    path('cabinet/<str:username>/journals/<slug:slug_journal>/districts/<slug:slug_district>/', views.JournalWalk.as_view(), name='journal_walk'),
     path('cabinet/<str:username>/journals/<slug:slug_journal>/districts/<slug:slug_district>/create-post-walking/', views.create_post_walking, name='create_post_walking'),
     path('cabinet/<str:username>/journals/<slug:slug_journal>/districts/<slug:slug_district>/<int:post_id>/edit-post-walking/', views.edit_post_walking, name='edit_post_walking'),
-    path('cabinet/<str:username>/journals/<slug:slug_journal>/districts/<slug:slug_district>/<int:post_id>/', views.post_detail, name='post_walking_detail'),
-    path('cabinet/<str:username>/journals/<slug:slug_journal>/districts/<slug:slug_district>/<int:post_id>/resolution/', views.add_resolution, name='add_resolution'),
+    path('cabinet/<str:username>/journals/<slug:slug_journal>/districts/<slug:slug_district>/<int:post_id>/', views.PostWalkingDetail.as_view(), name='post_walking_detail'),
+    path('cabinet/<str:username>/journals/<slug:slug_journal>/districts/<slug:slug_district>/<int:post_id>/resolution/', views.ResolutionAdd.as_view(), name='add_resolution'),
     path('cabinet/<str:username>/journals/<slug:slug_journal>/districts/<slug:slug_district>/<int:post_id>/edit_resolution/', views.edit_resolution, name='edit_resolution'),
 ]
