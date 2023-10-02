@@ -320,7 +320,7 @@ class Resolution(models.Model):
         if (Resolution.objects.filter(id=self.id) or
             not Resolution.objects.filter(
                 post_walking_id=self.post_walking_id
-            )):
+        )):
             super(Resolution, self).save(*args, **kwargs)
 
     def get_absolute_url(self):

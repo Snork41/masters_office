@@ -134,5 +134,7 @@ class ResolutionAdmin(admin.ModelAdmin):
     def save_model(self, request, obj, form, change):
         if PostWalking.objects.get(id=request.POST['post_walking']).resolution.all() and not change:
             messages.set_level(request, messages.ERROR)
-            messages.error(request, 'Резолюция не добавлена, у записи уже есть резолюция!')
+            messages.error(
+                request, 'Резолюция не добавлена, у записи уже есть резолюция!'
+            )
         super().save_model(request, obj, form, change)

@@ -1,8 +1,9 @@
 from django.contrib.auth import get_user_model
 from django.test import TestCase
 
-from ..models import (Brigade, District, EnergyDistrict, Journal, Personal,
-                      Position, PostWalking)
+from office.models import (
+    Brigade, District, EnergyDistrict,
+    Journal, Personal, Position, PostWalking)
 from .consts import (BRGD_NUMBER, DESCRIPTION_JOURNAL, FIRST_NAME_1,
                      FIRST_NAME_2, LAST_NAME_1, LAST_NAME_2, MIDDLE_NAME_1,
                      MIDDLE_NAME_2, NAME_POSITION, PLAN_WLK, POST_WLK_NUMBER,

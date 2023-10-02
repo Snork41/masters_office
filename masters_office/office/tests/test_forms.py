@@ -18,7 +18,9 @@ class PostFormTests(TestCase):
     def setUpClass(cls):
         super().setUpClass()
         cls.user = User.objects.create_user(username=USERNAME)
-        cls.user_boss = User.objects.create_user(username=USERNAME_BOSS, is_staff=True)
+        cls.user_boss = User.objects.create_user(
+            username=USERNAME_BOSS, is_staff=True
+        )
         cls.energy_district = EnergyDistrict.objects.create(
             title=TITLE_ENERGY_DISTRICT,
         )
@@ -58,7 +60,7 @@ class PostFormTests(TestCase):
             author=cls.user,
         )
         cls.post_walking.members.set([cls.workman])
-    
+
     def setUp(self):
         self.authorized_client = Client()
         self.authorized_client.force_login(self.user)
@@ -69,10 +71,12 @@ class PostFormTests(TestCase):
         """Валидная форма создаёт резолюцию."""
         form_data = {'text': RESOLUTION_WALK}
         self.boss_client.post(ADD_RESOLUTION_URL, data=form_data)
-        self.assertTrue(Resolution.objects.filter(text=form_data['text']).exists())
+        self.assertTrue(
+            Resolution.objects.filter(text=form_data['text']).exists())
 
     def test_only_boss_can_make_create_resolution(self):
         """Только Начальник может оставлять резолюцию."""
         form_data = {'text': RESOLUTION_WALK}
         self.authorized_client.post(ADD_RESOLUTION_URL, data=form_data)
-        self.assertFalse(Resolution.objects.filter(text=form_data['text']).exists())
+        self.assertFalse(
+            Resolution.objects.filter(text=form_data['text']).exists())

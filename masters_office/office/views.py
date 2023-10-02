@@ -2,7 +2,8 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.shortcuts import get_object_or_404, redirect, render
-from django.views.generic import ListView, TemplateView, DetailView, FormView, CreateView
+from django.views.generic import (
+    ListView, TemplateView, DetailView, FormView, CreateView)
 
 
 from .models import District, Journal, PostWalking, Resolution
@@ -30,7 +31,9 @@ class DistrictsList(LoginRequiredMixin, ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['journal'] = get_object_or_404(Journal, slug=self.kwargs.get('slug_journal'))
+        context['journal'] = get_object_or_404(
+            Journal, slug=self.kwargs.get('slug_journal')
+        )
         return context
 
 
@@ -44,8 +47,12 @@ class JournalWalk(LoginRequiredMixin, ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['district'] = get_object_or_404(District, slug=self.kwargs.get('slug_district'))
-        context['posts'] = context['journal'].posts.filter(district_id=context['district'].id)
+        context['district'] = get_object_or_404(
+            District, slug=self.kwargs.get('slug_district')
+        )
+        context['posts'] = context['journal'].posts.filter(
+            district_id=context['district'].id
+        )
         return context
 
 
@@ -67,7 +74,10 @@ def create_post_walking(request, username, slug_journal, slug_district):
         post.author = request.user
         post.journal = journal
         form.save()
-        return redirect('office:journal_walk', username, slug_journal, slug_district)
+        return redirect(
+            'office:journal_walk',
+            username, slug_journal, slug_district
+        )
     return render(request, 'office/create_post_walking.html', context)
 
 
@@ -76,7 +86,10 @@ def edit_post_walking(request, username, slug_journal, slug_district, post_id):
     post = get_object_or_404(PostWalking, id=post_id)
 
     if post.author != request.user:
-        return redirect('office:post_walking_detail', username, slug_journal, slug_district, post_id)
+        return redirect(
+            'office:post_walking_detail',
+            username, slug_journal, slug_district, post_id
+        )
     form = PostWalkingForm(
         request.POST or None,
         files=request.FILES or None,
@@ -92,7 +105,10 @@ def edit_post_walking(request, username, slug_journal, slug_district, post_id):
     if request.method == 'POST':
         if form.is_valid():
             form.save(request.user)
-            return redirect('office:post_walking_detail', username, slug_journal, slug_district, post_id)
+            return redirect(
+                'office:post_walking_detail',
+                username, slug_journal, slug_district, post_id
+            )
     return render(request, 'office/create_post_walking.html', context)
 
 
@@ -109,7 +125,7 @@ class PostWalkingDetail(LoginRequiredMixin, DetailView, FormView):
         context['journal'] = context['post'].journal
         context['resolution'] = context['post'].resolution.first()
         return context
-    
+
 
 class ResolutionAdd(LoginRequiredMixin, CreateView):
     form_class = ResolutionForm
@@ -123,10 +139,12 @@ class ResolutionAdd(LoginRequiredMixin, CreateView):
             messages.success(self.request, 'Резолюция успешно добавлена')
             return super().form_valid(form)
         return self.form_invalid(form=form, message=True)
-    
+
     def form_invalid(self, form, message=False):
         if message:
-            messages.warning(self.request, 'Резолюцию может оставлять только Начальник')
+            messages.warning(
+                self.request, 'Резолюцию может оставлять только Начальник'
+            )
         else:
             messages.warning(self.request, 'Резолюция не может быть пустой')
         return redirect('office:post_walking_detail',
@@ -142,7 +160,10 @@ def edit_resolution(request, username, slug_journal, slug_district, post_id):
     resolution = get_object_or_404(Resolution, post_walking_id=post_id)
 
     if resolution.author != request.user:
-        return redirect('office:post_walking_detail', username, slug_journal, slug_district, post_id)
+        return redirect(
+            'office:post_walking_detail',
+            username, slug_journal, slug_district, post_id
+        )
 
     form = ResolutionForm(
         request.POST or None,
@@ -153,4 +174,7 @@ def edit_resolution(request, username, slug_journal, slug_district, post_id):
     if form.is_valid():
         form.save(request.user)
         messages.success(request, 'Резолюция успешно изменена')
-    return redirect('office:post_walking_detail', username, slug_journal, slug_district, post_id)
+    return redirect(
+        'office:post_walking_detail',
+        username, slug_journal, slug_district, post_id
+    )

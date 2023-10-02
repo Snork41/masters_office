@@ -10,13 +10,13 @@ class CustomUserAdmin(UserAdmin):
     model = CustomUser
     add_fieldsets = (
         *UserAdmin.add_fieldsets,
-            (
+        (
                 'Дополнительные поля',
                 {
                     'fields': ('position',)}))
     fieldsets = (
         *UserAdmin.fieldsets,
-            (
+        (
                 'Дополнительные поля',
                 {
                     'fields': ('position',)}))

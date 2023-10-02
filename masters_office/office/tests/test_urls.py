@@ -4,8 +4,9 @@ from django.contrib.auth import get_user_model
 from django.test import Client, TestCase
 from django.urls import reverse
 
-from ..models import (Brigade, District, EnergyDistrict, Journal, Personal,
-                      Position, PostWalking)
+from office.models import (
+    Brigade, District, EnergyDistrict,
+    Journal, Personal, Position, PostWalking)
 from .consts import (BRGD_NUMBER, CABINET_TMPLT, CABINET_URL,
                      CREATE_POST_WLK_TMPLT, CREATE_POST_WLK_URL,
                      DESCRIPTION_JOURNAL, DISTRICTS_TMPLT, DISTRICTS_URL,

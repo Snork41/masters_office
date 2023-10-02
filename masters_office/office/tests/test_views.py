@@ -3,8 +3,9 @@ from django.contrib.auth import get_user_model
 from django.test import Client, TestCase
 from django.urls import reverse
 
-from office.models import (Brigade, District, EnergyDistrict, Journal, Personal,
-                      Position, PostWalking, Resolution)
+from office.models import (
+    Brigade, District, EnergyDistrict,
+    Journal, Personal, Position, PostWalking, Resolution)
 from .consts import (BRGD_NUMBER, CREATE_POST_WLK_URL,
                      DESCRIPTION_JOURNAL, DISTRICTS_URL,
                      EDIT_POST_WLK_REVERSE, FIRST_NAME_1,
@@ -16,8 +17,8 @@ from .consts import (BRGD_NUMBER, CREATE_POST_WLK_URL,
                      SLUG_JOURNAL, TAB_NUMBER_1, TAB_NUMBER_2, TASK_WLK,
                      TEXT_WLK, TITLE_DISTRICT, TITLE_ENERGY_DISTRICT,
                      TITLE_JOURNAL, TRANSFER_WLK, USERNAME,
-                     USERNAME_AUTHOR, WALK_DATE, TITLE_DISTRICT_2, SLUG_DISTRICT_2,
-                     RESOLUTION_WALK, RESOLUTION_WALK_2)
+                     USERNAME_AUTHOR, WALK_DATE, TITLE_DISTRICT_2,
+                     SLUG_DISTRICT_2, RESOLUTION_WALK, RESOLUTION_WALK_2)
 
 User = get_user_model()
 
@@ -27,7 +28,9 @@ class OfficeViewsTest(TestCase):
     def setUpClass(cls):
         super().setUpClass()
         cls.user = User.objects.create_user(username=USERNAME)
-        cls.user_author = User.objects.create_user(username=USERNAME_AUTHOR, is_staff=True)
+        cls.user_author = User.objects.create_user(
+            username=USERNAME_AUTHOR, is_staff=True
+        )
         cls.energy_district = EnergyDistrict.objects.create(
             title=TITLE_ENERGY_DISTRICT,
         )
@@ -152,7 +155,9 @@ class OfficeViewsTest(TestCase):
         expected_journal = Journal.objects.get(title=self.journal)
         expected_districts = District.objects.all()
         self.assertEqual(response.context['journal'], expected_journal)
-        self.assertQuerysetEqual(response.context['districts'], expected_districts, ordered=False)
+        self.assertQuerysetEqual(
+            response.context['districts'], expected_districts, ordered=False
+        )
 
     def test_journal_walk_page_show_correct_context(self):
         """Шаблон journal_walk сформирован с правильным контекстом."""
@@ -183,9 +188,12 @@ class OfficeViewsTest(TestCase):
     def test_post_walking_detail_page_show_correct_context(self):
         """Шаблон post_walking_detail сформирован с правильным контекстом."""
         response = self.authorized_client.get(self.POST_WLK_DETAIL_URL)
-        expected_post = PostWalking.objects.filter(id=self.post_walking.id).first()
-        expected_district = District.objects.filter(id=self.district.id).first()
-        expected_journal = Journal.objects.filter(id=self.journal.id).first()
+        expected_post = PostWalking.objects.filter(
+            id=self.post_walking.id).first()
+        expected_district = District.objects.filter(
+            id=self.district.id).first()
+        expected_journal = Journal.objects.filter(
+            id=self.journal.id).first()
         self.assertEqual(response.context.get('post'), expected_post)
         self.assertEqual(response.context.get('district'), expected_district)
         self.assertEqual(response.context.get('journal'), expected_journal)
@@ -197,13 +205,17 @@ class OfficeViewsTest(TestCase):
 
     def test_resolution_can_be_only_one_for_post(self):
         """Для одного поста можно создать только одну резолюцию."""
-        response_1 = len(Resolution.objects.filter(post_walking_id=self.post_walking))
+        response_1 = len(
+            Resolution.objects.filter(post_walking_id=self.post_walking)
+        )
         Resolution.objects.create(
             post_walking=self.post_walking,
             author=self.user_author,
             text=RESOLUTION_WALK_2
         )
-        response_2 = len(Resolution.objects.filter(post_walking_id=self.post_walking))
+        response_2 = len(
+            Resolution.objects.filter(post_walking_id=self.post_walking)
+        )
         self.assertEqual(response_1, response_2)
 
     def test_posts_show_only_in_their_journal(self):
