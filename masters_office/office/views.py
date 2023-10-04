@@ -8,6 +8,7 @@ from django.views.generic import (
 
 from .models import District, Journal, PostWalking, Resolution
 from .forms import PostWalkingForm, ResolutionForm
+from .utils import get_page
 
 
 class HomePage(TemplateView):
@@ -50,9 +51,13 @@ class JournalWalk(LoginRequiredMixin, ListView):
         context['district'] = get_object_or_404(
             District, slug=self.kwargs.get('slug_district')
         )
-        context['posts'] = context['journal'].posts.filter(
-            district_id=context['district'].id
+        page_obj = get_page(self.request, context['journal'].posts.filter(
+            district_id=context['district'].id)
         )
+        # context['posts'] = context['journal'].posts.filter(
+        #     district_id=context['district'].id
+        # )
+        context['page_obj'] = page_obj
         return context
 
 

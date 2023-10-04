@@ -108,21 +108,23 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
+LOGIN_URL = 'users:login'
+LOGIN_REDIRECT_URL = 'office:index'
+# LOGOUT_REDIRECT_URL = 'office:index'
+
+
+EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
+EMAIL_FILE_PATH = os.path.join(BASE_DIR, 'sent_emails')
+
+
+CSRF_FAILURE_VIEW = 'core.views.csrf_failure'
+
+
 # Количество символов в тайтле поста
 MAX_CHAR_TITLE = 15
 
 # Разряд в должности
 RANK = [(1, 1), (2, 2), (3, 3), (4, 4), (5, 5), (6, 6), (7, 7)]
 
-
-LOGIN_URL = 'users:login'
-LOGIN_REDIRECT_URL = 'office:index'
-# LOGOUT_REDIRECT_URL = 'office:index'
-
-
-# подключаем движок filebased.EmailBackend
-EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
-EMAIL_FILE_PATH = os.path.join(BASE_DIR, 'sent_emails')
-
-
-CSRF_FAILURE_VIEW = 'core.views.csrf_failure'
+# Количество записей на странцие журнала обходов
+AMOUNT_POSTS_WALK = 3

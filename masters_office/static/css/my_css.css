@@ -28,3 +28,24 @@ body {
     text-align: center;
     margin-top: 5em;
 }
+
+.pagination .page-item .page-link {
+    color: black;
+    border-color: rgb(126, 126, 126);
+}
+
+.pagination .page-item.active .page-link {
+    background: rgb(0, 0, 0);
+    color: rgb(255, 255, 255);
+    border-color: rgb(5, 5, 5);
+}
+
+.pagination li a:focus,
+.pagination li a:hover,
+.pagination li span:focus,
+.pagination li span:hover {
+    color: #000000;
+    background-color: #d4d4d4;
+    border-color: #000000;
+    box-shadow: 0 0 0 0.1rem rgba(0, 0, 0, 0);
+}
