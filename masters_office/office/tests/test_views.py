@@ -3,6 +3,7 @@ from django.contrib.auth import get_user_model
 from django.test import Client, TestCase
 from django.urls import reverse
 
+from masters_office.settings import AMOUNT_POSTS_WALK
 from office.models import (
     Brigade, District, EnergyDistrict,
     Journal, Personal, Position, PostWalking, Resolution)
@@ -13,7 +14,7 @@ from .consts import (BRGD_NUMBER, CREATE_POST_WLK_URL,
                      LAST_NAME_2, MIDDLE_NAME_1,
                      MIDDLE_NAME_2, NAME_POSITION, PLAN_WLK,
                      POST_WLK_DETAIL_REVERSE,
-                     POST_WLK_NUMBER, RANK, SLUG_DISTRICT,
+                     POST_WLK_NUMBER, POST_WLK_NUMBER_2, RANK, SLUG_DISTRICT,
                      SLUG_JOURNAL, TAB_NUMBER_1, TAB_NUMBER_2, TASK_WLK,
                      TEXT_WLK, TITLE_DISTRICT, TITLE_ENERGY_DISTRICT,
                      TITLE_JOURNAL, TRANSFER_WLK, USERNAME,
@@ -91,7 +92,7 @@ class OfficeViewsTest(TestCase):
         )
         cls.post_walking.members.set([cls.workman_2])
         cls.post_walking_2 = PostWalking.objects.create(
-            number_post=POST_WLK_NUMBER,
+            number_post=POST_WLK_NUMBER_2,
             walk_date=WALK_DATE,
             district=cls.district,
             task=TASK_WLK,
@@ -163,7 +164,7 @@ class OfficeViewsTest(TestCase):
         """Шаблон journal_walk сформирован с правильным контекстом."""
         response = self.authorized_client.get(JRNL_WLK_URL)
         excepted = PostWalking.objects.get(id=self.post_walking.id)
-        self.assertEqual(response.context.get('posts').first(), excepted)
+        self.assertEqual(response.context.get('page_obj')[0], excepted)
 
     def test_post_walking_create_page_show_correct_context(self):
         """Шаблон create_post_walking сформирован с правильным контекстом."""
@@ -199,7 +200,7 @@ class OfficeViewsTest(TestCase):
         self.assertEqual(response.context.get('journal'), expected_journal)
 
     def test_resolution_show_in_post(self):
-        """При создании резолюции, она появляется в записи"""
+        """При создании резолюции, она появляется в записи."""
         response = self.authorized_client.get(self.POST_WLK_DETAIL_URL)
         self.assertEqual(self.resolution, response.context.get('resolution'))
 
@@ -217,6 +218,32 @@ class OfficeViewsTest(TestCase):
             Resolution.objects.filter(post_walking_id=self.post_walking)
         )
         self.assertEqual(response_1, response_2)
+
+    def test_first_and_second_pages_contains_records(self):
+        """Пагинация в журнале обходов."""
+        PostWalking.objects.all().delete()
+        posts = []
+        for number in range(AMOUNT_POSTS_WALK * 2):
+            posts.append(PostWalking(
+                number_post=POST_WLK_NUMBER + number,
+                walk_date=WALK_DATE,
+                journal=self.journal,
+                district=self.district,
+                task=TASK_WLK,
+                text=TEXT_WLK,
+                plan=PLAN_WLK,
+                fix_date=WALK_DATE,
+                transfer=TRANSFER_WLK,
+                author=self.user,
+                )
+            )
+        PostWalking.objects.bulk_create(posts)
+        response = self.authorized_client.get(JRNL_WLK_URL)
+        self.assertEqual(
+            len(response.context.get('page_obj').object_list),
+            AMOUNT_POSTS_WALK
+        )
+        self.assertTrue(response.context.get('page_obj').has_other_pages())
 
     def test_posts_show_only_in_their_journal(self):
         """Записи появляются только в своём журнале."""

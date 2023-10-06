@@ -25,6 +25,7 @@ RANK = 1
 BRGD_NUMBER = 1
 DESCRIPTION_JOURNAL = 'Тестовое описание'
 POST_WLK_NUMBER = 1
+POST_WLK_NUMBER_2 = 1
 TASK_WLK = 'Тестовое задание'
 TEXT_WLK = 'Тестовые замечания'
 PLAN_WLK = 'Тестовые мероприятия'
