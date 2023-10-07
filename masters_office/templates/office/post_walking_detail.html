@@ -68,9 +68,9 @@
                   {% endif %}
 
                   {% if not resolution %}
-                    {% include 'office/includes/add_resolution.html' %}
+                    {% include 'office/includes/resolution_form.html' %}
                   {% elif resolution.author.id == user.id %}
-                    {% include 'office/includes/edit_resolution.html' %}
+                    {% include 'office/includes/resolution_update_form.html' %}
                   {% endif %}
               </ul>
           </div>

@@ -5,10 +5,12 @@ from office.models import (District, EnergyDistrict, Journal, Personal,
 
 from .consts import (ADD_RESOLUTION_URL, DESCRIPTION_JOURNAL, FIRST_NAME_1,
                      LAST_NAME_1, MIDDLE_NAME_1, NAME_POSITION, PLAN_WLK,
-                     POST_WLK_NUMBER, RANK, RESOLUTION_WALK, SLUG_DISTRICT,
+                     POST_WLK_NUMBER, RANK, RESOLUTION_WALK,
+                     RESOLUTION_WALK_2, SLUG_DISTRICT,
                      SLUG_JOURNAL, TAB_NUMBER_1, TASK_WLK, TEXT_WLK,
                      TITLE_DISTRICT, TITLE_ENERGY_DISTRICT, TITLE_JOURNAL,
-                     TRANSFER_WLK, USERNAME, USERNAME_BOSS, WALK_DATE)
+                     TRANSFER_WLK, USERNAME, USERNAME_BOSS, WALK_DATE,
+                     UPDATE_RESOLUTION_URL)
 
 User = get_user_model()
 
@@ -73,6 +75,17 @@ class PostFormTests(TestCase):
         self.boss_client.post(ADD_RESOLUTION_URL, data=form_data)
         self.assertTrue(
             Resolution.objects.filter(text=form_data['text']).exists())
+        
+    def test_update_resolution(self):
+        """Валидная форма редактирует резолюцию."""
+        form_data = {'text': RESOLUTION_WALK}
+        self.boss_client.post(ADD_RESOLUTION_URL, data=form_data)
+        resolution_before = Resolution.objects.all().first()
+        form_data = {'text': RESOLUTION_WALK_2}
+        self.boss_client.post(UPDATE_RESOLUTION_URL, data=form_data)
+        resolution_after = Resolution.objects.all().first()
+        self.assertEqual(resolution_before.id, resolution_after.id)
+        self.assertNotEqual(resolution_before.text, resolution_after.text)
 
     def test_only_boss_can_make_create_resolution(self):
         """Только Начальник может оставлять резолюцию."""

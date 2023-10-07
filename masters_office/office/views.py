@@ -3,7 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.shortcuts import get_object_or_404, redirect, render
 from django.views.generic import (
-    ListView, TemplateView, DetailView, FormView, CreateView)
+    ListView, TemplateView, DetailView, FormView, CreateView, UpdateView)
 
 
 from .models import District, Journal, PostWalking, Resolution
@@ -11,21 +11,21 @@ from .forms import PostWalkingForm, ResolutionForm
 from .utils import get_page
 
 
-class HomePage(TemplateView):
+class HomePageView(TemplateView):
     template_name = 'office/index.html'
 
 
-class Cabinet(LoginRequiredMixin, TemplateView):
+class CabinetView(LoginRequiredMixin, TemplateView):
     template_name = 'office/cabinet.html'
 
 
-class JournalsList(LoginRequiredMixin, ListView):
+class JournalsListView(LoginRequiredMixin, ListView):
     model = Journal
     template_name = 'office/journals.html'
     context_object_name = 'all_journals'
 
 
-class DistrictsList(LoginRequiredMixin, ListView):
+class DistrictsListView(LoginRequiredMixin, ListView):
     model = District
     template_name = 'office/districts.html'
     context_object_name = 'districts'
@@ -38,7 +38,7 @@ class DistrictsList(LoginRequiredMixin, ListView):
         return context
 
 
-class JournalWalk(LoginRequiredMixin, ListView):
+class JournalWalkView(LoginRequiredMixin, ListView):
     model = Journal
     template_name = 'office/journal_walk.html'
     context_object_name = 'journal'
@@ -54,9 +54,6 @@ class JournalWalk(LoginRequiredMixin, ListView):
         page_obj = get_page(self.request, context['journal'].posts.filter(
             district_id=context['district'].id)
         )
-        # context['posts'] = context['journal'].posts.filter(
-        #     district_id=context['district'].id
-        # )
         context['page_obj'] = page_obj
         return context
 
@@ -117,7 +114,7 @@ def edit_post_walking(request, username, slug_journal, slug_district, post_id):
     return render(request, 'office/create_post_walking.html', context)
 
 
-class PostWalkingDetail(LoginRequiredMixin, DetailView, FormView):
+class PostWalkingDetailView(LoginRequiredMixin, DetailView, FormView):
     model = PostWalking
     template_name = 'office/post_walking_detail.html'
     pk_url_kwarg = 'post_id'
@@ -132,8 +129,9 @@ class PostWalkingDetail(LoginRequiredMixin, DetailView, FormView):
         return context
 
 
-class ResolutionAdd(LoginRequiredMixin, CreateView):
-    form_class = ResolutionForm
+class ResolutionAddView(LoginRequiredMixin, CreateView):
+    model = Resolution
+    fields = ['text']
 
     def form_valid(self, form):
         if self.request.user.is_staff:
@@ -160,26 +158,15 @@ class ResolutionAdd(LoginRequiredMixin, CreateView):
                         )
 
 
-@login_required
-def edit_resolution(request, username, slug_journal, slug_district, post_id):
-    resolution = get_object_or_404(Resolution, post_walking_id=post_id)
+class ResolutionEditView(LoginRequiredMixin, UpdateView):
+    model = Resolution
+    fields = ['text']
+    template_name_suffix = '_update_form'
 
-    if resolution.author != request.user:
-        return redirect(
-            'office:post_walking_detail',
-            username, slug_journal, slug_district, post_id
-        )
+    def form_valid(self, form):
+        messages.success(self.request, 'Резолюция изменена')
+        return super().form_valid(form)
 
-    form = ResolutionForm(
-        request.POST or None,
-        files=request.FILES or None,
-        instance=resolution,
-    )
-
-    if form.is_valid():
-        form.save(request.user)
-        messages.success(request, 'Резолюция успешно изменена')
-    return redirect(
-        'office:post_walking_detail',
-        username, slug_journal, slug_district, post_id
-    )
+    def form_invalid(self, form):
+        messages.warning(self.request, 'Резолюция не может быть пустой')
+        return redirect(self.object.get_absolute_url())
