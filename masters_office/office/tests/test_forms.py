@@ -75,7 +75,7 @@ class PostFormTests(TestCase):
         self.boss_client.post(ADD_RESOLUTION_URL, data=form_data)
         self.assertTrue(
             Resolution.objects.filter(text=form_data['text']).exists())
-        
+
     def test_update_resolution(self):
         """Валидная форма редактирует резолюцию."""
         form_data = {'text': RESOLUTION_WALK}

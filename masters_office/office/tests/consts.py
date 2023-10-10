@@ -51,20 +51,50 @@ UPDATE_RESOLUTION_REVERSE = 'office:resolution_update_form'
 
 
 INDEX_URL = reverse(INDEX_REVERSE)
-CABINET_URL = reverse(CABINET_REVERSE,
-                      kwargs={'username': USERNAME})
-JOURNALS_URL = reverse(JOURNALS_REVERSE,
-                       kwargs={'username': USERNAME})
-DISTRICTS_URL = reverse(DISTRICTS_REVERSE,
-                        kwargs={'username': USERNAME, 'slug_journal': SLUG_JOURNAL})
-JRNL_WLK_URL = reverse(JRNL_WLK_REVERSE,
-                       kwargs={'username': USERNAME, 'slug_journal': SLUG_JOURNAL, 'slug_district': SLUG_DISTRICT})
-CREATE_POST_WLK_URL = reverse(CREATE_POST_WLK_REVERSE,
-                             kwargs={'username': USERNAME, 'slug_journal': SLUG_JOURNAL, 'slug_district': SLUG_DISTRICT})
-ADD_RESOLUTION_URL = reverse(ADD_RESOLUTION_REVERSE,
-                             kwargs={'username': USERNAME, 'slug_journal': SLUG_JOURNAL, 'slug_district': SLUG_DISTRICT, 'post_id': POST_WLK_NUMBER})
-UPDATE_RESOLUTION_URL = reverse(UPDATE_RESOLUTION_REVERSE,
-                             kwargs={'username': USERNAME, 'slug_journal': SLUG_JOURNAL, 'slug_district': SLUG_DISTRICT, 'post_id': POST_WLK_NUMBER, 'pk': RESOLUTION_ID})
+CABINET_URL = reverse(CABINET_REVERSE, kwargs={'username': USERNAME})
+JOURNALS_URL = reverse(JOURNALS_REVERSE, kwargs={'username': USERNAME})
+DISTRICTS_URL = reverse(
+    DISTRICTS_REVERSE,
+    kwargs={
+        'username': USERNAME,
+        'slug_journal': SLUG_JOURNAL
+    }
+)
+JRNL_WLK_URL = reverse(
+    JRNL_WLK_REVERSE,
+    kwargs={
+        'username': USERNAME,
+        'slug_journal': SLUG_JOURNAL,
+        'slug_district': SLUG_DISTRICT
+    }
+)
+CREATE_POST_WLK_URL = reverse(
+    CREATE_POST_WLK_REVERSE,
+    kwargs={
+        'username': USERNAME,
+        'slug_journal': SLUG_JOURNAL,
+        'slug_district': SLUG_DISTRICT
+    }
+)
+ADD_RESOLUTION_URL = reverse(
+    ADD_RESOLUTION_REVERSE,
+    kwargs={
+        'username': USERNAME,
+        'slug_journal': SLUG_JOURNAL,
+        'slug_district': SLUG_DISTRICT,
+        'post_id': POST_WLK_NUMBER
+    }
+)
+UPDATE_RESOLUTION_URL = reverse(
+    UPDATE_RESOLUTION_REVERSE,
+    kwargs={
+        'username': USERNAME,
+        'slug_journal': SLUG_JOURNAL,
+        'slug_district': SLUG_DISTRICT,
+        'post_id': POST_WLK_NUMBER,
+        'pk': RESOLUTION_ID
+    }
+)
 
 
 INDEX_TMPLT = 'office/index.html'

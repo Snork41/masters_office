@@ -7,13 +7,6 @@
           <img src="{% static 'img/logo_face_2.png' %}" alt="logo" class="d-inline-block align-text-center ">
           Кабинет мастера
         </a>
-        <ul class="navbar-nav navbar-center">
-          {% if user.is_staff or user.is_superuser %}
-            <li class="nav-item">
-              <a class="nav-link" href="/admin">Администрирование</a>
-            </li>
-          {% endif %}
-        </ul>
         <a href="javascript:history.go(-1)" class="btn btn-default">Cancel</a>
         <ul class="navbar-nav navbar-right">
           {% if user.is_active %}

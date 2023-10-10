@@ -86,7 +86,6 @@ def create_post_walking(request, username, slug_journal, slug_district):
 @login_required
 def edit_post_walking(request, username, slug_journal, slug_district, post_id):
     post = get_object_or_404(PostWalking, id=post_id)
-
     if post.author != request.user:
         return redirect(
             'office:post_walking_detail',

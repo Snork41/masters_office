@@ -49,3 +49,18 @@ body {
     border-color: #000000;
     box-shadow: 0 0 0 0.1rem rgba(0, 0, 0, 0);
 }
+
+.breadcrumb li {
+    padding-top: 0.5em;
+    padding-left: 0.5em;
+}
+
+.breadcrumb a {
+    font-weight: normal;
+    text-decoration: none;
+    color: #222;
+}
+
+.breadcrumb a:hover {
+    font-weight: bold;
+}

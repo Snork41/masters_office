@@ -1,0 +1,24 @@
+{% load breadcrumb %}
+{% get_breadcrumb as crumb %}
+
+{% if crumb.path %}
+<nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      {% if 'cabinet' in crumb.path %}
+      <li class="breadcrumb-item"><a href="{% url 'office:index' %}">На главную</a></li>
+      {% endif %}
+      {% if crumb.kwargs.username in crumb.path %}
+      <li class="breadcrumb-item"><a href="{% url 'office:cabinet' crumb.kwargs.username %}">Кабинет</a></li>
+      {% endif %}
+      {% if crumb.kwargs.slug_journal in crumb.path %}
+      <li class="breadcrumb-item"><a href="{% url 'office:journals' crumb.kwargs.username %}">Журналы</a></li>
+      {% endif %}
+      {% if 'districts' in crumb.path %}
+      <li class="breadcrumb-item"><a href="{% url 'office:districts' crumb.kwargs.username crumb.kwargs.slug_journal %}">Районы</a></li>
+      {% endif %}
+      {% if crumb.kwargs.slug_district in crumb.path and 'obhodov' in crumb.kwargs.slug_journal %}
+      <li class="breadcrumb-item"><a href="{% url 'office:journal_walk' crumb.kwargs.username crumb.kwargs.slug_journal crumb.kwargs.slug_district %}">Журнал обходов</a></li>
+      {% endif %}
+    </ol>
+</nav>
+{% endif %}

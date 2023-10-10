@@ -1,3 +1,4 @@
+.flake8
 .vscode/
 masters_office/sent_emails/
 thoughts.txt
