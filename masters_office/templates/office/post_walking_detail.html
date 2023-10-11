@@ -19,6 +19,20 @@
         <div class="col-md-20 p-5">
           <div class="card">
             <div class="card-header">
+              <div class="previous-button">
+                {% if post.get_previous_post %}
+                <a class="btn btn-outline-dark" href="{% url 'office:post_walking_detail' user.username journal.slug district.slug post.get_previous_post.id %} ">Предыдущая запись</a>
+                {% else %}
+                <a class="btn btn-outline-secondary disabled">Предыдущая запись</a>
+                {% endif %}
+              </div>
+              <div class="next-button">
+                {% if post.get_next_post %}
+                <a class="btn btn-outline-dark" href="{% url 'office:post_walking_detail' user.username journal.slug district.slug post.get_next_post.id %} ">Следующая запись</a>
+                {% else %}
+                <a class="btn btn-outline-secondary disabled">Следующая запись</a>
+                {% endif %}
+              </div>
               <h2 class="text-center fw-medium">Запись № {{ post.number_post }} от {{ post.time_create }}</h2>
               {% if post.time_update != post.time_create %}
                 <p class="text-center fw-light fs-4">запись была изменена {{ post.time_update|date:'d.m.Y' }} пользователем {{ post.author.get_full_name }} ({{ post.author }})</p>

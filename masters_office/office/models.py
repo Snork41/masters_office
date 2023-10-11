@@ -266,6 +266,14 @@ class PostWalking(models.Model):
         verbose_name_plural = 'Записи в Журналах обходов'
         ordering = ['-number_post']
 
+    def get_next_post(self):
+        return self.__class__.objects.get(
+            district=self.district, number_post=self.number_post + 1)
+    
+    def get_previous_post(self):
+        return self.__class__.objects.get(
+            district=self.district, number_post=self.number_post - 1)
+
     def get_absolute_url(self):
         return reverse('office:post_walking_detail', kwargs={
                  'username': self.kwargs.get('username'),

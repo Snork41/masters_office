@@ -64,3 +64,11 @@ body {
 .breadcrumb a:hover {
     font-weight: bold;
 }
+
+.next-button {
+    float: right;
+}
+
+.previous-button {
+    float: left;
+}
