@@ -67,7 +67,12 @@
                     <b>Резолюция начальника энергорайона:</b>
                     <p>
                       {% if resolution %}
-                        {{ resolution.text }} ({{ resolution.author.get_full_name }})
+                        {{ resolution.text }}
+                          {% if resolution.author.get_full_name %}
+                            ({{ resolution.author.get_full_name }})
+                          {% else %}
+                            ({{ resolution.author.username }})
+                          {% endif %}
                       {% else %}
                         Отсутствует
                       {% endif %}
