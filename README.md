@@ -92,7 +92,19 @@ Django 4.1.7
     ```
     pip install -r requirements.txt
     ````
-- В директории с файлом **manage.py** , запустите проект:
+- Создайте .env файл и сохраните в нем свой SECRET_KEY:
+    ```
+    touch .env
+    ````
+- В директории с файлом **manage.py** выполните миграции:
+    ```
+    python manage.py migrate
+    ````
+- Создайте суперюзера:
+    ```
+    python manage.py createsuperuser
+    ````
+- Запустите проект:
     ```
     python manage.py runserver
     ```
