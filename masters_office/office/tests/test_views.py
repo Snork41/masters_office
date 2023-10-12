@@ -145,10 +145,10 @@ class OfficeViewsTest(TestCase):
     def test_journals_page_show_correct_context(self):
         """Шаблон journals сформирован с правильным контекстом."""
         response = self.authorized_client.get(JOURNALS_URL)
-        first_object = response.context.get('all_journals').first()
-        self.assertEqual(first_object.title, self.journal.title)
-        self.assertEqual(first_object.description, self.journal.description)
-        self.assertEqual(first_object.slug, self.journal.slug)
+        last_object = response.context.get('all_journals').last()
+        self.assertEqual(last_object.title, self.journal.title)
+        self.assertEqual(last_object.description, self.journal.description)
+        self.assertEqual(last_object.slug, self.journal.slug)
 
     def test_districts_page_show_correct_context(self):
         """Шаблон districts сформирован с правильным контекстом."""
@@ -244,7 +244,3 @@ class OfficeViewsTest(TestCase):
             AMOUNT_POSTS_WALK
         )
         self.assertTrue(response.context.get('page_obj').has_other_pages())
-
-    def test_posts_show_only_in_their_journal(self):
-        """Записи появляются только в своём журнале."""
-        pass

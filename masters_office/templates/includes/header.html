@@ -7,7 +7,6 @@
           <img src="{% static 'img/logo_face_2.png' %}" alt="logo" class="d-inline-block align-text-center ">
           Кабинет мастера
         </a>
-        <a href="javascript:history.go(-1)" class="btn btn-default">Cancel</a>
         <ul class="navbar-nav navbar-right">
           {% if user.is_active %}
             <span class="navbar-text">Пользователь: {{ user.username }}</span>
