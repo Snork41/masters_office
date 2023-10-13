@@ -5,12 +5,11 @@ from office.models import (District, EnergyDistrict, Journal, Personal,
 
 from .consts import (ADD_RESOLUTION_URL, DESCRIPTION_JOURNAL, FIRST_NAME_1,
                      LAST_NAME_1, MIDDLE_NAME_1, NAME_POSITION, PLAN_WLK,
-                     POST_WLK_NUMBER, RANK, RESOLUTION_WALK,
-                     RESOLUTION_WALK_2, SLUG_DISTRICT,
-                     SLUG_JOURNAL, TAB_NUMBER_1, TASK_WLK, TEXT_WLK,
-                     TITLE_DISTRICT, TITLE_ENERGY_DISTRICT, TITLE_JOURNAL,
-                     TRANSFER_WLK, USERNAME, USERNAME_BOSS, WALK_DATE,
-                     UPDATE_RESOLUTION_URL)
+                     POST_WLK_NUMBER, RANK, RESOLUTION_WALK, RESOLUTION_WALK_2,
+                     SLUG_DISTRICT, SLUG_JOURNAL, TAB_NUMBER_1, TASK_WLK,
+                     TEXT_WLK, TITLE_DISTRICT, TITLE_ENERGY_DISTRICT,
+                     TITLE_JOURNAL, TRANSFER_WLK, UPDATE_RESOLUTION_URL,
+                     USERNAME, USERNAME_BOSS, WALK_DATE)
 
 User = get_user_model()
 

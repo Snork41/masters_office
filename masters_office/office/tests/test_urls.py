@@ -4,9 +4,8 @@ from django.contrib.auth import get_user_model
 from django.test import Client, TestCase
 from django.urls import reverse
 
-from office.models import (
-    Brigade, District, EnergyDistrict,
-    Journal, Personal, Position, PostWalking)
+from office.models import (Brigade, District, EnergyDistrict, Journal,
+                           Personal, Position, PostWalking)
 from .consts import (BRGD_NUMBER, CABINET_TMPLT, CABINET_URL,
                      CREATE_POST_WLK_TMPLT, CREATE_POST_WLK_URL,
                      DESCRIPTION_JOURNAL, DISTRICTS_TMPLT, DISTRICTS_URL,
@@ -16,11 +15,11 @@ from .consts import (BRGD_NUMBER, CABINET_TMPLT, CABINET_URL,
                      LAST_NAME_2, LOGIN_PAGE_REDIRECT, MIDDLE_NAME_1,
                      MIDDLE_NAME_2, NAME_POSITION, PLAN_WLK,
                      POST_WLK_DETAIL_REVERSE, POST_WLK_DETAIL_TMPLT,
-                     POST_WLK_NUMBER, RANK, SLUG_DISTRICT,
-                     SLUG_JOURNAL, TAB_NUMBER_1, TAB_NUMBER_2, TASK_WLK,
-                     TEXT_WLK, TITLE_DISTRICT, TITLE_ENERGY_DISTRICT,
-                     TITLE_JOURNAL, TRANSFER_WLK, UNEXISTING_PAGE, USERNAME,
-                     USERNAME_AUTHOR, WALK_DATE)
+                     POST_WLK_NUMBER, RANK, SLUG_DISTRICT, SLUG_JOURNAL,
+                     TAB_NUMBER_1, TAB_NUMBER_2, TASK_WLK, TEXT_WLK,
+                     TITLE_DISTRICT, TITLE_ENERGY_DISTRICT, TITLE_JOURNAL,
+                     TRANSFER_WLK, UNEXISTING_PAGE, USERNAME, USERNAME_AUTHOR,
+                     WALK_DATE)
 
 User = get_user_model()
 

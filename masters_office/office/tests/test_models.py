@@ -1,13 +1,14 @@
 from django.contrib.auth import get_user_model
-from django.test import TestCase
+from django.test import Client, TestCase
+from django.urls import reverse
 
-from office.models import (
-    Brigade, District, EnergyDistrict,
-    Journal, Personal, Position, PostWalking)
+from office.models import (Brigade, District, EnergyDistrict, Journal,
+                           Personal, Position, PostWalking)
 from .consts import (BRGD_NUMBER, DESCRIPTION_JOURNAL, FIRST_NAME_1,
                      FIRST_NAME_2, LAST_NAME_1, LAST_NAME_2, MIDDLE_NAME_1,
-                     MIDDLE_NAME_2, NAME_POSITION, PLAN_WLK, POST_WLK_NUMBER,
-                     RANK, SLUG_DISTRICT, SLUG_JOURNAL,
+                     MIDDLE_NAME_2, NAME_POSITION, PLAN_WLK,
+                     POST_WLK_DETAIL_REVERSE, POST_WLK_NUMBER,
+                     POST_WLK_NUMBER_2, RANK, SLUG_DISTRICT, SLUG_JOURNAL,
                      TAB_NUMBER_1, TAB_NUMBER_2, TASK_WLK, TEXT_WLK,
                      TITLE_DISTRICT, TITLE_ENERGY_DISTRICT, TITLE_JOURNAL,
                      TRANSFER_WLK, USERNAME, WALK_DATE)
@@ -74,6 +75,42 @@ class OfficeModelTest(TestCase):
             author=cls.user,
         )
         cls.post_walking.members.set([cls.workman_2])
+        cls.post_walking_2 = PostWalking.objects.create(
+            number_post=POST_WLK_NUMBER_2,
+            walk_date=WALK_DATE,
+            journal=cls.journal,
+            district=cls.district,
+            task=TASK_WLK,
+            text=TEXT_WLK,
+            plan=PLAN_WLK,
+            fix_date=WALK_DATE,
+            transfer=TRANSFER_WLK,
+            author=cls.user,
+        )
+        cls.post_walking_2.members.set([cls.workman_2])
+
+        cls.POST_WLK_DETAIL_URL = reverse(
+            POST_WLK_DETAIL_REVERSE,
+            kwargs={
+                'username': cls.user,
+                'slug_journal': cls.journal.slug,
+                'slug_district': cls.district.slug,
+                'post_id': cls.post_walking.id
+            }
+        )
+        cls.POST_WLK_2_DETAIL_URL = reverse(
+            POST_WLK_DETAIL_REVERSE,
+            kwargs={
+                'username': cls.user,
+                'slug_journal': cls.journal.slug,
+                'slug_district': cls.district.slug,
+                'post_id': cls.post_walking_2.id
+            }
+        )
+
+    def setUp(self):
+        self.authorized_client = Client()
+        self.authorized_client.force_login(self.user)
 
     def test_models_have_correct_object_names(self):
         """Проверяем, что у моделей корректно работает __str__."""
@@ -99,3 +136,23 @@ class OfficeModelTest(TestCase):
                 self.assertEqual(
                     expected_value, str(field)
                 )
+
+    def test_get_next_post_walking(self):
+        """Метод get_next_post поста обхода ссылается на следующий существующий пост в журнале обхода."""
+        response = self.authorized_client.get(self.POST_WLK_DETAIL_URL)
+        post = response.context.get('post')
+        next_post_number = post.number_post + 1
+        expected = PostWalking.objects.get(
+            journal=post.journal, number_post=next_post_number
+        )
+        self.assertEqual(post.get_next_post(), expected)
+
+    def test_previous_post_walking(self):
+        """Метод get_previous_post поста обхода ссылается на предыдущий существующий пост в журнале обхода."""
+        response = self.authorized_client.get(self.POST_WLK_2_DETAIL_URL)
+        post = response.context.get('post')
+        previous_post_number = post.number_post - 1
+        expected = PostWalking.objects.get(
+            journal=post.journal, number_post=previous_post_number
+        )
+        self.assertEqual(post.get_previous_post(), expected)

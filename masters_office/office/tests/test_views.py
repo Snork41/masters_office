@@ -4,22 +4,19 @@ from django.test import Client, TestCase
 from django.urls import reverse
 
 from masters_office.settings import AMOUNT_POSTS_WALK
-from office.models import (
-    Brigade, District, EnergyDistrict,
-    Journal, Personal, Position, PostWalking, Resolution)
-from .consts import (BRGD_NUMBER, CREATE_POST_WLK_URL,
-                     DESCRIPTION_JOURNAL, DISTRICTS_URL,
-                     EDIT_POST_WLK_REVERSE, FIRST_NAME_1,
+from office.models import (Brigade, District, EnergyDistrict, Journal,
+                           Personal, Position, PostWalking, Resolution)
+from .consts import (BRGD_NUMBER, CREATE_POST_WLK_URL, DESCRIPTION_JOURNAL,
+                     DISTRICTS_URL, EDIT_POST_WLK_REVERSE, FIRST_NAME_1,
                      FIRST_NAME_2, JOURNALS_URL, JRNL_WLK_URL, LAST_NAME_1,
-                     LAST_NAME_2, MIDDLE_NAME_1,
-                     MIDDLE_NAME_2, NAME_POSITION, PLAN_WLK,
-                     POST_WLK_DETAIL_REVERSE,
-                     POST_WLK_NUMBER, POST_WLK_NUMBER_2, RANK, SLUG_DISTRICT,
+                     LAST_NAME_2, MIDDLE_NAME_1, MIDDLE_NAME_2, NAME_POSITION,
+                     PLAN_WLK, POST_WLK_DETAIL_REVERSE, POST_WLK_NUMBER,
+                     POST_WLK_NUMBER_2, RANK, RESOLUTION_WALK,
+                     RESOLUTION_WALK_2, SLUG_DISTRICT, SLUG_DISTRICT_2,
                      SLUG_JOURNAL, TAB_NUMBER_1, TAB_NUMBER_2, TASK_WLK,
-                     TEXT_WLK, TITLE_DISTRICT, TITLE_ENERGY_DISTRICT,
-                     TITLE_JOURNAL, TRANSFER_WLK, USERNAME,
-                     USERNAME_AUTHOR, WALK_DATE, TITLE_DISTRICT_2,
-                     SLUG_DISTRICT_2, RESOLUTION_WALK, RESOLUTION_WALK_2)
+                     TEXT_WLK, TITLE_DISTRICT, TITLE_DISTRICT_2,
+                     TITLE_ENERGY_DISTRICT, TITLE_JOURNAL, TRANSFER_WLK,
+                     USERNAME, USERNAME_AUTHOR, WALK_DATE)
 
 User = get_user_model()
 
@@ -94,6 +91,7 @@ class OfficeViewsTest(TestCase):
         cls.post_walking_2 = PostWalking.objects.create(
             number_post=POST_WLK_NUMBER_2,
             walk_date=WALK_DATE,
+            journal=cls.journal,
             district=cls.district,
             task=TASK_WLK,
             text=TEXT_WLK,
@@ -163,8 +161,8 @@ class OfficeViewsTest(TestCase):
     def test_journal_walk_page_show_correct_context(self):
         """Шаблон journal_walk сформирован с правильным контекстом."""
         response = self.authorized_client.get(JRNL_WLK_URL)
-        excepted = PostWalking.objects.get(id=self.post_walking.id)
-        self.assertEqual(response.context.get('page_obj')[0], excepted)
+        excepted = PostWalking.objects.filter()
+        self.assertQuerysetEqual(response.context.get('page_obj').object_list, excepted)
 
     def test_post_walking_create_page_show_correct_context(self):
         """Шаблон create_post_walking сформирован с правильным контекстом."""
