@@ -17,6 +17,9 @@ ALLOWED_HOSTS = [
     'testserver',
 ]
 
+INTERNAL_IPS = [
+    "127.0.0.1",
+]
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -25,6 +28,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django_extensions',
+    'debug_toolbar',
     'mptt',
     'about.apps.AboutConfig',
     'office.apps.OfficeConfig',
@@ -40,6 +45,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
 ]
 
 ROOT_URLCONF = 'masters_office.urls'
@@ -118,6 +124,61 @@ EMAIL_FILE_PATH = os.path.join(BASE_DIR, 'sent_emails')
 
 
 CSRF_FAILURE_VIEW = 'core.views.csrf_failure'
+
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'action_formatter': {
+            'format': '{levelname}: {asctime} {filename} "{message}"',
+            'style': '{',
+        },
+        'request_formatter': {
+            'format': '{levelname} {asctime} {module} {filename} {message}',
+            'style': '{',
+        },
+    },
+    'handlers': {
+        'action_file': {
+            'level': 'DEBUG',
+            'class': 'logging.handlers.RotatingFileHandler',
+            'encoding': 'utf-8',
+            'maxBytes': 10000,
+            'backupCount': 5,
+            'delay': True,
+            'filename': os.path.join(BASE_DIR, 'logs/action_file.log'),
+            'formatter': 'action_formatter',
+        },
+        'request_file': {
+            'level': 'DEBUG',
+            'class': 'logging.handlers.RotatingFileHandler',
+            'encoding': 'utf-8',
+            'maxBytes': 1000000,
+            'backupCount': 2,
+            'delay': True,
+            'filename': os.path.join(BASE_DIR, 'logs/request_file.log'),
+            'formatter': 'request_formatter',
+        },
+        'console': {
+            'level': 'DEBUG',
+            'class': 'logging.StreamHandler',
+            'formatter': 'action_formatter',
+        },
+    },
+    'loggers': {
+        'office': {
+            'handlers': ['action_file', 'console'],
+            'level': 'DEBUG',
+            'propagate': True,
+        },
+        'django.request': {
+            'handlers': ['request_file'],
+            'level': 'WARNING',
+            'propagate': True,
+        },
+    },
+}
 
 
 # Количество символов в тайтле поста

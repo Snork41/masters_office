@@ -1,3 +1,5 @@
+import logging
+
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
@@ -9,6 +11,9 @@ from django.views.generic import (
 from .models import District, Journal, PostWalking, Resolution
 from .forms import PostWalkingForm, ResolutionForm
 from .utils import get_page
+
+
+logger = logging.getLogger(__name__)
 
 
 class HomePageView(TemplateView):
@@ -52,7 +57,8 @@ class JournalWalkView(LoginRequiredMixin, ListView):
             District, slug=self.kwargs.get('slug_district')
         )
         page_obj = get_page(self.request, context['journal'].posts.filter(
-            district_id=context['district'].id)
+            district_id=context['district'].id).prefetch_related(
+                'author', 'members')
         )
         context['page_obj'] = page_obj
         return context
@@ -76,6 +82,10 @@ def create_post_walking(request, username, slug_journal, slug_district):
         post.author = request.user
         post.journal = journal
         form.save()
+        logger.info(
+            f'PostWalking (id: {post.id}) was created. '
+            f'User: {(post.author.username).upper()}'
+        )
         return redirect(
             'office:journal_walk',
             username, slug_journal, slug_district
@@ -106,6 +116,10 @@ def edit_post_walking(request, username, slug_journal, slug_district, post_id):
     if request.method == 'POST':
         if form.is_valid():
             form.save(request.user)
+            logger.info(
+                f'PostWalking (id: {post.id}) was edited. '
+                f'User: {(request.user.username).upper()}'
+            )
             return redirect(
                 'office:post_walking_detail',
                 username, slug_journal, slug_district, post_id
@@ -119,6 +133,10 @@ class PostWalkingDetailView(LoginRequiredMixin, DetailView, FormView):
     pk_url_kwarg = 'post_id'
     context_object_name = 'post'
     form_class = ResolutionForm
+
+    def get_queryset(self):
+        return super().get_queryset().select_related(
+            'author', 'journal', 'district')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -139,6 +157,11 @@ class ResolutionAddView(LoginRequiredMixin, CreateView):
             resolution.post_walking_id = self.kwargs.get('post_id')
             resolution.save()
             messages.success(self.request, 'Резолюция успешно добавлена')
+            logger.info(
+                f'Resolution (id: {resolution.id}) was added. '
+                f'Text: {resolution.text}. '
+                f'User: {(resolution.author.username).upper()}'
+            )
             return super().form_valid(form)
         return self.form_invalid(form=form, message=True)
 
@@ -164,6 +187,11 @@ class ResolutionEditView(LoginRequiredMixin, UpdateView):
 
     def form_valid(self, form):
         messages.success(self.request, 'Резолюция изменена')
+        logger.info(
+            f'Resolution (id: {self.object.id}) was changed. '
+            f'New text: {self.object.text}. '
+            f'User: {(self.request.user.username).upper()}'
+        )
         return super().form_valid(form)
 
     def form_invalid(self, form):

@@ -16,8 +16,8 @@
       {% if 'districts' in crumb.path %}
       <li class="breadcrumb-item"><a href="{% url 'office:districts' crumb.kwargs.username crumb.kwargs.slug_journal %}">Районы</a></li>
       {% endif %}
-      {% if crumb.kwargs.slug_district in crumb.path and 'obhodov' in crumb.kwargs.slug_journal %}
-      <li class="breadcrumb-item"><a href="{% url 'office:journal_walk' crumb.kwargs.username crumb.kwargs.slug_journal crumb.kwargs.slug_district %}">Журнал обходов</a></li>
+      {% if crumb.kwargs.slug_district in crumb.path %}
+      <li class="breadcrumb-item"><a href="{% url 'office:journal_walk' crumb.kwargs.username crumb.kwargs.slug_journal crumb.kwargs.slug_district %}">{{ crumb.journal.title }}</a></li>
       {% endif %}
     </ol>
 </nav>

@@ -269,7 +269,7 @@ class PostWalking(models.Model):
     def get_next_post(self):
         return self.__class__.objects.get(
             district=self.district, number_post=self.number_post + 1)
-    
+
     def get_previous_post(self):
         return self.__class__.objects.get(
             district=self.district, number_post=self.number_post - 1)

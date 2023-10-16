@@ -124,6 +124,7 @@ class PositionAdmin(admin.ModelAdmin):
 @admin.register(Resolution)
 class ResolutionAdmin(admin.ModelAdmin):
     list_display = (
+        'id',
         'author',
         'post_walking',
         'text',
