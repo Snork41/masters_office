@@ -1,12 +1,11 @@
 import logging
 
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from django.shortcuts import get_object_or_404, redirect, render
+from django.urls import reverse
+from django.shortcuts import get_object_or_404, redirect
 from django.views.generic import (
     ListView, TemplateView, DetailView, FormView, CreateView, UpdateView)
-
 
 from .models import District, Journal, PostWalking, Resolution
 from .forms import PostWalkingForm, ResolutionForm
@@ -64,67 +63,82 @@ class JournalWalkView(LoginRequiredMixin, ListView):
         return context
 
 
-@login_required
-def create_post_walking(request, username, slug_journal, slug_district):
-    district = get_object_or_404(District, slug=slug_district)
-    journal = get_object_or_404(Journal, slug=slug_journal)
-    initial_data = {'district': district, }
-    form = PostWalkingForm(
-        request.POST or None,
-        files=request.FILES or None,
-        initial=initial_data,
-    )
-    context = {
-        'form': form,
-    }
-    if form.is_valid():
-        post = form.save(False)
-        post.author = request.user
-        post.journal = journal
-        form.save()
+class PostWalkingCreateView(LoginRequiredMixin, CreateView):
+    model = PostWalking
+    template_name = 'office/create_post_walking.html'
+    form_class = PostWalkingForm
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['journal'] = get_object_or_404(
+            Journal, slug=self.kwargs.get('slug_journal')
+        )
+        return context
+
+    def get_initial(self):
+        initial = super().get_initial()
+        initial['district'] = get_object_or_404(
+            District, slug=self.kwargs.get('slug_district')
+        )
+        return initial
+
+    def form_valid(self, form):
+        post = form.save(commit=False)
+        post.author = self.request.user
+        post.journal = get_object_or_404(
+            Journal, slug=self.kwargs.get('slug_journal')
+        )
+        post.save()
+        return super().form_valid(form)
+
+    def get_success_url(self):
         logger.info(
-            f'PostWalking (id: {post.id}) was created. '
-            f'User: {(post.author.username).upper()}'
+            f'PostWalking (pk: {self.object.id}) was created. '
+            f'User: {(self.object.author.username).upper()}'
         )
-        return redirect(
-            'office:journal_walk',
-            username, slug_journal, slug_district
-        )
-    return render(request, 'office/create_post_walking.html', context)
+        return reverse('office:journal_walk', kwargs={
+                 'username': self.kwargs.get('username'),
+                 'slug_journal': self.kwargs.get('slug_journal'),
+                 'slug_district': self.kwargs.get('slug_district'),
+            })
 
 
-@login_required
-def edit_post_walking(request, username, slug_journal, slug_district, post_id):
-    post = get_object_or_404(PostWalking, id=post_id)
-    if post.author != request.user:
-        return redirect(
-            'office:post_walking_detail',
-            username, slug_journal, slug_district, post_id
-        )
-    form = PostWalkingForm(
-        request.POST or None,
-        files=request.FILES or None,
-        instance=post,
-    )
-    fields_hidden = form.fields['district']
-    fields_hidden.widget = fields_hidden.hidden_widget()
-    context = {
-        'post': post,
-        'form': form,
-        'is_edit': True
-    }
-    if request.method == 'POST':
-        if form.is_valid():
-            form.save(request.user)
-            logger.info(
-                f'PostWalking (id: {post.id}) was edited. '
-                f'User: {(request.user.username).upper()}'
-            )
+class PostWalkingEditView(LoginRequiredMixin, UpdateView):
+    model = PostWalking
+    template_name = 'office/edit_post_walking.html'
+    form_class = PostWalkingForm
+    pk_url_kwarg = 'post_id'
+    context_object_name = 'post'
+
+    def dispatch(self, request, *args, **kwargs):
+        post = self.get_object()
+        if post.author != request.user:
             return redirect(
                 'office:post_walking_detail',
-                username, slug_journal, slug_district, post_id
+                username=self.kwargs.get('username'),
+                slug_journal=self.kwargs.get('slug_journal'),
+                slug_district=self.kwargs.get('slug_district'),
+                post_id=self.kwargs.get('post_id')
             )
-    return render(request, 'office/create_post_walking.html', context)
+        return super().dispatch(request, *args, **kwargs)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['journal'] = get_object_or_404(
+            Journal, slug=self.kwargs.get('slug_journal')
+        )
+        return context
+
+    def get_success_url(self):
+        logger.info(
+            f'PostWalking (pk: {self.object.id}) was edited. '
+            f'User: {(self.object.author.username).upper()}'
+        )
+        return reverse('office:journal_walk', kwargs={
+                 'username': self.kwargs.get('username'),
+                 'slug_journal': self.kwargs.get('slug_journal'),
+                 'slug_district': self.kwargs.get('slug_district'),
+            })
 
 
 class PostWalkingDetailView(LoginRequiredMixin, DetailView, FormView):

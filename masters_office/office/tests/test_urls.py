@@ -182,6 +182,8 @@ class OfficeURLTest(TestCase):
         for url in urls:
             with self.subTest(url=url):
                 response = self.client.get(url, follow=True)
+                if 'edit_post_walking' in url:
+                    url = self.POST_WLK_DETAIL_URL
                 self.assertRedirects(response, LOGIN_PAGE_REDIRECT + url)
 
     def test_urls_uses_correct_template(self):

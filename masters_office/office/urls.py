@@ -22,10 +22,10 @@ urlpatterns = [
         views.JournalWalkView.as_view(), name='journal_walk'),
     path(
         'cabinet/<str:username>/journals/<slug:slug_journal>/districts/<slug:slug_district>/create-post-walking/',
-        views.create_post_walking, name='create_post_walking'),
+        views.PostWalkingCreateView.as_view(), name='create_post_walking'),
     path(
-        'cabinet/<str:username>/journals/<slug:slug_journal>/districts/<slug:slug_district>/<int:post_id>/edit-post-walking/',
-        views.edit_post_walking, name='edit_post_walking'),
+        'cabinet/<str:username>/journals/<slug:slug_journal>/districts/<slug:slug_district>/edit_post_walking/<int:post_id>/',
+        views.PostWalkingEditView.as_view(), name='edit_post_walking'),
     path(
         'cabinet/<str:username>/journals/<slug:slug_journal>/districts/<slug:slug_district>/<int:post_id>/',
         views.PostWalkingDetailView.as_view(), name='post_walking_detail'),

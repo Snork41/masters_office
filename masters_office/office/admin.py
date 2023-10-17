@@ -25,6 +25,7 @@ class PostWalkingAdmin(admin.ModelAdmin):
     inlines = (ResolutionInline,)
     list_display = (
         'pk',
+        'id',
         'number_post',
         'district',
         'planned',
@@ -124,6 +125,7 @@ class PositionAdmin(admin.ModelAdmin):
 @admin.register(Resolution)
 class ResolutionAdmin(admin.ModelAdmin):
     list_display = (
+        'pk',
         'id',
         'author',
         'post_walking',
