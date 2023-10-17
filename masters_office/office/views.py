@@ -109,6 +109,10 @@ class PostWalkingEditView(LoginRequiredMixin, UpdateView):
     pk_url_kwarg = 'post_id'
     context_object_name = 'post'
 
+    def get_queryset(self):
+        return super().get_queryset().select_related(
+            'author', 'district')
+
     def dispatch(self, request, *args, **kwargs):
         post = self.get_object()
         if post.author != request.user:
