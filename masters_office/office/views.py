@@ -97,7 +97,6 @@ class PostWalkingCreateView(LoginRequiredMixin, CreateView):
             f'User: {(self.object.author.username).upper()}'
         )
         return reverse('office:journal_walk', kwargs={
-                 'username': self.kwargs.get('username'),
                  'slug_journal': self.kwargs.get('slug_journal'),
                  'slug_district': self.kwargs.get('slug_district'),
             })
@@ -115,7 +114,6 @@ class PostWalkingEditView(LoginRequiredMixin, UpdateView):
         if post.author != request.user:
             return redirect(
                 'office:post_walking_detail',
-                username=self.kwargs.get('username'),
                 slug_journal=self.kwargs.get('slug_journal'),
                 slug_district=self.kwargs.get('slug_district'),
                 post_id=self.kwargs.get('post_id')
@@ -135,7 +133,6 @@ class PostWalkingEditView(LoginRequiredMixin, UpdateView):
             f'User: {(self.object.author.username).upper()}'
         )
         return reverse('office:journal_walk', kwargs={
-                 'username': self.kwargs.get('username'),
                  'slug_journal': self.kwargs.get('slug_journal'),
                  'slug_district': self.kwargs.get('slug_district'),
             })
@@ -187,7 +184,6 @@ class ResolutionAddView(LoginRequiredMixin, CreateView):
         else:
             messages.warning(self.request, 'Резолюция не может быть пустой')
         return redirect('office:post_walking_detail',
-                        self.kwargs.get('username'),
                         self.kwargs.get('slug_journal'),
                         self.kwargs.get('slug_district'),
                         self.kwargs.get('post_id')

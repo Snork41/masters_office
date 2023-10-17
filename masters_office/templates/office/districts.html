@@ -8,7 +8,7 @@
 <br>
 <div class="d-grid gap-2 col-6 mx-auto">
   {% for district in districts %}
-    <a href="{% url 'office:journal_walk' user.username journal.slug district.slug %}" class="btn btn-outline-dark btn-lg" role="button">{{ district }}</a>
+    <a href="{% url 'office:journal_walk' journal.slug district.slug %}" class="btn btn-outline-dark btn-lg" role="button">{{ district }}</a>
   {% endfor %}
 </div>
 {% endblock %}

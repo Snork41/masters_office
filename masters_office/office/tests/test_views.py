@@ -109,7 +109,6 @@ class OfficeViewsTest(TestCase):
         cls.POST_WLK_DETAIL_URL = reverse(
             POST_WLK_DETAIL_REVERSE,
             kwargs={
-                'username': cls.user,
                 'slug_journal': cls.journal.slug,
                 'slug_district': cls.district.slug,
                 'post_id': cls.post_walking.id
@@ -118,7 +117,6 @@ class OfficeViewsTest(TestCase):
         cls.POST_WLK_2_DETAIL_URL = reverse(
             POST_WLK_DETAIL_REVERSE,
             kwargs={
-                'username': cls.user,
                 'slug_journal': cls.journal.slug,
                 'slug_district': cls.district.slug,
                 'post_id': cls.post_walking_2.id
@@ -127,7 +125,6 @@ class OfficeViewsTest(TestCase):
         cls.EDIT_POST_WLK_URL = reverse(
             EDIT_POST_WLK_REVERSE,
             kwargs={
-                'username': cls.user,
                 'slug_journal': cls.journal.slug,
                 'slug_district': cls.district.slug,
                 'post_id': cls.post_walking.id

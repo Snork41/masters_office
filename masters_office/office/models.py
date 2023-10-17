@@ -333,7 +333,6 @@ class Resolution(models.Model):
 
     def get_absolute_url(self):
         return reverse('office:post_walking_detail', kwargs={
-            'username': self.author.username,
             'slug_journal': self.post_walking.journal.slug,
             'slug_district': self.post_walking.district.slug,
             'post_id': self.post_walking.id
