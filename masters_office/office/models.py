@@ -14,7 +14,8 @@ class EnergyDistrict(models.Model):
 
     title = models.CharField(
         verbose_name='Энергорайон',
-        max_length=20
+        max_length=20,
+        unique=True
     )
 
     class Meta:
@@ -39,7 +40,7 @@ class District(models.Model):
     master = models.ForeignKey(
         User,
         on_delete=models.PROTECT,
-        related_name='master',
+        related_name='district',
         verbose_name='Ответственный'
     )
 
@@ -178,6 +179,12 @@ class Journal(models.Model):
     def __str__(self):
         return self.title
 
+    def get_absolute_url(self):
+        return reverse('office:districts', kwargs={
+            'slug_journal': self.slug
+            }
+        )
+
 
 class PostWalking(models.Model):
     """Запись в журнале обхода."""
@@ -276,11 +283,11 @@ class PostWalking(models.Model):
 
     def get_absolute_url(self):
         return reverse('office:post_walking_detail', kwargs={
-                 'username': self.kwargs.get('username'),
-                 'slug_journal': self.kwargs.get('slug_journal'),
-                 'slug_district': self.kwargs.get('slug_district'),
-                 'post_id': self.kwargs.get('post_id')
-            })
+            'slug_journal': self.kwargs.get('slug_journal'),
+            'slug_district': self.kwargs.get('slug_district'),
+            'post_id': self.kwargs.get('post_id')
+            }
+        )
 
     def __str__(self):
         return f'{self.district.title}, Запись № {self.number_post} от {self.time_create.date()}'

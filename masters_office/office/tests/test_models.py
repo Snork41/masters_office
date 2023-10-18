@@ -3,12 +3,13 @@ from django.test import Client, TestCase
 from django.urls import reverse
 
 from office.models import (Brigade, District, EnergyDistrict, Journal,
-                           Personal, Position, PostWalking)
+                           Personal, Position, PostWalking, Resolution)
 from .consts import (BRGD_NUMBER, DESCRIPTION_JOURNAL, FIRST_NAME_1,
                      FIRST_NAME_2, LAST_NAME_1, LAST_NAME_2, MIDDLE_NAME_1,
                      MIDDLE_NAME_2, NAME_POSITION, PLAN_WLK,
                      POST_WLK_DETAIL_REVERSE, POST_WLK_NUMBER,
-                     POST_WLK_NUMBER_2, RANK, SLUG_DISTRICT, SLUG_JOURNAL,
+                     POST_WLK_NUMBER_2, RANK,
+                     RESOLUTION_WALK, SLUG_DISTRICT, SLUG_JOURNAL,
                      TAB_NUMBER_1, TAB_NUMBER_2, TASK_WLK, TEXT_WLK,
                      TITLE_DISTRICT, TITLE_ENERGY_DISTRICT, TITLE_JOURNAL,
                      TRANSFER_WLK, USERNAME, WALK_DATE)
@@ -20,9 +21,12 @@ class OfficeModelTest(TestCase):
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
-        cls.user = User.objects.create_user(username=USERNAME)
         cls.energy_district = EnergyDistrict.objects.create(
             title=TITLE_ENERGY_DISTRICT,
+        )
+        cls.user = User.objects.create_user(
+            username=USERNAME,
+            energy_district=cls.energy_district
         )
         cls.district = District.objects.create(
             title=TITLE_DISTRICT,
@@ -88,7 +92,11 @@ class OfficeModelTest(TestCase):
             author=cls.user,
         )
         cls.post_walking_2.members.set([cls.workman_2])
-
+        cls.resolution = Resolution.objects.create(
+            post_walking=cls.post_walking,
+            author=cls.user,
+            text=RESOLUTION_WALK,
+        )
         cls.POST_WLK_DETAIL_URL = reverse(
             POST_WLK_DETAIL_REVERSE,
             kwargs={
@@ -112,13 +120,15 @@ class OfficeModelTest(TestCase):
 
     def test_models_have_correct_object_names(self):
         """Проверяем, что у моделей корректно работает __str__."""
-        energy_district = OfficeModelTest.energy_district
-        district = OfficeModelTest.district
-        position = OfficeModelTest.position
-        workman = OfficeModelTest.workman
-        brigade = OfficeModelTest.brigade
-        journal = OfficeModelTest.journal
-        post_walking = OfficeModelTest.post_walking
+        energy_district = self.energy_district
+        district = self.district
+        position = self.position
+        workman = self.workman
+        brigade = self.brigade
+        journal = self.journal
+        post_walking = self.post_walking
+        personal = self.workman
+        resolution = self.resolution
 
         object_names = {
             energy_district: energy_district.title,
@@ -128,6 +138,8 @@ class OfficeModelTest(TestCase):
             brigade: f'Бригада № {brigade.number}. Мастера {brigade.master}',
             journal: journal.title,
             post_walking: f'{district.title}, Запись № {post_walking.pk} от {post_walking.time_create.date()}',
+            personal: f'{personal.last_name} {personal.first_name} {personal.middle_name}',
+            resolution: resolution.text
         }
         for field, expected_value in object_names.items():
             with self.subTest(field=field):

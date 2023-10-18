@@ -33,6 +33,9 @@ urlpatterns = [
         'cabinet/journals/<slug:slug_journal>/<slug:slug_district>/<int:post_id>/resolution/',
         views.ResolutionAddView.as_view(), name='resolution_form'),
     path(
-        'cabinet/journals/<slug:slug_journal>/<slug:slug_district>/<int:post_id>/resolution/<pk>/',
+        'cabinet/journals/<slug:slug_journal>/<slug:slug_district>/<int:post_id>/resolution/<int:resolution_id>/',
         views.ResolutionEditView.as_view(), name='resolution_update_form'),
+    path(
+        'cabinet/brigades/',
+        views.BrigadesListView.as_view(), name='brigades'),
 ]

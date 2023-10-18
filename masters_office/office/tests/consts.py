@@ -87,7 +87,7 @@ UPDATE_RESOLUTION_URL = reverse(
         'slug_journal': SLUG_JOURNAL,
         'slug_district': SLUG_DISTRICT,
         'post_id': POST_WLK_NUMBER,
-        'pk': RESOLUTION_ID
+        'resolution_id': RESOLUTION_ID
     }
 )
 
@@ -100,4 +100,5 @@ JRNL_WLK_TMPLT = 'office/journal_walk.html'
 CREATE_POST_WLK_TMPLT = 'office/create_post_walking.html'
 POST_WLK_DETAIL_TMPLT = 'office/post_walking_detail.html'
 EDIT_POST_WLK_TMPLT = 'office/edit_post_walking.html'
-RESOLUTION_TMPLT = 'office/includes/resolution_form.html'
+ADD_RESOLUTION_TMPLT = 'office/includes/resolution_form.html'
+UPDATE_RESOLUTION_TMPLT = 'office/includes/resolution_update_form.html'

@@ -13,10 +13,10 @@ class CustomUserAdmin(UserAdmin):
         (
                 'Дополнительные поля',
                 {
-                    'fields': ('position',)}))
+                    'fields': ('middle_name', 'position', 'energy_district',)}))
     fieldsets = (
         *UserAdmin.fieldsets,
         (
                 'Дополнительные поля',
                 {
-                    'fields': ('position',)}))
+                    'fields': ('middle_name','position', 'energy_district',)}))

@@ -18,12 +18,17 @@ class PostFormTests(TestCase):
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
-        cls.user = User.objects.create_user(username=USERNAME)
-        cls.user_boss = User.objects.create_user(
-            username=USERNAME_BOSS, is_staff=True
-        )
         cls.energy_district = EnergyDistrict.objects.create(
             title=TITLE_ENERGY_DISTRICT,
+        )
+        cls.user = User.objects.create_user(
+            username=USERNAME,
+            energy_district=cls.energy_district
+        )
+        cls.user_boss = User.objects.create_user(
+            username=USERNAME_BOSS,
+            is_staff=True,
+            energy_district=cls.energy_district
         )
         cls.district = District.objects.create(
             title=TITLE_DISTRICT,

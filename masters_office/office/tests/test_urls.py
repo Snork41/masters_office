@@ -28,10 +28,16 @@ class OfficeURLTest(TestCase):
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
-        cls.user = User.objects.create_user(username=USERNAME)
-        cls.user_author = User.objects.create_user(username=USERNAME_AUTHOR)
         cls.energy_district = EnergyDistrict.objects.create(
             title=TITLE_ENERGY_DISTRICT,
+        )
+        cls.user = User.objects.create_user(
+            username=USERNAME,
+            energy_district=cls.energy_district
+        )
+        cls.user_author = User.objects.create_user(
+            username=USERNAME_AUTHOR,
+            energy_district=cls.energy_district
         )
         cls.district = District.objects.create(
             title=TITLE_DISTRICT,

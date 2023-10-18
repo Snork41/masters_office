@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% block title %}
+  Бригады
+{% endblock %}
+{% block content %}
+<br>
+<h1 class="text-center fw-light">Бригады</h1>
+<h2 class="text-center fw-light"> {{ energy_district }} </h1>
+<br>
+<div class="d-grid gap-2 col-6 mx-auto">
+  {% for brigade in brigades %}
+  <div class="card">
+    <div class="card-header ">
+      <div class="fs-5">Бригада мастера {{ brigade.master.get_full_name }}</div>
+    </div>
+    <div class="card-body">
+      <table class="table table-hover">
+        <thead>
+          <tr>
+            <th scope="col"></th>
+            <th scope="col">Фамилия</th>
+            <th scope="col">Имя</th>
+            <th scope="col">Отчество</th>
+            <th scope="col">Должность</th>
+            <th scope="col">Разряд</th>
+          </tr>
+        </thead>
+        {% for member in brigade.members.all %}
+        <tbody>    
+          <tr>
+            <th scope="row">{% if member == brigade.brigadier %}Бригадир{% endif %}</th>
+            <td>{{ member.last_name }}</td>
+            <td>{{ member.first_name }}</td>
+            <td>{{ member.middle_name }}</td>
+            <td>{{ member.position }}</td>
+            <td>{%if member.rank %}{{ member.rank }}{% else %} --- {% endif %}</td>
+          </tr>
+        </tbody>
+        {% endfor %}
+      </table>
+    </div>
+  </div>
+{% endfor %}
+</div>
+{% endblock %}

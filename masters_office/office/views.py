@@ -7,7 +7,7 @@ from django.shortcuts import get_object_or_404, redirect
 from django.views.generic import (
     ListView, TemplateView, DetailView, FormView, CreateView, UpdateView)
 
-from .models import District, Journal, PostWalking, Resolution
+from .models import Brigade, District, Journal, PostWalking, Resolution
 from .forms import PostWalkingForm, ResolutionForm
 from .utils import get_page
 
@@ -163,6 +163,7 @@ class PostWalkingDetailView(LoginRequiredMixin, DetailView, FormView):
 
 class ResolutionAddView(LoginRequiredMixin, CreateView):
     model = Resolution
+    template_name = 'office/includes/resolution_form.html'
     fields = ['text']
 
     def form_valid(self, form):
@@ -197,7 +198,8 @@ class ResolutionAddView(LoginRequiredMixin, CreateView):
 class ResolutionEditView(LoginRequiredMixin, UpdateView):
     model = Resolution
     fields = ['text']
-    template_name_suffix = '_update_form'
+    template_name = 'office/includes/resolution_update_form.html'
+    pk_url_kwarg = 'resolution_id'
 
     def form_valid(self, form):
         messages.success(self.request, 'Резолюция изменена')
@@ -211,3 +213,18 @@ class ResolutionEditView(LoginRequiredMixin, UpdateView):
     def form_invalid(self, form):
         messages.warning(self.request, 'Резолюция не может быть пустой')
         return redirect(self.object.get_absolute_url())
+
+
+class BrigadesListView(LoginRequiredMixin, ListView):
+    model = Brigade
+    template_name = 'office/brigades.html'
+    context_object_name = 'brigades'
+
+    def get_queryset(self):
+        return Brigade.objects.filter(
+            master__energy_district=self.request.user.energy_district).prefetch_related('members')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['energy_district'] = self.request.user.energy_district
+        return context

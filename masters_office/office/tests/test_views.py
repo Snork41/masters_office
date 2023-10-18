@@ -16,7 +16,8 @@ from .consts import (BRGD_NUMBER, CREATE_POST_WLK_URL, DESCRIPTION_JOURNAL,
                      SLUG_JOURNAL, TAB_NUMBER_1, TAB_NUMBER_2, TASK_WLK,
                      TEXT_WLK, TITLE_DISTRICT, TITLE_DISTRICT_2,
                      TITLE_ENERGY_DISTRICT, TITLE_JOURNAL, TRANSFER_WLK,
-                     USERNAME, USERNAME_AUTHOR, WALK_DATE)
+                     USERNAME, USERNAME_AUTHOR, WALK_DATE, ADD_RESOLUTION_URL,
+                     UPDATE_RESOLUTION_URL)
 
 User = get_user_model()
 
@@ -25,12 +26,17 @@ class OfficeViewsTest(TestCase):
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
-        cls.user = User.objects.create_user(username=USERNAME)
-        cls.user_author = User.objects.create_user(
-            username=USERNAME_AUTHOR, is_staff=True
-        )
         cls.energy_district = EnergyDistrict.objects.create(
             title=TITLE_ENERGY_DISTRICT,
+        )
+        cls.user = User.objects.create_user(
+            username=USERNAME,
+            energy_district=cls.energy_district
+        )
+        cls.user_author = User.objects.create_user(
+            username=USERNAME_AUTHOR,
+            is_staff=True,
+            energy_district=cls.energy_district
         )
         cls.district = District.objects.create(
             title=TITLE_DISTRICT,
@@ -239,3 +245,25 @@ class OfficeViewsTest(TestCase):
             AMOUNT_POSTS_WALK
         )
         self.assertTrue(response.context.get('page_obj').has_other_pages())
+
+    def test_resolution_form_show_correct_context(self):
+        """Шаблон resolution_form сформирован с правильным контекстом."""
+        response = self.authorized_client.get(ADD_RESOLUTION_URL)
+        form_fields = {
+            'text': forms.fields.CharField,
+        }
+        for value, expected in form_fields.items():
+            with self.subTest(value=value):
+                form_field = response.context.get('form').fields.get(value)
+                self.assertIsInstance(form_field, expected)
+
+    def test_resolution_update_form_show_correct_context(self):
+        """Шаблон resolution_update_form сформирован с правильным контекстом."""
+        response = self.authorized_client.get(UPDATE_RESOLUTION_URL)
+        form_fields = {
+            'text': forms.fields.CharField,
+        }
+        for value, expected in form_fields.items():
+            with self.subTest(value=value):
+                form_field = response.context.get('form').fields.get(value)
+                self.assertIsInstance(form_field, expected)
