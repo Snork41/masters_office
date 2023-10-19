@@ -1,7 +1,6 @@
 {% load static %}
-{% with request.resolver_match.view_name as view_name %}
   <header>
-    <nav class="navbar navbar-expand-lg bg-dark bg-gradient">
+    <nav class="navbar navbar-expand-lg bg-dark">
       <div class="container-fluid">
         <a class="navbar-brand" href="{% url 'office:index' %}">
           <img src="{% static 'img/logo_face_2.png' %}" alt="logo" class="d-inline-block align-text-center ">
@@ -9,16 +8,17 @@
         </a>
         <ul class="navbar-nav navbar-right">
           {% if user.is_active %}
-            <span class="navbar-text">Пользователь: {{ user.username }}</span>
+            <span class="navbar-text">Пользователь: 
+              <span class="navbar-username">{{ user.username }}</span>
+            </span>
             <li class="nav-item">
               <a class="nav-link" href="{% url 'logout' %}">Выйти</a>
             </li>
           {% endif %}
           <li class="nav-item">
-            <a class="nav-link {% if view_name == 'about:help' %}{% endif %}" href="{% url 'about:help' %}">Помощь</a>
+            <a class="nav-link" href="{% url 'about:help' %}">Помощь</a>
           </li>
         </ul>
       </div>
     </nav>
   </header>
-{% endwith %}

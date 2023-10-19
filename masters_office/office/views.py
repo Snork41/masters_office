@@ -57,7 +57,7 @@ class JournalWalkView(LoginRequiredMixin, ListView):
         )
         page_obj = get_page(self.request, context['journal'].posts.filter(
             district_id=context['district'].id).prefetch_related(
-                'author', 'members')
+                'author', 'members', 'district')
         )
         context['page_obj'] = page_obj
         return context
@@ -95,6 +95,10 @@ class PostWalkingCreateView(LoginRequiredMixin, CreateView):
         logger.info(
             f'PostWalking (pk: {self.object.id}) was created. '
             f'User: {(self.object.author.username).upper()}'
+        )
+        messages.success(
+            self.request,
+            f'Запись № {self.object.number_post} успешно добавлена'
         )
         return reverse('office:journal_walk', kwargs={
                  'slug_journal': self.kwargs.get('slug_journal'),
@@ -135,6 +139,10 @@ class PostWalkingEditView(LoginRequiredMixin, UpdateView):
         logger.info(
             f'PostWalking (pk: {self.object.id}) was edited. '
             f'User: {(self.object.author.username).upper()}'
+        )
+        messages.success(
+            self.request,
+            f'Запись № {self.object.number_post} успешно изменена'
         )
         return reverse('office:journal_walk', kwargs={
                  'slug_journal': self.kwargs.get('slug_journal'),
@@ -202,7 +210,7 @@ class ResolutionEditView(LoginRequiredMixin, UpdateView):
     pk_url_kwarg = 'resolution_id'
 
     def form_valid(self, form):
-        messages.success(self.request, 'Резолюция изменена')
+        messages.success(self.request, 'Резолюция успешно изменена')
         logger.info(
             f'Resolution (id: {self.object.id}) was changed. '
             f'New text: {self.object.text}. '
@@ -222,7 +230,8 @@ class BrigadesListView(LoginRequiredMixin, ListView):
 
     def get_queryset(self):
         return Brigade.objects.filter(
-            master__energy_district=self.request.user.energy_district).prefetch_related('members')
+            master__energy_district=self.request.user.energy_district
+            ).prefetch_related('members__position', 'master', 'brigadier')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

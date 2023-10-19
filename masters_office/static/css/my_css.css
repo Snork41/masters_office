@@ -3,8 +3,19 @@ body {
     font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif
 }
 
+.navbar-nav li a:hover {    
+    color: #afafaf;
+}
+
+.navbar-brand:hover {
+    color: #afafaf;
+}
+
+.navbar-nav .navbar-text .navbar-username {
+    color: #c93e3e;
+}
 .nav-link, .navbar-brand, .navbar-text {
-    color: rgb(221, 233, 233);
+    color: rgb(233, 221, 221);
     font-size: 1.5em;
 }
 

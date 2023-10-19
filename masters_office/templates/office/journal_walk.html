@@ -1,8 +1,16 @@
 {% extends 'base.html' %}
-
 {% block title %} Журнал обходов тепловых сетей {% endblock title %}
 
 {% block content %}
+
+{% for message in messages %}
+  {% if message.tags == 'success' %}
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+      {{ message }}
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Закрыть"></button>
+    </div>
+  {% endif %}
+{% endfor %}
 
 <br>
 <h1 class="text-center fw-light">Журнал обходов тепловых сетей</h1>
@@ -38,7 +46,14 @@
               <br>
               <b>Автор:</b> {{ post.author.get_full_name }} ({{ post.author }})
               <p>
-                <a class="btn btn-outline-dark btn-sm" href="{% url 'office:post_walking_detail' journal.slug district.slug post.id %} ">подробная информация </a>
+                <a class="btn btn-outline-dark btn-sm" href="{{ post.get_absolute_url }} ">подробная информация </a>
+                {% if post.author.id == user.id %}
+                <a class="btn btn-outline-dark btn-sm" href="{% url 'office:edit_post_walking' journal.slug district.slug post.id %}">Редактировать запись</a>
+                {% else %}
+                <span class="d-inline-block" tabindex="0" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-title="Вы не автор записи!">
+                  <button class="btn btn-outline-dark btn-sm" type="button" disabled>Редактировать запись</button>
+                </span>     
+                {% endif %}
               </p>
               {% if not forloop.last %} <hr> {% endif %}
           {% endfor %}

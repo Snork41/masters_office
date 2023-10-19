@@ -6,7 +6,7 @@
       {% if 'cabinet' in crumb.path %}
       <li class="breadcrumb-item"><a href="{% url 'office:index' %}">На главную</a></li>
       {% endif %}
-      {% if 'journals' in crumb.path %}
+      {% if 'journals' in crumb.path or 'brigades' in crumb.path %}
       <li class="breadcrumb-item"><a href="{% url 'office:cabinet' %}">Кабинет</a></li>
       {% endif %}
       {% if crumb.kwargs.slug_journal in crumb.path %}

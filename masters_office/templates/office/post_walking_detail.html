@@ -1,5 +1,4 @@
 {% extends 'base.html' %}
-
 {% block title %}
   Запись № {{ post.number_post }}
 {% endblock %}
@@ -7,11 +6,17 @@
 {% block content %}
   <main>
     <div class="post-detail">
-      {% if messages %}
         {% for message in messages %}
-          <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+          {% if message.tags == 'warning' %}
+        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+          <strong>Внимание!</strong> {{ message }}
+          {% elif message.tags == 'success' %}
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+          {{ message }}
+          {% endif %}
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Закрыть"></button>
+        </div>
         {% endfor %}
-      {% endif %}
       <br>
       <h2 class="text-center fw-light">Журнал обходов тепловых сетей</h2>
       <h2 class="text-center fw-medium">{{ district }}</h2>
@@ -23,14 +28,18 @@
                 {% if post.get_previous_post %}
                 <a class="btn btn-outline-dark" href="{% url 'office:post_walking_detail' journal.slug district.slug post.get_previous_post.id %} ">Предыдущая запись</a>
                 {% else %}
-                <a class="btn btn-outline-secondary disabled">Предыдущая запись</a>
+                <span class="d-inline-block" tabindex="0" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-title="Записи нет">
+                  <button class="btn btn-outline-secondary" type="button" disabled>Предыдущая запись</button>
+                </span>    
                 {% endif %}
               </div>
               <div class="next-button">
                 {% if post.get_next_post %}
                 <a class="btn btn-outline-dark" href="{% url 'office:post_walking_detail' journal.slug district.slug post.get_next_post.id %} ">Следующая запись</a>
                 {% else %}
-                <a class="btn btn-outline-secondary disabled">Следующая запись</a>
+                <span class="d-inline-block" tabindex="0" data-bs-toggle="tooltip" data-bs-placement="left" data-bs-title="Записи нет">
+                  <button class="btn btn-outline-secondary" type="button" disabled>Следующая запись</button>
+                </span>    
                 {% endif %}
               </div>
               <h2 class="text-center fw-medium">Запись № {{ post.number_post }} от {{ post.time_create }}</h2>

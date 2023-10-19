@@ -283,9 +283,9 @@ class PostWalking(models.Model):
 
     def get_absolute_url(self):
         return reverse('office:post_walking_detail', kwargs={
-            'slug_journal': self.kwargs.get('slug_journal'),
-            'slug_district': self.kwargs.get('slug_district'),
-            'post_id': self.kwargs.get('post_id')
+            'slug_journal': self.journal.slug,
+            'slug_district': self.district.slug,
+            'post_id': self.id
             }
         )
 
