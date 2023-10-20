@@ -31,6 +31,9 @@ INSTALLED_APPS = [
     'django_extensions',
     'debug_toolbar',
     'mptt',
+    'django_bootstrap5',
+    'django_filters',
+    'django_tables2',
     'about.apps.AboutConfig',
     'office.apps.OfficeConfig',
     'users.apps.UsersConfig',
@@ -189,3 +192,11 @@ RANK = [(1, 1), (2, 2), (3, 3), (4, 4), (5, 5), (6, 6), (7, 7)]
 
 # Количество записей на странице журнала обходов
 AMOUNT_POSTS_WALK = 5
+
+
+DJANGO_TABLES2_TABLE_ATTRS = {
+    'class': 'table table-hover',
+    'thead': {
+        'class': 'table-light',
+    },
+}

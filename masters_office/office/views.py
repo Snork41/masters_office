@@ -1,5 +1,7 @@
 import logging
 
+from django_filters.views import FilterView
+from django_tables2 import SingleTableMixin
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib import messages
 from django.urls import reverse
@@ -8,7 +10,9 @@ from django.views.generic import (
     ListView, TemplateView, DetailView, FormView, CreateView, UpdateView)
 
 from .models import Brigade, District, Journal, PostWalking, Personal, Resolution
+from .tables import PersonalTable
 from .forms import PostWalkingForm, ResolutionForm
+from .filters import PersonalFilter
 from .utils import get_page
 
 
@@ -239,10 +243,12 @@ class BrigadesListView(LoginRequiredMixin, ListView):
         return context
 
 
-class EmployeesListView(LoginRequiredMixin, ListView):
+class EmployeesListView(LoginRequiredMixin, SingleTableMixin, FilterView):
     model = Personal
     template_name = 'office/employees.html'
     context_object_name = 'employees'
+    table_class = PersonalTable
+    filterset_class = PersonalFilter
 
     def get_queryset(self):
         return Personal.objects.filter(
