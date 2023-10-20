@@ -21,7 +21,8 @@ from .consts import (BRGD_NUMBER, CREATE_POST_WLK_URL, DESCRIPTION_JOURNAL,
                      USERNAME_SECOND_ENERGY_DISCRICT,
                      FIRST_NAME_3_SED, FIRST_NAME_4_SED, LAST_NAME_3_SED,
                      LAST_NAME_4_SED, MIDDLE_NAME_3_SED, MIDDLE_NAME_4_SED,
-                     BRGD_SED_NUMBER, TAB_NUMBER_3_SED, TAB_NUMBER_4_SED)
+                     BRGD_SED_NUMBER, TAB_NUMBER_3_SED, TAB_NUMBER_4_SED,
+                     EMPLOYEES_URL)
 
 User = get_user_model()
 
@@ -311,4 +312,14 @@ class OfficeViewsTest(TestCase):
             )
         self.assertQuerysetEqual(
             response.context['brigades'], expected_brigades
+        )
+
+    def test_employees_page_show_correct_context(self):
+        """Шаблон employees сформирован с правильным контекстом."""
+        response = self.authorized_client.get(EMPLOYEES_URL)
+        expected_employees = Personal.objects.filter(
+            energy_district=self.user.energy_district
+            )
+        self.assertQuerysetEqual(
+            response.context['employees'], expected_employees
         )

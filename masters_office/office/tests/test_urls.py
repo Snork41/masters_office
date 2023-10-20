@@ -19,7 +19,8 @@ from .consts import (BRGD_NUMBER, CABINET_TMPLT, CABINET_URL,
                      TAB_NUMBER_1, TAB_NUMBER_2, TASK_WLK, TEXT_WLK,
                      TITLE_DISTRICT, TITLE_ENERGY_DISTRICT, TITLE_JOURNAL,
                      TRANSFER_WLK, UNEXISTING_PAGE, USERNAME, USERNAME_AUTHOR,
-                     WALK_DATE, BRIGADES_URL, BRIGADES_TMPL)
+                     WALK_DATE, BRIGADES_URL, BRIGADES_TMPL, EMPLOYEES_URL,
+                     EMPLOYEES_TMPL)
 
 User = get_user_model()
 
@@ -139,6 +140,7 @@ class OfficeURLTest(TestCase):
             self.POST_WLK_DETAIL_URL: HTTPStatus.OK,
             self.EDIT_POST_WLK_URL: HTTPStatus.FOUND,
             BRIGADES_URL: HTTPStatus.OK,
+            EMPLOYEES_URL: HTTPStatus.OK,
         }
         for url_name, expected_code in url.items():
             with self.subTest(url_name=url_name):
@@ -165,6 +167,7 @@ class OfficeURLTest(TestCase):
             self.POST_WLK_DETAIL_URL: HTTPStatus.OK,
             self.EDIT_POST_WLK_URL: HTTPStatus.OK,
             BRIGADES_URL: HTTPStatus.OK,
+            EMPLOYEES_URL: HTTPStatus.OK,
         }
         for url_name, expected_code in url.items():
             with self.subTest(url_name=url_name):
@@ -185,6 +188,7 @@ class OfficeURLTest(TestCase):
             self.POST_WLK_DETAIL_URL,
             self.EDIT_POST_WLK_URL,
             BRIGADES_URL,
+            EMPLOYEES_URL,
         ]
         for url in urls:
             with self.subTest(url=url):
@@ -205,6 +209,7 @@ class OfficeURLTest(TestCase):
             self.POST_WLK_DETAIL_URL: POST_WLK_DETAIL_TMPLT,
             self.EDIT_POST_WLK_URL: EDIT_POST_WLK_TMPLT,
             BRIGADES_URL: BRIGADES_TMPL,
+            EMPLOYEES_URL: EMPLOYEES_TMPL,
         }
         for address, template in templates_url_names.items():
             with self.subTest(template=template):

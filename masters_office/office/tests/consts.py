@@ -60,11 +60,13 @@ EDIT_POST_WLK_REVERSE = 'office:edit_post_walking'
 ADD_RESOLUTION_REVERSE = 'office:resolution_form'
 UPDATE_RESOLUTION_REVERSE = 'office:resolution_update_form'
 BRIGADES_REVERSE = 'office:brigades'
+EMPLOYEES_REVERSE = 'office:employees'
 
 
 INDEX_URL = reverse(INDEX_REVERSE)
 CABINET_URL = reverse(CABINET_REVERSE)
 BRIGADES_URL = reverse(BRIGADES_REVERSE)
+EMPLOYEES_URL = reverse(EMPLOYEES_REVERSE)
 JOURNALS_URL = reverse(JOURNALS_REVERSE)
 DISTRICTS_URL = reverse(
     DISTRICTS_REVERSE,
@@ -116,3 +118,4 @@ EDIT_POST_WLK_TMPLT = 'office/edit_post_walking.html'
 ADD_RESOLUTION_TMPLT = 'office/includes/resolution_form.html'
 UPDATE_RESOLUTION_TMPLT = 'office/includes/resolution_update_form.html'
 BRIGADES_TMPL = 'office/brigades.html'
+EMPLOYEES_TMPL = 'office/employees.html'
