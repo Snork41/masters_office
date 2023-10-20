@@ -17,7 +17,11 @@ from .consts import (BRGD_NUMBER, CREATE_POST_WLK_URL, DESCRIPTION_JOURNAL,
                      TEXT_WLK, TITLE_DISTRICT, TITLE_DISTRICT_2,
                      TITLE_ENERGY_DISTRICT, TITLE_JOURNAL, TRANSFER_WLK,
                      USERNAME, USERNAME_AUTHOR, WALK_DATE, ADD_RESOLUTION_URL,
-                     UPDATE_RESOLUTION_URL)
+                     UPDATE_RESOLUTION_URL, BRIGADES_URL, TITLE_SECOND_ENERGY_DISTRICT,
+                     USERNAME_SECOND_ENERGY_DISCRICT,
+                     FIRST_NAME_3_SED, FIRST_NAME_4_SED, LAST_NAME_3_SED,
+                     LAST_NAME_4_SED, MIDDLE_NAME_3_SED, MIDDLE_NAME_4_SED,
+                     BRGD_SED_NUMBER, TAB_NUMBER_3_SED, TAB_NUMBER_4_SED)
 
 User = get_user_model()
 
@@ -29,6 +33,9 @@ class OfficeViewsTest(TestCase):
         cls.energy_district = EnergyDistrict.objects.create(
             title=TITLE_ENERGY_DISTRICT,
         )
+        cls.energy_district_2 = EnergyDistrict.objects.create(
+            title=TITLE_SECOND_ENERGY_DISTRICT,
+        )
         cls.user = User.objects.create_user(
             username=USERNAME,
             energy_district=cls.energy_district
@@ -37,6 +44,10 @@ class OfficeViewsTest(TestCase):
             username=USERNAME_AUTHOR,
             is_staff=True,
             energy_district=cls.energy_district
+        )
+        cls.user_SED = User.objects.create_user(
+            username=USERNAME_SECOND_ENERGY_DISCRICT,
+            energy_district=cls.energy_district_2
         )
         cls.district = District.objects.create(
             title=TITLE_DISTRICT,
@@ -70,12 +81,36 @@ class OfficeViewsTest(TestCase):
             rank=RANK,
             tab_number=TAB_NUMBER_2,
         )
+        cls.workman_3_SED = Personal.objects.create(
+            first_name=FIRST_NAME_3_SED,
+            last_name=LAST_NAME_3_SED,
+            middle_name=MIDDLE_NAME_3_SED,
+            energy_district=cls.energy_district_2,
+            position=cls.position,
+            rank=RANK,
+            tab_number=TAB_NUMBER_3_SED,
+        )
+        cls.workman_4_SED = Personal.objects.create(
+            first_name=FIRST_NAME_4_SED,
+            last_name=LAST_NAME_4_SED,
+            middle_name=MIDDLE_NAME_4_SED,
+            energy_district=cls.energy_district_2,
+            position=cls.position,
+            rank=RANK,
+            tab_number=TAB_NUMBER_4_SED,
+        )
         cls.brigade = Brigade.objects.create(
             number=BRGD_NUMBER,
             master=cls.user,
             brigadier=cls.workman,
         )
         cls.brigade.members.set([cls.workman_2])
+        cls.brigade_SED = Brigade.objects.create(
+            number=BRGD_SED_NUMBER,
+            master=cls.user_SED,
+            brigadier=cls.workman_3_SED,
+        )
+        cls.brigade_SED.members.set([cls.workman_4_SED])
         cls.journal = Journal.objects.create(
             title=TITLE_JOURNAL,
             slug=SLUG_JOURNAL,
@@ -267,3 +302,13 @@ class OfficeViewsTest(TestCase):
             with self.subTest(value=value):
                 form_field = response.context.get('form').fields.get(value)
                 self.assertIsInstance(form_field, expected)
+
+    def test_brigades_page_show_correct_context(self):
+        """Шаблон brigades сформирован с правильным контекстом."""
+        response = self.authorized_client.get(BRIGADES_URL)
+        expected_brigades = Brigade.objects.filter(
+            master__energy_district=self.user.energy_district
+            )
+        self.assertQuerysetEqual(
+            response.context['brigades'], expected_brigades
+        )

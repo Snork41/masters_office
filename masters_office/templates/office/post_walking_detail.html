@@ -64,9 +64,13 @@
                   </li>
                   <p>
                     <li><b>Ф.И.О обходчиков:</b>
-                    {% for member in post.members.all %}
-                      <br>{{ member }}
-                    {% endfor %}
+                      <div class="d-grid gap-2 col-6">
+                        <ul class="list-group list-group-flush">
+                          {% for member in post.members.all %}                    
+                          <li class="list-group-item">{{ member }}</li>
+                          {% endfor %}
+                        </ul>
+                      </div>
                     </li>
                   </p>
                   <li><b>Участок теплотрассы, задание мастера:</b><p>{{ post.task }}</p></li>
