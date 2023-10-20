@@ -38,4 +38,7 @@ urlpatterns = [
     path(
         'cabinet/brigades/',
         views.BrigadesListView.as_view(), name='brigades'),
+    path(
+        'cabinet/employees/',
+        views.EmployeesListView.as_view(), name='employees'),
 ]

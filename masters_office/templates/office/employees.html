@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% block title %}
+  Сотрудники
+{% endblock %}
+{% block content %}
+<br>
+<h1 class="text-center fw-light">Сотрудники</h1>
+<h2 class="text-center fw-light"> {{ energy_district }} </h1>
+<br>
+<div class="d-grid gap-2 col-6 mx-auto">
+  <div class="card">
+    <div class="card-header ">
+      <div class="fs-5">Здесь фильтры</div>
+    </div>
+    <div class="card-body">
+      <table class="table table-hover">
+        <thead>
+          <tr>
+            <th scope="col">Таб. номер</th>
+            <th scope="col">Фамилия</th>
+            <th scope="col">Имя</th>
+            <th scope="col">Отчество</th>
+            <th scope="col">Должность</th>
+            <th scope="col">Разряд</th>
+          </tr>
+        </thead>
+        {% for employee in employees %}
+        <tbody>    
+          <tr>
+            {% comment %} <th scope="row">1</th> {% endcomment %}
+            <td>{{ employee.tab_number }}</td>
+            <td>{{ employee.last_name }}</td>
+            <td>{{ employee.first_name }}</td>
+            <td>{{ employee.middle_name }}</td>
+            <td>{{ employee.position }}</td>
+            <td>{% if employee.rank %}{{  employee.rank }}{% else %} --- {% endif %}</td>
+          </tr>
+        </tbody>
+        {% endfor %}
+      </table>
+    </div>
+  </div>
+</div>
+{% endblock %}

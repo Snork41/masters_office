@@ -7,7 +7,7 @@ from django.shortcuts import get_object_or_404, redirect
 from django.views.generic import (
     ListView, TemplateView, DetailView, FormView, CreateView, UpdateView)
 
-from .models import Brigade, District, Journal, PostWalking, Resolution
+from .models import Brigade, District, Journal, PostWalking, Personal, Resolution
 from .forms import PostWalkingForm, ResolutionForm
 from .utils import get_page
 
@@ -232,6 +232,22 @@ class BrigadesListView(LoginRequiredMixin, ListView):
         return Brigade.objects.filter(
             master__energy_district=self.request.user.energy_district
             ).prefetch_related('members__position', 'master', 'brigadier')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['energy_district'] = self.request.user.energy_district
+        return context
+
+
+class EmployeesListView(LoginRequiredMixin, ListView):
+    model = Personal
+    template_name = 'office/employees.html'
+    context_object_name = 'employees'
+
+    def get_queryset(self):
+        return Personal.objects.filter(
+            energy_district=self.request.user.energy_district
+            ).select_related('position')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
