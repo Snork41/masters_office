@@ -19,4 +19,4 @@ class CustomUserAdmin(UserAdmin):
         (
                 'Дополнительные поля',
                 {
-                    'fields': ('middle_name','position', 'energy_district',)}))
+                    'fields': ('middle_name', 'position', 'energy_district',)}))

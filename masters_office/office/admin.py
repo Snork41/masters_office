@@ -8,6 +8,8 @@ from .models import (Journal, PostWalking,
 
 
 admin.site.site_header = '"Кабинет мастера" | Администрирование'
+admin.site.index_title = 'Управление кабинетом'
+
 admin.site.register(EnergyDistrict)
 
 

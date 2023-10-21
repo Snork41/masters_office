@@ -70,6 +70,8 @@ TEMPLATES = [
         },
     },
 ]
+DJANGO_TABLES2_TEMPLATE = os.path.join(BASE_DIR, 'templates/office/includes/table_employees.html')
+
 
 WSGI_APPLICATION = 'masters_office.wsgi.application'
 

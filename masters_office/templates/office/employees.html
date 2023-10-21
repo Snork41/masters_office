@@ -11,7 +11,9 @@
 <div class="row row-table-employees">
   <div class="col-6 col-md-3">
     <div class="card">
-      <div class="card-header ">Фильтрация</div>
+      <div class="card-header" style="text-align: center;">
+        <span class="btn" style="font-size: larger;">ФИЛЬТРАЦИЯ</button>
+      </div>      
       <div class="card-body">
         {% if filter %}
           <form action="" method="get" class="form form-floating ">
@@ -26,9 +28,7 @@
   </div>
   <div class="col-md-9">
     <div class="card">
-        <div class="card-body">
-            {% render_table table %}
-        </div>
+      {% render_table table %}
     </div>
   </div>
 </div>

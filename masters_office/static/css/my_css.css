@@ -87,3 +87,15 @@ body {
 .row-table-employees {
     padding: 5%;;
 }
+
+a.table-head-employees {
+    font-size: larger;
+    text-decoration: none;
+    color: #000000;
+    text-transform: uppercase;
+}
+
+a.table-head-employees:hover {
+    color: #000000;
+    font-weight: bold;
+}
