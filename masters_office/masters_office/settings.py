@@ -173,7 +173,7 @@ LOGGING = {
     },
     'loggers': {
         'office': {
-            'handlers': ['action_file', 'console'],
+            'handlers': ['action_file'],
             'level': 'DEBUG',
             'propagate': True,
         },

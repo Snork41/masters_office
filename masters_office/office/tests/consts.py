@@ -39,12 +39,14 @@ POST_WLK_NUMBER = 1
 POST_WLK_NUMBER_2 = 2
 TASK_WLK = 'Тестовое задание'
 TEXT_WLK = 'Тестовые замечания'
+TEXT_WLK_2 = 'Тестовые замечания второй записи'
 PLAN_WLK = 'Тестовые мероприятия'
 RESOLUTION_WALK = 'Тестовая резолюция'
 RESOLUTION_WALK_2 = 'Тестовая резолюция 2'
 RESOLUTION_ID = 1
 TRANSFER_WLK = 'Тестовый перенос ремонта'
-WALK_DATE = datetime.datetime(year=2010, month=2, day=2)
+WALK_DATE = datetime.date.today()
+WALK_DATE_NOT_VALID = datetime.date.today() + datetime.timedelta(days=1)
 
 
 LOGIN_PAGE_REDIRECT = '/auth/login/?next='

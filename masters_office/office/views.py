@@ -14,6 +14,7 @@ from .tables import PersonalTable
 from .forms import PostWalkingForm, ResolutionForm
 from .filters import PersonalFilter
 from .utils import get_page
+from .validators import validated_post_walking_form
 
 
 logger = logging.getLogger(__name__)
@@ -87,6 +88,9 @@ class PostWalkingCreateView(LoginRequiredMixin, CreateView):
         return initial
 
     def form_valid(self, form):
+        form = validated_post_walking_form(self, form)
+        if form.errors:
+            return self.form_invalid(form)
         post = form.save(commit=False)
         post.author = self.request.user
         post.journal = get_object_or_404(
@@ -138,6 +142,12 @@ class PostWalkingEditView(LoginRequiredMixin, UpdateView):
             Journal, slug=self.kwargs.get('slug_journal')
         )
         return context
+
+    def form_valid(self, form):
+        form = validated_post_walking_form(self, form)
+        if form.errors:
+            return self.form_invalid(form)
+        return super().form_valid(form)
 
     def get_success_url(self):
         logger.info(

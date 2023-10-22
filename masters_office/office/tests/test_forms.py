@@ -7,9 +7,10 @@ from .consts import (ADD_RESOLUTION_URL, DESCRIPTION_JOURNAL, FIRST_NAME_1,
                      LAST_NAME_1, MIDDLE_NAME_1, NAME_POSITION, PLAN_WLK,
                      POST_WLK_NUMBER, RANK, RESOLUTION_WALK, RESOLUTION_WALK_2,
                      SLUG_DISTRICT, SLUG_JOURNAL, TAB_NUMBER_1, TASK_WLK,
-                     TEXT_WLK, TITLE_DISTRICT, TITLE_ENERGY_DISTRICT,
+                     TEXT_WLK, TEXT_WLK_2, TITLE_DISTRICT, TITLE_ENERGY_DISTRICT,
                      TITLE_JOURNAL, TRANSFER_WLK, UPDATE_RESOLUTION_URL,
-                     USERNAME, USERNAME_BOSS, WALK_DATE)
+                     USERNAME, USERNAME_BOSS, WALK_DATE, CREATE_POST_WLK_URL,
+                     WALK_DATE_NOT_VALID)
 
 User = get_user_model()
 
@@ -97,3 +98,65 @@ class PostFormTests(TestCase):
         self.authorized_client.post(ADD_RESOLUTION_URL, data=form_data)
         self.assertFalse(
             Resolution.objects.filter(text=form_data['text']).exists())
+
+    def test_create_post_walking(self):
+        """Валидная форма создаёт запись обхода тепловых сетей.
+
+        Номер записи, журнал и автор должны заполняться автоматически.
+        """
+        exist_posts_walking_amount = PostWalking.objects.count()
+        expected_posts_walking_amount = exist_posts_walking_amount + 1
+        exist_post_walking_number = self.post_walking.number_post
+        expected_new_post_walking_number = exist_post_walking_number + 1
+        form_data = {
+            'planned': True,
+            'not_planned': False,
+            'walk_date': WALK_DATE,
+            'task': TASK_WLK,
+            'text': TEXT_WLK_2,
+            'plan': PLAN_WLK,
+            'fix_date': WALK_DATE,
+            'transfer': TRANSFER_WLK,
+            'members': self.workman.id,
+            'district': self.district.id
+        }
+        self.authorized_client.post(CREATE_POST_WLK_URL, data=form_data)
+        new_post_walking = PostWalking.objects.get(text=form_data['text'])
+        self.assertEqual(PostWalking.objects.count(), expected_posts_walking_amount)
+        self.assertEqual(new_post_walking.number_post, expected_new_post_walking_number)
+        self.assertEqual(new_post_walking.author, self.user)
+        self.assertEqual(new_post_walking.journal, self.journal)
+
+    def test_validation_walk_date_in_new_post_walking(self):
+        """Дата обхода не может быть будущей при создании записи."""
+        form_data = {
+            'planned': True,
+            'not_planned': False,
+            'walk_date': WALK_DATE_NOT_VALID,
+            'task': TASK_WLK,
+            'text': TEXT_WLK,
+            'members': self.workman.id,
+            'district': self.district.id
+        }
+        self.assertTrue(
+            'walk_date' in self.authorized_client.post(
+                CREATE_POST_WLK_URL, data=form_data
+                ).context_data['form'].errors
+        )
+
+    def test_validation_select_planned_in_new_post_walking(self):
+        """При создании запись обхода не может быть без типа (план/внеплан)."""
+        form_data = {
+            'planned': False,
+            'not_planned': False,
+            'walk_date': WALK_DATE,
+            'task': TASK_WLK,
+            'text': TEXT_WLK,
+            'members': self.workman.id,
+            'district': self.district.id
+        }
+        self.assertTrue(
+            'planned' in self.authorized_client.post(
+                CREATE_POST_WLK_URL, data=form_data
+                ).context_data['form'].errors
+        )

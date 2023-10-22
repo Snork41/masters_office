@@ -26,7 +26,6 @@ class PostWalkingAdmin(admin.ModelAdmin):
     form = PostWalkingForm
     inlines = (ResolutionInline,)
     list_display = (
-        'pk',
         'id',
         'number_post',
         'district',
@@ -80,6 +79,10 @@ class BrigadeAdmin(admin.ModelAdmin):
         'number',
         'master',
         'brigadier',
+    )
+    list_display_links = (
+        'number',
+        'master',
     )
     filter_horizontal = ('members',)
     empty_value_display = '-пусто-'
