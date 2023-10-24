@@ -1,10 +1,10 @@
 {% load static %}
   <header>
-    <nav class="navbar navbar-expand-lg bg-dark">
+    <nav class="navbar navbar-expand-lg bg-dark fixed-top">
       <div class="container-fluid">
         <a class="navbar-brand" href="{% url 'office:index' %}">
-          <img src="{% static 'img/logo_face_2.png' %}" alt="logo" class="d-inline-block align-text-center ">
-          Кабинет мастера
+          <img src="{% static 'img/logo_face_2.png' %}" alt="logo" class="d-inline-block align-text-center">
+          КАБИНЕТ МАСТЕРА
         </a>
         <ul class="navbar-nav navbar-right">
           {% if user.is_active %}

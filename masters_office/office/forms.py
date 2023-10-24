@@ -1,10 +1,47 @@
+import datetime as dt
 from django import forms
 from django.contrib.admin.widgets import FilteredSelectMultiple
+from django.core.validators import MaxValueValidator
+import os
 
 from .models import PostWalking, Personal, Resolution
+from masters_office.settings import BASE_DIR
 
 
 class PostWalkingForm(forms.ModelForm):
+
+    walk_date = forms.DateField(
+        label='Дата обхода',
+        widget=forms.DateInput(attrs={'type': 'date'}),
+        validators=[MaxValueValidator(dt.date.today(), message='Дата обхода еще не наступила')]
+    )
+    fix_date = forms.DateField(
+        label='Дата устранения замечания',
+        help_text='При отсутствии замечаний не заполняется',
+        required=False,
+        widget=forms.DateInput(attrs={'type': 'date', 'min': dt.date.today()})
+    )
+    planned = forms.BooleanField(
+        error_messages={'planned': 'ererer'},
+        label='Плановый',
+        required=False,
+        initial=True,
+        widget=forms.CheckboxInput(attrs={'id': 'btn-check-outlined', 'type': 'checkbox', 'class': 'btn-check'})
+    )
+    not_planned = forms.BooleanField(
+        label='Внеплановый',
+        required=False,
+        widget=forms.CheckboxInput(attrs={'id': 'btn-check-2-outlined', 'type': 'checkbox', 'class': 'btn-check'})
+    )
+    members = forms.ModelMultipleChoiceField(
+        label='Члены бригады',
+        queryset=Personal.objects.filter(position__walker=True),
+        widget=FilteredSelectMultiple(
+            verbose_name='Члены бригады',
+            is_stacked=False
+        ),
+    )
+
     class Meta:
         model = PostWalking
         fields = (
@@ -19,28 +56,15 @@ class PostWalkingForm(forms.ModelForm):
             'fix_date',
             'transfer',
         )
-    members = forms.ModelMultipleChoiceField(
-        queryset=Personal.objects.filter(position__walker=True),
-        widget=FilteredSelectMultiple(
-            verbose_name='Члены бригады',
-            is_stacked=False
-        ),
-        label='Члены бригады',
-    )
 
     class Media:
         css = {
-            'all': ('/static/admin/css/widgets.css',),
+            'all': [os.path.join(BASE_DIR, 'static/css/select_multiple.css')],
         }
         js = ('/admin/jsi18n',)
 
-    def __init__(self, *args, **kwargs):
-        self.instance = kwargs.get('instance')
-        super().__init__(*args, **kwargs)
-
     def save(self, username=None, *args, commit=True, **kwargs):
         """Сохранение записи с автоматической нумерацией, учитывая район."""
-
         obj = super().save(commit=False, *args, **kwargs)
         if not obj.number_post:
             most_recent = PostWalking.objects.filter(
@@ -52,6 +76,14 @@ class PostWalkingForm(forms.ModelForm):
             obj.save()
             self._save_m2m()
         return obj
+
+    def __init__(self, *args, **kwargs):
+        self.instance = kwargs.get('instance')
+        super(PostWalkingForm, self).__init__(*args, **kwargs)
+        for field in ['district', 'walk_date', 'task', 'text', 'plan', 'fix_date', 'transfer']:
+            self.fields[field].widget.attrs.update({'class': 'focus-ring focus-ring-dark border'})
+        if self.instance.time_create:
+            self.fields['district'].disabled = True
 
 
 class ResolutionForm(forms.ModelForm):

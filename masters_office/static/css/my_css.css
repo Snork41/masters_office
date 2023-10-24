@@ -1,6 +1,7 @@
 body {
     background-color: rgb(255, 255, 255);
-    font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif
+    font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    padding-top: 4%;
 }
 
 .navbar-nav li a:hover {    
@@ -98,4 +99,20 @@ a.table-head-employees {
 a.table-head-employees:hover {
     color: #000000;
     font-weight: bold;
+}
+
+a.btn.btn-lg {
+    margin-bottom: 0%;
+}
+
+a.btn.btn-lg:hover {
+    font-size: 130%;
+    scale: 1.05;
+}
+
+/* Ошибка при не выборе план/внеплан обход */
+.form-error-planned {
+    color: red;
+    font-weight: 110%;
+    display: block;
 }

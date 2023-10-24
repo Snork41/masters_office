@@ -210,7 +210,7 @@ class OfficeViewsTest(TestCase):
             'district': forms.fields.ChoiceField,
             'planned': forms.fields.BooleanField,
             'not_planned': forms.fields.BooleanField,
-            'walk_date': forms.fields.DateTimeField,
+            'walk_date': forms.fields.DateField,
             'members': forms.models.ModelMultipleChoiceField,
             'task': forms.fields.CharField,
             'text': forms.fields.CharField,

@@ -9,12 +9,13 @@ from django.shortcuts import get_object_or_404, redirect
 from django.views.generic import (
     ListView, TemplateView, DetailView, FormView, CreateView, UpdateView)
 
-from .models import Brigade, District, Journal, PostWalking, Personal, Resolution
+from .models import (
+    Brigade, District, Journal, PostWalking, Personal, Resolution)
 from .tables import PersonalTable
 from .forms import PostWalkingForm, ResolutionForm
 from .filters import PersonalFilter
 from .utils import get_page
-from .validators import validated_post_walking_form
+from .validators import validated_planned_field
 
 
 logger = logging.getLogger(__name__)
@@ -88,7 +89,7 @@ class PostWalkingCreateView(LoginRequiredMixin, CreateView):
         return initial
 
     def form_valid(self, form):
-        form = validated_post_walking_form(self, form)
+        form = validated_planned_field(self, form)
         if form.errors:
             return self.form_invalid(form)
         post = form.save(commit=False)
@@ -144,7 +145,7 @@ class PostWalkingEditView(LoginRequiredMixin, UpdateView):
         return context
 
     def form_valid(self, form):
-        form = validated_post_walking_form(self, form)
+        form = validated_planned_field(self, form)
         if form.errors:
             return self.form_invalid(form)
         return super().form_valid(form)
