@@ -12,7 +12,7 @@ class PostWalkingForm(forms.ModelForm):
 
     walk_date = forms.DateField(
         label='Дата обхода',
-        widget=forms.DateInput(attrs={'type': 'date'}),
+        widget=forms.DateInput(format=('%Y-%m-%d'), attrs={'type': 'date'}),
         validators=[MaxValueValidator(dt.date.today(), message='Дата обхода еще не наступила')]
     )
     fix_date = forms.DateField(
@@ -26,12 +26,12 @@ class PostWalkingForm(forms.ModelForm):
         label='Плановый',
         required=False,
         initial=True,
-        widget=forms.CheckboxInput(attrs={'id': 'btn-check-outlined', 'type': 'checkbox', 'class': 'btn-check'})
+        widget=forms.CheckboxInput(attrs={'id': 'btn-check-planned-outlined', 'type': 'checkbox', 'class': 'btn-check'})
     )
     not_planned = forms.BooleanField(
         label='Внеплановый',
         required=False,
-        widget=forms.CheckboxInput(attrs={'id': 'btn-check-2-outlined', 'type': 'checkbox', 'class': 'btn-check'})
+        widget=forms.CheckboxInput(attrs={'id': 'btn-check-not-planned-outlined', 'type': 'checkbox', 'class': 'btn-check'})
     )
     members = forms.ModelMultipleChoiceField(
         label='Члены бригады',
@@ -40,6 +40,11 @@ class PostWalkingForm(forms.ModelForm):
             verbose_name='Члены бригады',
             is_stacked=False
         ),
+    )
+    is_deleted = forms.BooleanField(
+        label='Пометить запись на удаление',
+        required=False,
+        widget=forms.CheckboxInput(attrs={'id': 'btn-check-deleted-outlined', 'type': 'checkbox', 'class': 'btn-check'})
     )
 
     class Meta:
@@ -55,6 +60,7 @@ class PostWalkingForm(forms.ModelForm):
             'plan',
             'fix_date',
             'transfer',
+            'is_deleted',
         )
 
     class Media:

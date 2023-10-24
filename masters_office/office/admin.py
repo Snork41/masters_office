@@ -35,6 +35,7 @@ class PostWalkingAdmin(admin.ModelAdmin):
         'task',
         'text_for_display',
         'author',
+        'is_deleted',
     )
     fields = (
         'journal',
@@ -49,10 +50,11 @@ class PostWalkingAdmin(admin.ModelAdmin):
         'plan',
         'fix_date',
         'transfer',
+        'is_deleted',
     )
     list_display_links = ('number_post', 'task')
     search_fields = ('text', 'walk_date')
-    list_filter = ('walk_date',)
+    list_filter = ('walk_date', 'is_deleted',)
     empty_value_display = '-пусто-'
     save_on_top = True
     readonly_fields = ('time_create', 'time_update', 'number_post')

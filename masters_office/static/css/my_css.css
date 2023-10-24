@@ -116,3 +116,7 @@ a.btn.btn-lg:hover {
     font-weight: 110%;
     display: block;
 }
+
+.card-post-in-list {
+    margin-bottom: 2%;
+}

@@ -21,47 +21,45 @@
     <a class="btn btn-outline-dark btn-lg fs-3" href="{% url 'office:create_post_walking' journal.slug district.slug %}">Новая запись</a>
 </div>
 <div class="row justify-content-center">
-    <div class="col-md-20 p-5">
+    <div class="col-6 p-5">
       {% include 'includes/paginator.html' %}
-      <div class="card">
-        <div class="card-header fs-4">
           {% for post in page_obj %}
-              <b>Номер записи:</b> {{ post.number_post }}
-              <br>
-              <b>Дата обхода:</b> {{ post.walk_date|date:"d E Y" }}
-              <br>
-              <b>Причина обхода:</b>
-              {% if post.planned %} Плановый {% endif %}
-              {% if post.not_planned %} Внеплановый {% endif %}
-              <br>
-              <b>Ф.И.О обходчиков:</b>
-              {% for member in post.members.all %}
-                  {{ member }}
-                  {% if not forloop.last %} , {% endif %}
-              {% endfor %}    
-              <br>
-              <b>Участок теплотрассы, задание мастера:</b> {{ post.task }}
-              <br>
-              <b>Замечания, выявленные при обходе:</b> {{ post.text|truncatechars:15 }}
-              <br>
-              <b>Автор:</b> {{ post.author.get_full_name }} ({{ post.author }})
-              <p>
-                <a class="btn btn-outline-dark btn-sm" href="{{ post.get_absolute_url }} ">подробная информация </a>
-                {% if post.author.id == user.id %}
-                <a class="btn btn-outline-dark btn-sm" href="{% url 'office:edit_post_walking' journal.slug district.slug post.id %}">Редактировать запись</a>
-                {% else %}
-                <span class="d-inline-block" tabindex="0" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-title="Вы не автор записи!">
-                  <button class="btn btn-outline-dark btn-sm" type="button" disabled>Редактировать запись</button>
-                </span>     
-                {% endif %}
-              </p>
-              {% if not forloop.last %} <hr> {% endif %}
+          <div class="card card-post-in-list shadow {% if post.is_deleted %} bg-danger bg-opacity-10{% endif %}">
+            <div class="card-body fs-4">
+          {% if post.is_deleted %}
+          <div class="position-relative">
+          <div class="col-4 position-absolute top-0 end-0 border border-danger border-3 text-danger text-center" style="padding: 10px;"> ЗАПИСЬ ПОМЕЧЕНА НА УДАЛЕНИЕ</div>
+          </div>
+          {% endif %}
+          <div class="text-uppercase">Номер записи: <span style="font-weight: bolder;">{{ post.number_post }}</span> </div> 
+          <div class="text-uppercase">Дата обхода: <span style="font-weight: bolder;">{{ post.walk_date|date:"d.m.Y" }}</span></div>
+          <div class="d-inline-block text-uppercase">Причина обхода: </div><span style="font-weight: bolder;"> {% if post.planned %} Плановый {% endif %}{% if post.not_planned %} Внеплановый {% endif %}</span>          
+          <div>Ф.И.О обходчиков:</div>
+          <ol class="list-group list-group-flush">
+          {% for member in post.members.all %}
+            <li class="list-group-item {% if post.is_deleted %} bg-danger bg-opacity-10{% endif %}">{{ member }}</li>
+          {% endfor %}    
+          </ol>
+          <div class="text-uppercase">Участок теплотрассы, задание мастера: </div>
+          <div style="font-weight: bolder;">{{ post.task }} </div>
+          <div class="text-uppercase">Замечания, выявленные при обходе: </div>
+          <div style="font-weight: bolder;">{{ post.text|truncatechars:15 }} </div>
+          <div class="d-inline-block text-uppercase">Автор: </div><span style="font-weight: bolder;"> {{ post.author.get_full_name }} ({{ post.author }})</span>
+          <hr>
+            <a class="btn btn-outline-dark btn-sm" href="{{ post.get_absolute_url }} ">подробная информация </a>
+              {% if post.author.id == user.id %}
+                <a class="btn btn-outline-dark btn-sm" href="{% url 'office:edit_post_walking' journal.slug district.slug post.id %}">редактировать запись</a>
+              {% else %}
+              <span class="d-inline-block" tabindex="0" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-title="Вы не автор записи!">
+                <button class="btn btn-outline-dark btn-sm" type="button" disabled>Редактировать запись</button>
+              </span>     
+              {% endif %}
+        </div>
+      </div>
           {% endfor %}
           {% else %}
           <p class="text-center fs-1">Записей нет.</p>
-      {% endif %}
-        </div>
-      </div>
+          {% endif %}
       {% include 'includes/paginator.html' %}
     </div>
   </div>

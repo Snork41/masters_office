@@ -200,7 +200,7 @@ class PostWalking(models.Model):
     number_post = models.PositiveIntegerField(
         verbose_name='Номер записи'
     )
-    walk_date = models.DateTimeField(
+    walk_date = models.DateField(
         verbose_name='Дата обхода',
         help_text='Введите дату в формате "ДД.ММ.ГГГГ"'
     )
@@ -266,6 +266,10 @@ class PostWalking(models.Model):
         related_name='posts',
         verbose_name='Журнал',
         help_text='Журнал, в котором будет запись'
+    )
+    is_deleted = models.BooleanField(
+        default=False,
+        verbose_name='Удаленная запись'
     )
 
     class Meta:
