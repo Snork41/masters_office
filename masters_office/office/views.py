@@ -2,6 +2,7 @@ import logging
 
 from django_filters.views import FilterView
 from django_tables2 import SingleTableMixin
+from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib import messages
 from django.urls import reverse
@@ -13,9 +14,10 @@ from .models import (
     Brigade, District, Journal, PostWalking, Personal, Resolution)
 from .tables import PersonalTable
 from .forms import PostWalkingForm, ResolutionForm
-from .filters import PersonalFilter
+from .filters import PersonalFilter, PostWalkingFilter
 from .utils import get_page
 from .validators import validated_planned_field
+from masters_office.settings import AMOUNT_POSTS_WALK
 
 
 logger = logging.getLogger(__name__)
@@ -48,24 +50,33 @@ class DistrictsListView(LoginRequiredMixin, ListView):
         return context
 
 
-class JournalWalkView(LoginRequiredMixin, ListView):
-    model = Journal
+class JournalWalkView(LoginRequiredMixin, FilterView):
+    model = PostWalking
     template_name = 'office/journal_walk.html'
-    context_object_name = 'journal'
+    context_object_name = 'posts'
+    filterset_class = PostWalkingFilter
 
     def get_queryset(self):
-        return get_object_or_404(Journal, slug=self.kwargs.get('slug_journal'))
+        journal = get_object_or_404(Journal, slug=self.kwargs.get('slug_journal'))
+        district = get_object_or_404(District, slug=self.kwargs.get('slug_district'))
+        return PostWalking.objects.filter(
+            journal=journal, district=district
+        ).select_related('author', 'journal', 'district').prefetch_related('members')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['district'] = get_object_or_404(
-            District, slug=self.kwargs.get('slug_district')
-        )
-        page_obj = get_page(self.request, context['journal'].posts.filter(
-            district_id=context['district'].id).prefetch_related(
-                'author', 'members', 'district')
-        )
-        context['page_obj'] = page_obj
+        context['journal'] = get_object_or_404(Journal, slug=self.kwargs.get('slug_journal'))
+        context['district'] = get_object_or_404(District, slug=self.kwargs.get('slug_district'))
+        
+        paginator = Paginator(context['posts'], AMOUNT_POSTS_WALK)
+        page = self.request.GET.get('page')
+        try:
+            response = paginator.page(page)
+        except PageNotAnInteger:
+            response = paginator.page(1)
+        except EmptyPage:
+            response = paginator.page(paginator.num_pages)
+        context['page_obj'] = response
         return context
 
 

@@ -120,3 +120,8 @@ a.btn.btn-lg:hover {
 .card-post-in-list {
     margin-bottom: 2%;
 }
+
+/* Прилипание окна фильтрации в журнале обходов */
+.sticky-offset {
+    top: 100px;
+}
