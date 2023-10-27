@@ -19,25 +19,25 @@
 <br>
 {% if page_obj %}
 <div class="d-grid gap-2 col-2 mx-auto">
-    <a class="btn btn-outline-dark btn-lg fs-3" href="{% url 'office:create_post_walking' journal.slug district.slug %}">Новая запись</a>
+  <a class="btn btn-outline-dark btn-lg fs-3" href="{% url 'office:create_post_walking' journal.slug district.slug %}">Новая запись</a>
 </div>
 <div class="row justify-content-center">
   {% if filter %}
     <div class="col-3" style="padding-top: 7.5em; padding-left: 4em;">
       <div class="card shadow sticky-top sticky-offset">
         <div class="card-header" style="text-align: center;">
-          <span class="btn" style="font-size: larger;">ФИЛЬТРАЦИЯ</button>
+          <span class="btn" style="font-size: larger;">ФИЛЬТРАЦИЯ</span>
         </div>
-      <div class="card-body">
-      <form action="" method="get" class="form form-floating ">
-        {% bootstrap_form filter.form layout="floating" %}
-        <div class="text-center">
-        {% bootstrap_button button_type="submit" button_class="btn-outline-dark" content="Применить" %}
-        </div>
-      </form>
+        <div class="card-body">
+        <form action="" method="get" class="form form-floating ">
+          {% bootstrap_form filter.form layout="floating" %}
+          <div class="text-center">
+          {% bootstrap_button button_type="submit" button_class="btn-outline-dark" content="Применить" %}
+          </div>
+        </form>
+      </div>
     </div>
   </div>
-</div>
   {% endif %}
     <div class="col-9 p-5">
         {% include 'includes/paginator.html' %}
@@ -46,14 +46,14 @@
             <div class="card-body fs-4">
           <table class="table table-hover">
             <caption style="text-align: end;">Автор: {{ post.author.get_full_name }} ({{ post.author }})</caption>
-            {% if post.is_deleted %}
               <thead>
+            {% if post.is_deleted %}
               <span class="border border-danger" style="color: red; padding: 5px;">ЗАПИСЬ ПОМЕЧЕНА НА УДАЛЕНИЕ</span>
-              </thead>
             {% endif %}
+              </thead>
             <tbody >
               <tr>
-                <td class="text-uppercase fs-4 ">Номер записи:</td>
+                <td class="text-uppercase fs-4" style="width: 40%;">Номер записи:</td>
                 <td class="fs-4">{{ post.number_post }}</td>
               </tr>
               <tr>
@@ -97,14 +97,17 @@
         </div>
       </div>
           {% endfor %}
-          {% elif request.GET %}
+{% elif request.GET %}
           <p class="text-center fs-1" style="color: red;">Совпадений не найдено.</p>
           <div class="d-grid gap-2 col-2 mx-auto" style="padding-bottom: 1em;">
             <a class="btn btn-outline-dark btn-lg fs-3" href="{% url 'office:journal_walk' journal.slug district.slug %}">Назад</a>
           </div>
           {% else %}
           <p class="text-center fs-1">Записей нет.</p>
-          {% endif %}
+          <div class="d-grid gap-2 col-2 mx-auto">
+            <a class="btn btn-outline-dark btn-lg fs-3" href="{{ journal.get_absolute_url }}">Назад</a>
+          </div>
+{% endif %}
       {% include 'includes/paginator.html' %}
     </div>
   </div>

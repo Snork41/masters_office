@@ -9,6 +9,7 @@ from django.urls import reverse
 from django.shortcuts import get_object_or_404, redirect
 from django.views.generic import (
     ListView, TemplateView, DetailView, FormView, CreateView, UpdateView)
+from django.utils.safestring import mark_safe
 
 from .models import (
     Brigade, District, Journal, PostWalking, Personal, Resolution)
@@ -117,8 +118,10 @@ class PostWalkingCreateView(LoginRequiredMixin, CreateView):
             f'User: {(self.object.author.username).upper()}'
         )
         messages.success(
-            self.request,
-            f'Запись № {self.object.number_post} успешно добавлена'
+            self.request, mark_safe(
+                f'Запись № {self.object.number_post} успешно добавлена.'
+                f' <a href="{self.object.id}/">Открыть запись</a>'
+            )
         )
         return reverse('office:journal_walk', kwargs={
                  'slug_journal': self.kwargs.get('slug_journal'),
@@ -167,8 +170,10 @@ class PostWalkingEditView(LoginRequiredMixin, UpdateView):
             f'User: {(self.object.author.username).upper()}'
         )
         messages.success(
-            self.request,
-            f'Запись № {self.object.number_post} успешно изменена'
+            self.request, mark_safe(
+                f'Запись № {self.object.number_post} успешно изменена.'
+                f' <a href="{self.object.id}/">Открыть запись</a>'
+            )
         )
         return reverse('office:journal_walk', kwargs={
                  'slug_journal': self.kwargs.get('slug_journal'),
@@ -206,7 +211,7 @@ class ResolutionAddView(LoginRequiredMixin, CreateView):
             resolution.author = self.request.user
             resolution.post_walking_id = self.kwargs.get('post_id')
             resolution.save()
-            messages.success(self.request, 'Резолюция успешно добавлена')
+            messages.success(self.request, 'Резолюция успешно добавлена.')
             logger.info(
                 f'Resolution (id: {resolution.id}) was added. '
                 f'Text: {resolution.text}. '
@@ -236,7 +241,7 @@ class ResolutionEditView(LoginRequiredMixin, UpdateView):
     pk_url_kwarg = 'resolution_id'
 
     def form_valid(self, form):
-        messages.success(self.request, 'Резолюция успешно изменена')
+        messages.success(self.request,'Резолюция успешно изменена.')
         logger.info(
             f'Resolution (id: {self.object.id}) was changed. '
             f'New text: {self.object.text}. '

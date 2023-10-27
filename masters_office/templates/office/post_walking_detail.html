@@ -19,92 +19,124 @@
         {% endfor %}
       <br>
       <h2 class="text-center fw-light">Журнал обходов тепловых сетей</h2>
-      <h2 class="text-center fw-medium">{{ district }}</h2>
+      <h2 class="text-center fw-medium" style="padding-bottom: 3%;">{{ district }}</h2>
       <div class="row justify-content-center">
-        <div class="col-8 p-5">
-          <div class="card shadow-lg">
+        <div class="col-8 d-inline-block" style="padding-bottom: 10px;">
+        <div class="previous-button col-2">
+          {% if post.get_previous_post %}
+          <a class="btn btn-outline-dark shadow" href="{% url 'office:post_walking_detail' journal.slug district.slug post.get_previous_post.id %} ">Предыдущая запись</a>
+          {% else %}
+          <span class="d-inline-block" tabindex="0" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-title="Записи нет">
+            <button class="btn btn-outline-secondary shadow" type="button" disabled>Предыдущая запись</button>
+          </span>    
+          {% endif %}
+        </div>
+        <div class="back-button d-inline-block col-8 text-center">
+        <a class="btn btn-outline-dark shadow" href="{% url 'office:journal_walk' journal.slug district.slug %}">Назад к списку</a>
+        </div>
+        <div class="next-button col-2" style="text-align: end;">
+          {% if post.get_next_post %}
+          <a class="btn btn-outline-dark shadow" href="{% url 'office:post_walking_detail' journal.slug district.slug post.get_next_post.id %} ">Следующая запись</a>
+          {% else %}
+          <span class="d-inline-block" tabindex="0" data-bs-toggle="tooltip" data-bs-placement="left" data-bs-title="Записи нет">
+            <button class="btn btn-outline-secondary" type="button" disabled>Следующая запись</button>
+          </span>    
+          {% endif %}
+        </div>
+      </div>
+        <div class="col-8">          
+          <div class="card shadow-lg">            
             <div class="card-header">
-              <div class="previous-button">
-                {% if post.get_previous_post %}
-                <a class="btn btn-outline-dark" href="{% url 'office:post_walking_detail' journal.slug district.slug post.get_previous_post.id %} ">Предыдущая запись</a>
-                {% else %}
-                <span class="d-inline-block" tabindex="0" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-title="Записи нет">
-                  <button class="btn btn-outline-secondary" type="button" disabled>Предыдущая запись</button>
-                </span>    
-                {% endif %}
-              </div>
-              <div class="next-button">
-                {% if post.get_next_post %}
-                <a class="btn btn-outline-dark" href="{% url 'office:post_walking_detail' journal.slug district.slug post.get_next_post.id %} ">Следующая запись</a>
-                {% else %}
-                <span class="d-inline-block" tabindex="0" data-bs-toggle="tooltip" data-bs-placement="left" data-bs-title="Записи нет">
-                  <button class="btn btn-outline-secondary" type="button" disabled>Следующая запись</button>
-                </span>    
-                {% endif %}
-              </div>
-              <h2 class="text-center fw-medium">Запись № {{ post.number_post }} от {{ post.time_create }}</h2>
+              <h2 class="text-center fw-medium">Запись № {{ post.number_post }} от {{ post.time_create.date }}</h2>
               {% if post.time_update != post.time_create %}
                 <p class="text-center fw-light fs-4">запись была изменена {{ post.time_update|date:'d.m.Y' }} пользователем {{ post.author.get_full_name }} ({{ post.author }})</p>
               {% endif %}
             </div>
-                <ul>
-                  <li><b>Дата обхода:</b> {{ post.walk_date|date:'d.m.Y' }}</li>
-                  <li>
-                    <b>Автор записи:</b>
+            <div class="card-body">
+            <table class="table table-hover caption-top">
+              {% if post.is_deleted %}
+              <caption class="fs-3 text-center" style="color: red; padding: 5px;">ЗАПИСЬ ПОМЕЧЕНА НА УДАЛЕНИЕ</caption>
+              {% endif %}                
+              <thead>
+              </thead>
+              <tbody >
+                <tr>
+                  <td class="text-uppercase fs-4" style="width: 40%;">Дата обхода:</td>
+                  <td class="fs-4">{{ post.walk_date|date:"d.m.Y" }}</td>
+                </tr>
+                <tr>
+                  <td class="text-uppercase fs-4">Автор записи:</td>
+                  <td class="text-uppercase fs-4">
                     {% if post.author.get_full_name %}
                       {{ post.author.get_full_name }}
                     {% else %}
                       {{ post.author }}
                     {% endif %}
-                  </li>
-                  <li>
-                    <b>Причина обхода:</b>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="text-uppercase fs-4">Причина обхода:</td>
+                  <td class="text-uppercase fs-4">
                     {% if post.planned %} Плановый {% endif %}
                     {% if post.not_planned %} Внеплановый {% endif %}
-                  </li>
-                  <p>
-                    <li><b>Ф.И.О обходчиков:</b>
-                      <div class="d-grid gap-2 col-6">
-                        <ul class="list-group list-group-flush">
-                          {% for member in post.members.all %}                    
-                          <li class="list-group-item">{{ member }}</li>
-                          {% endfor %}
-                        </ul>
-                      </div>
-                    </li>
-                  </p>
-                  <li><b>Участок теплотрассы, задание мастера:</b><p>{{ post.task }}</p></li>
-                  <li><b>Замечания, выявленные при обходе:</b><p>{{ post.text }}</p></li>
-                  <li><b>Организационные мероприятия по устранению:</b><p>{{ post.plan }}</p></li>
-                  <li>
-                    <b>Резолюция начальника энергорайона:</b>
-                    <p>
-                      {% if resolution %}
-                        {{ resolution.text }}
-                          {% if resolution.author.get_full_name %}
-                            ({{ resolution.author.get_full_name }})
-                          {% else %}
-                            ({{ resolution.author.username }})
-                          {% endif %}
+                  </td>
+                </tr>
+                <tr>
+                  <td class="text-uppercase fs-4">Ф.И.О обходчиков:</td>
+                  <td class="fs-4">
+                      <ul class="list-group list-group-flush">
+                        {% for member in post.members.all %}                    
+                        <li class="list-group-item">{{ member }}</li>
+                        {% endfor %}
+                      </ul>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="text-uppercase fs-4">Участок теплотрассы, задание мастера:</td>
+                  <td class="fs-4">{{ post.task }}</td>
+                </tr>
+                <tr>
+                  <td class="text-uppercase fs-4">Замечания, выявленные при обходе:</td>
+                  <td class="fs-4">{{ post.text }}</td>
+                </tr>
+                <tr>
+                  <td class="text-uppercase fs-4">Организационные мероприятия по устранению:</td>
+                  <td class="fs-4">{{ post.plan }}</td>
+                </tr>
+                <tr>
+                  <td class="text-uppercase fs-4">Резолюция начальника энергорайона:</td>
+                  <td class="fs-4">
+                    {% if resolution %}
+                    {{ resolution.text }}
+                      {% if resolution.author.get_full_name %}
+                        ({{ resolution.author.get_full_name }})
                       {% else %}
-                        Отсутствует
+                        ({{ resolution.author.username }})
                       {% endif %}
-                    </p>
-                  </li>
-                  {% if post.fix_date %}
-                  <li><b>Дата устранения замечания:</b> {{ post.fix_date|date:"d.m.Y" }}</li>
+                  {% else %} Отсутствует
                   {% endif %}
-                  <li><b>Перенос на ремонт в план на следующий месяц или на межотопительный период:</b><p>{{ post.transfer }}</p></li>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="text-uppercase fs-4">Дата устранения замечания:</td>
+                  <td class="fs-4">{{ post.fix_date|date:"d.m.Y" }}</td>
+                </tr>
+                <tr>
+                  <td class="text-uppercase fs-4">Перенос на ремонт в план на следующий месяц или на межотопительный период:</td>
+                  <td class="fs-4">{{ post.transfer }}</td>
+                </tr>
+              </tbody>            
+            </table>
+
                   {% if post.author.id == user.id %}
                     <a class="btn btn-outline-dark" href="{% url 'office:edit_post_walking' journal.slug district.slug post.id %}">Редактировать запись</a>
                   {% endif %}
-
                   {% if not resolution %}
                     {% include 'office/includes/resolution_form.html' %}
                   {% elif resolution.author.id == user.id %}
                     {% include 'office/includes/resolution_update_form.html' %}
                   {% endif %}
-              </ul>
+                </div>
           </div>
         </div>
       </div>

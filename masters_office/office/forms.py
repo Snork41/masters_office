@@ -96,3 +96,6 @@ class ResolutionForm(forms.ModelForm):
     class Meta:
         model = Resolution
         fields = ('text',)
+        widgets = {
+            'text': forms.Textarea(attrs={'rows': '5', 'cols': '60', 'style': 'max-width: 100%'})
+        }
