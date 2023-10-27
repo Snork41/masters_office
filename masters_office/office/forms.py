@@ -92,6 +92,7 @@ class PostWalkingForm(forms.ModelForm):
             self.fields['district'].disabled = True
 
 
+
 class ResolutionForm(forms.ModelForm):
     class Meta:
         model = Resolution

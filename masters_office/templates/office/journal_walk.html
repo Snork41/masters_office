@@ -32,7 +32,8 @@
         <form action="" method="get" class="form form-floating ">
           {% bootstrap_form filter.form layout="floating" %}
           <div class="text-center">
-          {% bootstrap_button button_type="submit" button_class="btn-outline-dark" content="Применить" %}
+          {% bootstrap_button button_type="submit" button_class="btn-outline-dark col-4" content="Применить" %}
+          <a href="{% url 'office:journal_walk' journal.slug district.slug %}" class="btn btn-outline-dark col-4" role="button">Сбросить</a>
           </div>
         </form>
       </div>

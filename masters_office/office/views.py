@@ -16,7 +16,6 @@ from .models import (
 from .tables import PersonalTable
 from .forms import PostWalkingForm, ResolutionForm
 from .filters import PersonalFilter, PostWalkingFilter
-from .utils import get_page
 from .validators import validated_planned_field
 from masters_office.settings import AMOUNT_POSTS_WALK
 

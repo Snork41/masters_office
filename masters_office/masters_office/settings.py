@@ -205,6 +205,11 @@ DJANGO_TABLES2_TABLE_ATTRS = {
     },
 }
 
-
+# crispy_forms
+# crispy_bootstrap5
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
 CRISPY_TEMPLATE_PACK = "bootstrap5"
+
+
+# django_filters
+FILTERS_EMPTY_CHOICE_LABEL = 'Все'

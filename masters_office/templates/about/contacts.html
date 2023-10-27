@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %} Контакты {% endblock title %}
+
+{% block content %}
+<img src="{% static '/gif/contacts.gif' %}" alt="CONTACTS.GIF" class="mx-auto d-block" style="scale: 150%; padding-top: 1.5em; padding-bottom: 1.5em;">
+<div class="col-4 p-5 mx-auto">
+  <div class="card shadow">
+    <h5 class="card-header">Контакты</h5>
+    <div class="card-body">
+      <ul>
+        <li>Email: davleevkam@gmail.com</li>
+        <li>Telegram: <a class="link-opacity-10-hover" href="https://t.me/Snork41" target="_blank">@Snork41</a></li>
+        <li>GithHub: <a class="link-opacity-50-hover" href="https://github.com/Snork41" target="_blank">Snork41</a></li>
+        <li>VK: <a class="link-opacity-10-hover" href="https://vk.com/id19900774" target="_blank">https://vk.com/id19900774</a></li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+{% endblock content %}

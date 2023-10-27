@@ -89,7 +89,7 @@ body {
     padding: 5%;;
 }
 
-a.table-head-employees {
+a.table-head-employees, span.table-head-employees {
     font-size: larger;
     text-decoration: none;
     color: #000000;
