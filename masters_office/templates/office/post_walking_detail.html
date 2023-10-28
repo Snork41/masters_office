@@ -19,7 +19,10 @@
         {% endfor %}
       <br>
       <h2 class="text-center fw-light">Журнал обходов тепловых сетей</h2>
-      <h2 class="text-center fw-medium" style="padding-bottom: 3%;">{{ district }}</h2>
+      <h2 class="text-center fw-medium">{{ district }}</h2>
+      <div class="d-grid col-2 mx-auto">
+        <a class="btn btn-outline-dark fs-5 btn-back"  style="margin-bottom: 10%;" href="{% url 'office:journal_walk' journal.slug district.slug %}">Назад к списку</a>
+        </div>
       <div class="row justify-content-center">
         <div class="col-8 d-inline-block" style="padding-bottom: 10px;">
         <div class="previous-button col-2">
@@ -30,9 +33,6 @@
             <button class="btn btn-outline-secondary shadow" type="button" disabled>Предыдущая запись</button>
           </span>    
           {% endif %}
-        </div>
-        <div class="back-button d-inline-block col-8 text-center">
-        <a class="btn btn-outline-dark shadow" href="{% url 'office:journal_walk' journal.slug district.slug %}">Назад к списку</a>
         </div>
         <div class="next-button col-2" style="text-align: end;">
           {% if post.get_next_post %}
@@ -45,7 +45,7 @@
         </div>
       </div>
         <div class="col-8">          
-          <div class="card shadow-lg">            
+          <div class="card shadow-lg border-0">            
             <div class="card-header">
               <h2 class="text-center fw-medium">Запись № {{ post.number_post }} от {{ post.time_create.date }}</h2>
               {% if post.time_update != post.time_create %}
@@ -61,12 +61,12 @@
               </thead>
               <tbody >
                 <tr>
-                  <td class="text-uppercase fs-4" style="width: 40%;">Дата обхода:</td>
+                  <td class="fs-4" style="width: 40%;">Дата обхода:</td>
                   <td class="fs-4">{{ post.walk_date|date:"d.m.Y" }}</td>
                 </tr>
                 <tr>
-                  <td class="text-uppercase fs-4">Автор записи:</td>
-                  <td class="text-uppercase fs-4">
+                  <td class="fs-4">Автор записи:</td>
+                  <td class="fs-4">
                     {% if post.author.get_full_name %}
                       {{ post.author.get_full_name }}
                     {% else %}
@@ -75,15 +75,15 @@
                   </td>
                 </tr>
                 <tr>
-                  <td class="text-uppercase fs-4">Причина обхода:</td>
-                  <td class="text-uppercase fs-4">
+                  <td class="fs-4">Причина обхода:</td>
+                  <td class="fs-4">
                     {% if post.planned %} Плановый {% endif %}
                     {% if post.not_planned %} Внеплановый {% endif %}
                   </td>
                 </tr>
                 <tr>
-                  <td class="text-uppercase fs-4">Ф.И.О обходчиков:</td>
-                  <td class="fs-4">
+                  <td class="fs-4">Ф.И.О обходчиков:</td>
+                  <td class="fs-5">
                       <ul class="list-group list-group-flush">
                         {% for member in post.members.all %}                    
                         <li class="list-group-item">{{ member }}</li>
@@ -92,37 +92,37 @@
                   </td>
                 </tr>
                 <tr>
-                  <td class="text-uppercase fs-4">Участок теплотрассы, задание мастера:</td>
+                  <td class="fs-4">Участок теплотрассы, задание мастера:</td>
                   <td class="fs-4">{{ post.task }}</td>
                 </tr>
                 <tr>
-                  <td class="text-uppercase fs-4">Замечания, выявленные при обходе:</td>
+                  <td class="fs-4">Замечания, выявленные при обходе:</td>
                   <td class="fs-4">{{ post.text }}</td>
                 </tr>
                 <tr>
-                  <td class="text-uppercase fs-4">Организационные мероприятия по устранению:</td>
+                  <td class="fs-4">Организационные мероприятия по устранению:</td>
                   <td class="fs-4">{{ post.plan }}</td>
                 </tr>
                 <tr>
-                  <td class="text-uppercase fs-4">Резолюция начальника энергорайона:</td>
+                  <td class="fs-4">Резолюция начальника энергорайона:</td>
                   <td class="fs-4">
                     {% if resolution %}
                     {{ resolution.text }}
                       {% if resolution.author.get_full_name %}
-                        ({{ resolution.author.get_full_name }})
+                      <span class="fw-light">({{ resolution.author.get_full_name }})</span>
                       {% else %}
-                        ({{ resolution.author.username }})
+                        <span class="fw-light">({{ resolution.author.username }})</span>
                       {% endif %}
                   {% else %} Отсутствует
                   {% endif %}
                   </td>
                 </tr>
                 <tr>
-                  <td class="text-uppercase fs-4">Дата устранения замечания:</td>
+                  <td class="fs-4">Дата устранения замечания:</td>
                   <td class="fs-4">{{ post.fix_date|date:"d.m.Y" }}</td>
                 </tr>
                 <tr>
-                  <td class="text-uppercase fs-4">Перенос на ремонт в план на следующий месяц или на межотопительный период:</td>
+                  <td class="fs-4">Перенос на ремонт в план на следующий месяц или на межотопительный период:</td>
                   <td class="fs-4">{{ post.transfer }}</td>
                 </tr>
               </tbody>            

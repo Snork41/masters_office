@@ -105,7 +105,8 @@ a.btn.btn-lg {
     margin-bottom: 0%;
 }
 
-a.btn.btn-lg:hover {
+a.btn.btn-lg:hover,
+a.btn.btn-back:hover {
     font-size: 130%;
     scale: 1.05;
 }

@@ -10,11 +10,16 @@
 <br>
 <div class="d-grid gap-2 col-6 mx-auto">
   <a href="{% url 'office:journals' %}" class="btn btn-outline-dark btn-lg" role="button">Журналы</a>
-  <button class="btn btn-outline-dark btn-lg disabled" type="button">Паспорта объектов</button>
   <a href="{% url 'office:brigades' %}" class="btn btn-outline-dark btn-lg" role="button">Бригады</a>
-  <button class="btn btn-outline-dark btn-lg disabled" type="button">СИЗ</button>
-  <button class="btn btn-outline-dark btn-lg disabled" type="button">Справочники</button>
   <a href="{% url 'office:employees' %}" class="btn btn-outline-dark btn-lg" role="button">Сотрудники</a>
-<p>
+  <span class="d-inline-block d-grid" tabindex="0" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-title="Упс! Раздел в разработке">
+    <button class="btn btn-outline-dark btn-lg disabled" type="button">Паспорта объектов</button>
+  </span>  
+  <span class="d-inline-block d-grid" tabindex="0" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-title="Упс! Раздел в разработке">
+    <button class="btn btn-outline-dark btn-lg disabled" type="button">СИЗ</button>
+  </span>
+  <span class="d-inline-block d-grid" tabindex="0" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-title="Упс! Раздел в разработке">
+    <button class="btn btn-outline-dark btn-lg disabled" type="button">Справочники</button>
+  </span>  
 </div>
 {% endblock %}

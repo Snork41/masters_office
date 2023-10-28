@@ -20,6 +20,7 @@
 {% if page_obj %}
 <div class="d-grid gap-2 col-2 mx-auto">
   <a class="btn btn-outline-dark btn-lg fs-3" href="{% url 'office:create_post_walking' journal.slug district.slug %}">Новая запись</a>
+  <a class="btn btn-outline-dark fs-5 btn-back" href="{{ journal.get_absolute_url }}">Назад к районам</a>
 </div>
 <div class="row justify-content-center">
   {% if filter %}
@@ -43,30 +44,30 @@
     <div class="col-9 p-5">
         {% include 'includes/paginator.html' %}
           {% for post in page_obj %}
-          <div class="card card-post-in-list shadow">
+          <div class="card card-post-in-list shadow border-0">
             <div class="card-body fs-4">
           <table class="table table-hover">
             <caption style="text-align: end;">Автор: {{ post.author.get_full_name }} ({{ post.author }})</caption>
-              <thead>
+              <thead class="text-align: end;">
             {% if post.is_deleted %}
               <span class="border border-danger" style="color: red; padding: 5px;">ЗАПИСЬ ПОМЕЧЕНА НА УДАЛЕНИЕ</span>
             {% endif %}
               </thead>
             <tbody >
               <tr>
-                <td class="text-uppercase fs-4" style="width: 40%;">Номер записи:</td>
+                <td class="fs-5" style="width: 40%;">Номер записи:</td>
                 <td class="fs-4">{{ post.number_post }}</td>
               </tr>
               <tr>
-                <td class="text-uppercase fs-4">Дата обхода:</td>
+                <td class="fs-5">Дата обхода:</td>
                 <td class="fs-4">{{ post.walk_date|date:"d.m.Y" }}</td>
               </tr>
               <tr>
-                <td class="text-uppercase fs-4">Причина обхода:</td>
-                <td class="text-uppercase fs-4">{% if post.planned %} Плановый {% endif %}{% if post.not_planned %} Внеплановый {% endif %}</td>
+                <td class="fs-5">Причина обхода:</td>
+                <td class="fs-5">{% if post.planned %} Плановый {% endif %}{% if post.not_planned %} Внеплановый {% endif %}</td>
               </tr>
               <tr>
-                <td class="text-uppercase fs-4">Ф.И.О. обходчиков:</td>
+                <td class="fs-5">Ф.И.О. обходчиков:</td>
                 <td>
                   <ol class="list-group list-group-flush">
                     {% for member in post.members.all %}
@@ -76,12 +77,12 @@
                 </td>
               </tr>
               <tr>
-                <td class="text-uppercase fs-4">Участок теплотрассы, задание мастера:</td>
-                <td class="fs-4">{{ post.task|truncatechars:15 }}</td>
+                <td class="fs-5">Участок теплотрассы, задание мастера:</td>
+                <td class="fs-5">{{ post.task|truncatechars:15 }}</td>
               </tr>
               <tr>
-                <td class="text-uppercase fs-4">Замечания, выявленные при обходе:</td>
-                <td class="fs-4">{{ post.text|truncatechars:15 }}</td>
+                <td class="fs-5">Замечания, выявленные при обходе:</td>
+                <td class="fs-5">{{ post.text|truncatechars:15 }}</td>
               </tr>
             </tbody>            
           </table>
@@ -114,5 +115,6 @@
   </div>
   <div class="d-grid gap-2 col-2 mx-auto">
     <a class="btn btn-outline-dark btn-lg fs-3" href="{% url 'office:create_post_walking' journal.slug district.slug %}">Новая запись</a>
+    <a class="btn btn-outline-dark btn-back fs-5" href="{{ journal.get_absolute_url }}">Назад к районам</a>
   </div>
 {% endblock content %}
