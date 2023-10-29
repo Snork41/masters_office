@@ -113,7 +113,7 @@ a.btn.btn-back:hover {
 
 /* Ошибка при не выборе план/внеплан обход */
 .form-error-planned {
-    color: red;
+    color: rgb(0, 255, 21);
     font-weight: 110%;
     display: block;
 }
