@@ -6,7 +6,7 @@ personal = [
         'first_name': 'Петр',
         'last_name': 'Петровский',
         'middle_name': 'Владимирович',
-        'energy_district': 'Сетевой район',
+        'energy_district': 'Первый энергорайон',
         'position': 'Слесарь по обслуживанию тепловых сетей',
         'rank': 2,
         'tab_number': 1010
@@ -15,7 +15,7 @@ personal = [
         'first_name': 'Василий',
         'last_name': 'Жуков',
         'middle_name': 'Иванович',
-        'energy_district': 'Сетевой район',
+        'energy_district': 'Первый энергорайон',
         'position': 'Слесарь-ремонтник',
         'rank': 5,
         'tab_number': 999
@@ -24,7 +24,7 @@ personal = [
         'first_name': 'Григорий',
         'last_name': 'Потапов',
         'middle_name': 'Федорович',
-        'energy_district': 'Сетевой район',
+        'energy_district': 'Первый энергорайон',
         'position': 'Электрогазосварщик',
         'rank': 4,
         'tab_number': 2020
@@ -33,7 +33,7 @@ personal = [
         'first_name': 'Глеб',
         'last_name': 'Степашко',
         'middle_name': 'Андреевич',
-        'energy_district': 'Сетевой район',
+        'energy_district': 'Первый энергорайон',
         'position': 'Мастер',
         'rank': None,
         'tab_number': 777

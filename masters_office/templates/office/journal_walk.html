@@ -106,15 +106,14 @@
           </div>
           {% else %}
           <p class="text-center fs-1">Записей нет.</p>
-          <div class="d-grid gap-2 col-2 mx-auto">
-            <a class="btn btn-outline-dark btn-lg fs-3" href="{{ journal.get_absolute_url }}">Назад</a>
-          </div>
 {% endif %}
       {% include 'includes/paginator.html' %}
     </div>
   </div>
   <div class="d-grid gap-2 col-2 mx-auto">
     <a class="btn btn-outline-dark btn-lg fs-3" href="{% url 'office:create_post_walking' journal.slug district.slug %}">Новая запись</a>
+    {% if not request.GET %}
     <a class="btn btn-outline-dark btn-back fs-5" href="{{ journal.get_absolute_url }}">Назад к районам</a>
+    {% endif %}
   </div>
 {% endblock content %}

@@ -14,7 +14,8 @@ class CustomUser(AbstractUser):
     energy_district = models.ForeignKey(
         'office.EnergyDistrict',
         on_delete=models.PROTECT,
-        verbose_name='Энергорайон'
+        verbose_name='Энергорайон',
+        null=True
     )
     middle_name = models.CharField(
         max_length=50,

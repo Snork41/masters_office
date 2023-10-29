@@ -7,6 +7,7 @@
 <h1 class="text-center fw-light">Бригады</h1>
 <h2 class="text-center fw-light"> {{ energy_district }} </h1>
 <br>
+{% if brigades %}
 <div class="d-grid gap-2 col-6 mx-auto">
   {% for brigade in brigades %}
   <div class="card">
@@ -41,5 +42,10 @@
     </div>
   </div>
 {% endfor %}
+</div>
+{% endif %}
+<div class="text-center fw-light fs-4 mx-auto">
+Упс!<br>
+Сформированные бригады отсутствуют. <br>Создать бригады можно через административную панель.
 </div>
 {% endblock %}
