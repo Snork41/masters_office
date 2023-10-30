@@ -113,7 +113,7 @@ USE_TZ = True
 
 AUTH_USER_MODEL = 'users.CustomUser'
 
-
+# STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 STATIC_URL = 'static/'
 
@@ -126,8 +126,20 @@ LOGIN_REDIRECT_URL = 'office:index'
 # LOGOUT_REDIRECT_URL = 'office:index'
 
 
-EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
-EMAIL_FILE_PATH = os.path.join(BASE_DIR, 'sent_emails')
+# Восстановление паролей
+if DEBUG:
+    # Эмуляция почты
+    EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
+    EMAIL_FILE_PATH = os.path.join(BASE_DIR, 'sent_emails')
+else:
+    EMAIL_HOST = config("EMAIL_HOST", cast=str)
+    EMAIL_PORT = config("EMAIL_PORT", cast=int)
+    EMAIL_USE_TSL = config("EMAIL_USE_TSL", cast=bool)
+    EMAIL_USE_SSL = config("EMAIL_USE_SSL", cast=bool)
+
+    EMAIL_HOST_USER = config("EMAIL_HOST_USER", cast=str)
+    EMAIL_HOST_PASSWORD = config("EMAIL_HOST_PASSWORD", cast=str)
+    DEFAULT_FROM_EMAIL = config("DEFAULT_FROM_EMAIL", cast=str)
 
 
 CSRF_FAILURE_VIEW = 'core.views.csrf_failure'
@@ -197,7 +209,7 @@ RANK = [(1, 1), (2, 2), (3, 3), (4, 4), (5, 5), (6, 6), (7, 7)]
 # Количество записей на странице журнала обходов
 AMOUNT_POSTS_WALK = 5
 
-
+# django-tables2 css
 DJANGO_TABLES2_TABLE_ATTRS = {
     'class': 'table table-hover',
     'thead': {
