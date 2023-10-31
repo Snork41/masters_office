@@ -87,10 +87,10 @@ class PostWalkingForm(forms.ModelForm):
         self.instance = kwargs.get('instance')
         super(PostWalkingForm, self).__init__(*args, **kwargs)
         for field in ['district', 'walk_date', 'task', 'text', 'plan', 'fix_date', 'transfer']:
-            self.fields[field].widget.attrs.update({'class': 'focus-ring focus-ring-dark border'})
-        if self.instance.time_create:
+            if field in self.fields:
+                self.fields[field].widget.attrs.update({'class': 'focus-ring focus-ring-dark border'})
+        if self.instance.time_create and 'district' in self.fields:
             self.fields['district'].disabled = True
-
 
 
 class ResolutionForm(forms.ModelForm):

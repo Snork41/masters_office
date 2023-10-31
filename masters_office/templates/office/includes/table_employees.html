@@ -12,9 +12,9 @@
                 <thead {{ table.attrs.thead.as_html }} >
                 <tr>
                 {% for column in table.columns %}
-                    <th {{ column.attrs.th.as_html }} scope="col" style="text-align: center;">                        
+                    <th {{ column.attrs.th.as_html }} scope="col" style="text-align: center; padding-bottom: 3em;">                        
                         {% if column.orderable %}
-                            <a class="btn table-head-employees" href="{% querystring table.prefixed_order_by_field=column.order_by_alias.next %}">{{ column.header }}</a>
+                          <a class="btn table-head-employees" href="{% querystring table.prefixed_order_by_field=column.order_by_alias.next %}" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Нажмите для фильтрации">{{ column.header }}</a>
                         {% else %}
                             <span class="btn table-head-employees">{{ column.header }}</span>
                         {% endif %}

@@ -163,8 +163,8 @@ LOGGING = {
             'level': 'DEBUG',
             'class': 'logging.handlers.RotatingFileHandler',
             'encoding': 'utf-8',
-            'maxBytes': 10000,
-            'backupCount': 5,
+            'maxBytes': 20000,
+            'backupCount': 3,
             'delay': True,
             'filename': os.path.join(BASE_DIR, 'logs/action_file.log'),
             'formatter': 'action_formatter',
@@ -206,7 +206,7 @@ MAX_CHAR_TITLE = 15
 # Разряд в должности
 RANK = [(1, 1), (2, 2), (3, 3), (4, 4), (5, 5), (6, 6), (7, 7)]
 
-# Количество записей на странице журнала обходов
+# Количество записей на странице журнала обходов (пагинация)
 AMOUNT_POSTS_WALK = 5
 
 # django-tables2 css

@@ -10,7 +10,10 @@ from .consts import (ADD_RESOLUTION_URL, DESCRIPTION_JOURNAL, FIRST_NAME_1,
                      TEXT_WLK, TEXT_WLK_2, TITLE_DISTRICT, TITLE_ENERGY_DISTRICT,
                      TITLE_JOURNAL, TRANSFER_WLK, UPDATE_RESOLUTION_URL,
                      USERNAME, USERNAME_BOSS, WALK_DATE, CREATE_POST_WLK_URL,
-                     WALK_DATE_NOT_VALID)
+                     WALK_DATE_NOT_VALID, EDIT_POST_WLK_URL, WALK_DATE_IN_EDIT_POST,
+                     TASK_WLK_IN_EDIT_POST, PLAN_WLK_IN_EDIT_POST,
+                     TRANSFER_WLK__IN_EDIT_POST, FIRST_NAME_2, LAST_NAME_2,
+                     MIDDLE_NAME_2, TAB_NUMBER_2)
 
 User = get_user_model()
 
@@ -48,6 +51,15 @@ class PostFormTests(TestCase):
             position=cls.position,
             rank=RANK,
             tab_number=TAB_NUMBER_1,
+        )
+        cls.workman_2 = Personal.objects.create(
+            first_name=FIRST_NAME_2,
+            last_name=LAST_NAME_2,
+            middle_name=MIDDLE_NAME_2,
+            energy_district=cls.energy_district,
+            position=cls.position,
+            rank=RANK,
+            tab_number=TAB_NUMBER_2,
         )
         cls.journal = Journal.objects.create(
             title=TITLE_JOURNAL,
@@ -126,6 +138,34 @@ class PostFormTests(TestCase):
         self.assertEqual(new_post_walking.number_post, expected_new_post_walking_number)
         self.assertEqual(new_post_walking.author, self.user)
         self.assertEqual(new_post_walking.journal, self.journal)
+
+    def test_edit_post_walking(self):
+        """Валидная форма редактирует запись обхода тепловых сетей."""
+        exist_post_walking = PostWalking.objects.get(author=self.user, number_post=POST_WLK_NUMBER)
+        member = exist_post_walking.members.first()
+        form_data = {
+            'planned': not exist_post_walking.planned,
+            'not_planned': not exist_post_walking.not_planned,
+            'walk_date': WALK_DATE_IN_EDIT_POST,
+            'task': TASK_WLK_IN_EDIT_POST,
+            'text': TEXT_WLK_2,
+            'plan': PLAN_WLK_IN_EDIT_POST,
+            'fix_date': WALK_DATE_IN_EDIT_POST,
+            'transfer': TRANSFER_WLK__IN_EDIT_POST,
+            'members': self.workman_2.id,
+            'district': self.district.id  # район остаётся прежним
+        }
+        self.authorized_client.post(EDIT_POST_WLK_URL, data=form_data)
+        edit_post_walking = PostWalking.objects.get(author=self.user, number_post=POST_WLK_NUMBER)
+        self.assertNotEqual(exist_post_walking.planned, edit_post_walking.planned)
+        self.assertNotEqual(exist_post_walking.not_planned, edit_post_walking.not_planned)
+        self.assertNotEqual(exist_post_walking.walk_date, edit_post_walking.walk_date)
+        self.assertNotEqual(exist_post_walking.task, edit_post_walking.task)
+        self.assertNotEqual(exist_post_walking.text, edit_post_walking.text)
+        self.assertNotEqual(exist_post_walking.plan, edit_post_walking.plan)
+        self.assertNotEqual(exist_post_walking.fix_date, edit_post_walking.fix_date)
+        self.assertNotEqual(exist_post_walking.transfer, edit_post_walking.transfer)
+        self.assertNotEqual(member, edit_post_walking.members.first())
 
     def test_validation_walk_date_in_new_post_walking(self):
         """Дата обхода не может быть будущей при создании записи."""

@@ -67,7 +67,7 @@ class JournalWalkView(LoginRequiredMixin, FilterView):
         context = super().get_context_data(**kwargs)
         context['journal'] = get_object_or_404(Journal, slug=self.kwargs.get('slug_journal'))
         context['district'] = get_object_or_404(District, slug=self.kwargs.get('slug_district'))
-        
+
         paginator = Paginator(context['posts'], AMOUNT_POSTS_WALK)
         page = self.request.GET.get('page')
         try:
@@ -240,7 +240,7 @@ class ResolutionEditView(LoginRequiredMixin, UpdateView):
     pk_url_kwarg = 'resolution_id'
 
     def form_valid(self, form):
-        messages.success(self.request,'Резолюция успешно изменена.')
+        messages.success(self.request, 'Резолюция успешно изменена.')
         logger.info(
             f'Resolution (id: {self.object.id}) was changed. '
             f'New text: {self.object.text}. '

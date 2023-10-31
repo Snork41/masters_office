@@ -38,14 +38,18 @@ DESCRIPTION_JOURNAL = 'Тестовое описание'
 POST_WLK_NUMBER = 1
 POST_WLK_NUMBER_2 = 2
 TASK_WLK = 'Тестовое задание'
+TASK_WLK_IN_EDIT_POST = 'Тестовое задание измененное'
 TEXT_WLK = 'Тестовые замечания'
 TEXT_WLK_2 = 'Тестовые замечания второй записи'
 PLAN_WLK = 'Тестовые мероприятия'
+PLAN_WLK_IN_EDIT_POST = 'Тестовые мероприятия измененные'
 RESOLUTION_WALK = 'Тестовая резолюция'
 RESOLUTION_WALK_2 = 'Тестовая резолюция 2'
 RESOLUTION_ID = 1
 TRANSFER_WLK = 'Тестовый перенос ремонта'
+TRANSFER_WLK__IN_EDIT_POST = 'Тестовый перенос ремонта измененный'
 WALK_DATE = datetime.date.today()
+WALK_DATE_IN_EDIT_POST = datetime.date.today() - datetime.timedelta(days=1)
 WALK_DATE_NOT_VALID = datetime.date.today() + datetime.timedelta(days=1)
 
 
@@ -88,6 +92,14 @@ CREATE_POST_WLK_URL = reverse(
     kwargs={
         'slug_journal': SLUG_JOURNAL,
         'slug_district': SLUG_DISTRICT
+    }
+)
+EDIT_POST_WLK_URL = reverse(
+    EDIT_POST_WLK_REVERSE,
+    kwargs={
+        'slug_journal': SLUG_JOURNAL,
+        'slug_district': SLUG_DISTRICT,
+        'post_id': POST_WLK_NUMBER
     }
 )
 ADD_RESOLUTION_URL = reverse(
