@@ -4,7 +4,7 @@ from django.contrib import messages
 from .forms import PostWalkingForm
 from .models import (Journal, PostWalking,
                      Personal, District, Position,
-                     EnergyDistrict, Brigade, Resolution)
+                     EnergyDistrict, Brigade, Resolution, PostRepairWork)
 
 
 admin.site.site_header = '"Кабинет мастера" | Администрирование'
@@ -19,6 +19,27 @@ class ResolutionInline(admin.TabularInline):
     def get_max_num(self, request, obj=None, **kwargs):
         max_num = 1
         return max_num
+
+
+@admin.register(PostRepairWork)
+class PostRepairWorkAdmin(admin.ModelAdmin):
+    list_display = (
+        'id',
+        'number_post',
+        'district',
+        'order',
+        'number_order',
+        'text_for_display',
+        'date_start_working',
+        'date_end_working',
+        'author',
+        'is_deleted',
+    )
+    list_display_links = ('number_post', 'text_for_display')
+    search_fields = ('description', 'date_start_working', 'date_end_working')
+    list_filter = ('district', 'date_start_working', 'date_end_working', 'is_deleted', 'author')
+    empty_value_display = '-пусто-'
+    list_per_page = 20
 
 
 @admin.register(PostWalking)

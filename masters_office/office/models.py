@@ -3,7 +3,7 @@ from django.contrib.auth import get_user_model
 from django.db import models
 from django.urls import reverse
 
-from masters_office.settings import RANK
+from masters_office.settings import RANK, ORDER
 
 
 User = get_user_model()
@@ -274,7 +274,7 @@ class PostWalking(models.Model):
 
     class Meta:
         verbose_name = 'Запись в журнале обхода'
-        verbose_name_plural = 'Записи в Журналах обходов'
+        verbose_name_plural = 'Записи в журналах обходов'
         ordering = ['-number_post']
 
     def get_next_post(self):
@@ -349,3 +349,81 @@ class Resolution(models.Model):
             'post_id': self.post_walking.id
             }
         )
+
+
+class PostRepairWork(models.Model):
+    """Запись в журнале ремонтных работ."""
+
+    time_create = models.DateTimeField(
+        auto_now_add=True,
+        verbose_name='Дата создания'
+    )
+    time_update = models.DateTimeField(
+        auto_now=True,
+        verbose_name='Дата редактирования'
+    )
+    number_post = models.PositiveIntegerField(
+        verbose_name='Номер записи'
+    )
+    district = models.ForeignKey(
+        'District',
+        blank=False,
+        null=True,
+        on_delete=models.SET_NULL,
+        related_name='posts_repair',
+        verbose_name='источник (район)'
+    )
+    order = models.CharField(
+        choices=ORDER,
+        verbose_name='Работы по',
+        help_text='наряду или распоряжению',
+        null=False,
+        blank=False,
+        max_length=30,
+    )
+    number_order = models.PositiveIntegerField(
+        verbose_name='Номера распоряжения/наряда',
+    )
+    description = models.TextField(
+        verbose_name='Выполненные работы'
+    )
+    date_start_working = models.DateTimeField(
+        verbose_name='Дата начала работ',
+    )
+    date_end_working = models.DateTimeField(
+        verbose_name='Дата окончания работ',
+    )
+    author = models.ForeignKey(
+        User,
+        blank=False,
+        null=True,
+        on_delete=models.SET_NULL,
+        verbose_name='Автор',
+        related_name='posts_repair'
+    )
+    journal = models.ForeignKey(
+        'Journal',
+        null=True,
+        on_delete=models.SET_NULL,
+        related_name='posts_repair',
+        verbose_name='Журнал',
+        help_text='Журнал, в котором будет запись'
+    )
+    is_deleted = models.BooleanField(
+        default=False,
+        verbose_name='Удаленная запись'
+    )
+
+    class Meta:
+        verbose_name = 'Запись в журнале ремонтных работ'
+        verbose_name_plural = 'Записи в журнале ремонтных работ'
+        ordering = ['-number_post']
+
+    def __str__(self):
+        return f'Запись в журнале ремонтных работ № {self.number_post} от {self.time_create.date()}'
+
+    @admin.display(description='Выполненные работы')
+    def text_for_display(self):
+        if len(self.description) > 15:
+            return f'{self.description[:20]}...'
+        return self.description
