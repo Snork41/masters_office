@@ -9,7 +9,7 @@
       {% if 'journals' in crumb.path or 'brigades' in crumb.path or 'employees' in crumb.path %}
       <li class="breadcrumb-item"><a href="{% url 'office:cabinet' %}">Кабинет</a></li>
       {% endif %}
-      {% if crumb.kwargs.slug_journal in crumb.path %}
+      {% if crumb.path|length > 2 and 'journals' in crumb.path%}
       <li class="breadcrumb-item"><a href="{% url 'office:journals' %}">Журналы</a></li>
       {% endif %}
       {% if crumb.kwargs.slug_district in crumb.path %}

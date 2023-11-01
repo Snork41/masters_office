@@ -2,7 +2,6 @@ import logging
 
 from django_filters.views import FilterView
 from django_tables2 import SingleTableMixin
-from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib import messages
 from django.urls import reverse
@@ -12,12 +11,13 @@ from django.views.generic import (
 from django.utils.safestring import mark_safe
 
 from .models import (
-    Brigade, District, Journal, PostWalking, Personal, Resolution)
+    Brigade, District, Journal, PostWalking, Personal, Resolution, PostRepairWork)
 from .tables import PersonalTable
 from .forms import PostWalkingForm, ResolutionForm
 from .filters import PersonalFilter, PostWalkingFilter
 from .validators import validated_planned_field
-from masters_office.settings import AMOUNT_POSTS_WALK
+from .utils import get_paginator
+from masters_office.settings import AMOUNT_POSTS_WALK, AMOUNT_POSTS_REPAIR_WORK
 
 
 logger = logging.getLogger(__name__)
@@ -67,16 +67,11 @@ class JournalWalkView(LoginRequiredMixin, FilterView):
         context = super().get_context_data(**kwargs)
         context['journal'] = get_object_or_404(Journal, slug=self.kwargs.get('slug_journal'))
         context['district'] = get_object_or_404(District, slug=self.kwargs.get('slug_district'))
-
-        paginator = Paginator(context['posts'], AMOUNT_POSTS_WALK)
-        page = self.request.GET.get('page')
-        try:
-            response = paginator.page(page)
-        except PageNotAnInteger:
-            response = paginator.page(1)
-        except EmptyPage:
-            response = paginator.page(paginator.num_pages)
-        context['page_obj'] = response
+        context['page_obj'] = get_paginator(
+            self.request,
+            context['posts'],
+            AMOUNT_POSTS_WALK
+        )
         return context
 
 
@@ -284,4 +279,22 @@ class EmployeesListView(LoginRequiredMixin, SingleTableMixin, FilterView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['energy_district'] = self.request.user.energy_district
+        return context
+
+
+class JournalRepairWorkView(LoginRequiredMixin, ListView):
+    model = PostRepairWork
+    template_name = 'office/journal_repair_work.html'
+    context_object_name = 'posts'
+
+    def get_queryset(self):
+        return PostRepairWork.objects.all().select_related('author', 'district')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['page_obj'] = get_paginator(
+            self.request,
+            context['posts'],
+            AMOUNT_POSTS_REPAIR_WORK
+        )
         return context

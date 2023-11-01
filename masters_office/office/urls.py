@@ -14,6 +14,9 @@ urlpatterns = [
     path(
         'cabinet/journals/',
         views.JournalsListView.as_view(), name='journals'),
+    re_path(
+        r'cabinet/journals/[\w-]*remont[\w-]*/',
+        views.JournalRepairWorkView.as_view(), name='journal_repair_work'),
     path(
         'cabinet/journals/<slug:slug_journal>/',
         views.DistrictsListView.as_view(), name='districts'),
