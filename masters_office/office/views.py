@@ -14,7 +14,7 @@ from .models import (
     Brigade, District, Journal, PostWalking, Personal, Resolution, PostRepairWork)
 from .tables import PersonalTable
 from .forms import PostWalkingForm, ResolutionForm
-from .filters import PersonalFilter, PostWalkingFilter
+from .filters import PersonalFilter, PostWalkingFilter, PostRepairWorkFilter
 from .validators import validated_planned_field
 from .utils import get_paginator
 from masters_office.settings import AMOUNT_POSTS_WALK, AMOUNT_POSTS_REPAIR_WORK
@@ -282,10 +282,11 @@ class EmployeesListView(LoginRequiredMixin, SingleTableMixin, FilterView):
         return context
 
 
-class JournalRepairWorkView(LoginRequiredMixin, ListView):
+class JournalRepairWorkView(LoginRequiredMixin, FilterView):
     model = PostRepairWork
     template_name = 'office/journal_repair_work.html'
     context_object_name = 'posts'
+    filterset_class = PostRepairWorkFilter
 
     def get_queryset(self):
         return PostRepairWork.objects.all().select_related('author', 'district')

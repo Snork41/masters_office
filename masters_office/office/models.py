@@ -382,7 +382,7 @@ class PostRepairWork(models.Model):
         max_length=30,
     )
     number_order = models.PositiveIntegerField(
-        verbose_name='Номера распоряжения/наряда',
+        verbose_name='Номер распоряжения/наряда',
     )
     description = models.TextField(
         verbose_name='Выполненные работы'

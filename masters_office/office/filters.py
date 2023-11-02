@@ -1,5 +1,5 @@
-from django_filters import FilterSet
-from .models import Personal, PostWalking
+from django_filters import FilterSet, DateRangeFilter
+from .models import Personal, PostWalking, PostRepairWork
 
 
 class PersonalFilter(FilterSet):
@@ -17,12 +17,31 @@ class PersonalFilter(FilterSet):
 
 
 class PostWalkingFilter(FilterSet):
+    date_range = DateRangeFilter(field_name='walk_date')
 
     class Meta:
         model = PostWalking
-        fields = {
-            'number_post': ['exact'],
-            'planned': ['exact'],
-            'not_planned': ['exact'],
-            'is_deleted': ['exact'],
-        }
+        fields = [
+            'number_post',
+            'planned',
+            'not_planned',
+            'date_range',
+            'author',
+            'is_deleted',
+        ]
+
+
+class PostRepairWorkFilter(FilterSet):
+    date_range = DateRangeFilter(field_name='date_start_working')
+
+    class Meta:
+        model = PostRepairWork
+        fields = [
+            'number_post',
+            'district',
+            'order',
+            'number_order',
+            'date_range',
+            'author',
+            'is_deleted'
+        ]

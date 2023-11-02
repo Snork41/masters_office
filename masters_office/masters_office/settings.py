@@ -220,7 +220,7 @@ AMOUNT_POSTS_REPAIR_WORK = 10
 DJANGO_TABLES2_TABLE_ATTRS = {
     'class': 'table table-hover',
     'thead': {
-        'class': 'table-light',
+        'class': 'table-light sticky-top sticky-offset',
     },
 }
 
