@@ -13,9 +13,9 @@ from django.utils.safestring import mark_safe
 from .models import (
     Brigade, District, Journal, PostWalking, Personal, Resolution, PostRepairWork)
 from .tables import PersonalTable
-from .forms import PostWalkingForm, ResolutionForm
+from .forms import PostWalkingForm, ResolutionForm, PostRepairWorkForm
 from .filters import PersonalFilter, PostWalkingFilter, PostRepairWorkFilter
-from .validators import validated_planned_field
+from .validators import validated_planned_field, CheckEnergyDistrictMixin
 from .utils import get_paginator
 from masters_office.settings import AMOUNT_POSTS_WALK, AMOUNT_POSTS_REPAIR_WORK
 
@@ -42,6 +42,9 @@ class DistrictsListView(LoginRequiredMixin, ListView):
     template_name = 'office/districts.html'
     context_object_name = 'districts'
 
+    def get_queryset(self):
+        return District.objects.filter(energy_district=self.request.user.energy_district)
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['journal'] = get_object_or_404(
@@ -50,7 +53,7 @@ class DistrictsListView(LoginRequiredMixin, ListView):
         return context
 
 
-class JournalWalkView(LoginRequiredMixin, FilterView):
+class JournalWalkView(LoginRequiredMixin, CheckEnergyDistrictMixin, FilterView):
     model = PostWalking
     template_name = 'office/journal_walk.html'
     context_object_name = 'posts'
@@ -65,8 +68,8 @@ class JournalWalkView(LoginRequiredMixin, FilterView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['journal'] = get_object_or_404(Journal, slug=self.kwargs.get('slug_journal'))
         context['district'] = get_object_or_404(District, slug=self.kwargs.get('slug_district'))
+        context['journal'] = get_object_or_404(Journal, slug=self.kwargs.get('slug_journal'))
         context['page_obj'] = get_paginator(
             self.request,
             context['posts'],
@@ -75,7 +78,7 @@ class JournalWalkView(LoginRequiredMixin, FilterView):
         return context
 
 
-class PostWalkingCreateView(LoginRequiredMixin, CreateView):
+class PostWalkingCreateView(LoginRequiredMixin, CheckEnergyDistrictMixin, CreateView):
     model = PostWalking
     template_name = 'office/create_post_walking.html'
     form_class = PostWalkingForm
@@ -123,7 +126,7 @@ class PostWalkingCreateView(LoginRequiredMixin, CreateView):
             })
 
 
-class PostWalkingEditView(LoginRequiredMixin, UpdateView):
+class PostWalkingEditView(LoginRequiredMixin, CheckEnergyDistrictMixin, UpdateView):
     model = PostWalking
     template_name = 'office/edit_post_walking.html'
     form_class = PostWalkingForm
@@ -175,7 +178,7 @@ class PostWalkingEditView(LoginRequiredMixin, UpdateView):
             })
 
 
-class PostWalkingDetailView(LoginRequiredMixin, DetailView, FormView):
+class PostWalkingDetailView(LoginRequiredMixin, CheckEnergyDistrictMixin, DetailView, FormView):
     model = PostWalking
     template_name = 'office/post_walking_detail.html'
     pk_url_kwarg = 'post_id'
@@ -194,7 +197,7 @@ class PostWalkingDetailView(LoginRequiredMixin, DetailView, FormView):
         return context
 
 
-class ResolutionAddView(LoginRequiredMixin, CreateView):
+class ResolutionAddView(LoginRequiredMixin, CheckEnergyDistrictMixin, CreateView):
     model = Resolution
     template_name = 'office/includes/resolution_form.html'
     fields = ['text']
@@ -228,7 +231,7 @@ class ResolutionAddView(LoginRequiredMixin, CreateView):
                         )
 
 
-class ResolutionEditView(LoginRequiredMixin, UpdateView):
+class ResolutionEditView(LoginRequiredMixin, CheckEnergyDistrictMixin, UpdateView):
     model = Resolution
     fields = ['text']
     template_name = 'office/includes/resolution_update_form.html'
@@ -287,9 +290,12 @@ class JournalRepairWorkView(LoginRequiredMixin, FilterView):
     template_name = 'office/journal_repair_work.html'
     context_object_name = 'posts'
     filterset_class = PostRepairWorkFilter
+    form_class = PostRepairWorkForm
 
     def get_queryset(self):
-        return PostRepairWork.objects.all().select_related('author', 'district')
+        return PostRepairWork.objects.filter(
+            district__energy_district=self.request.user.energy_district
+        ).select_related('author', 'district')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

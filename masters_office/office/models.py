@@ -43,6 +43,11 @@ class District(models.Model):
         related_name='district',
         verbose_name='Ответственный'
     )
+    energy_district = models.ForeignKey(
+        'EnergyDistrict',
+        on_delete=models.PROTECT,
+        verbose_name='Энергорайон'
+    )
 
     class Meta:
         verbose_name = 'Источник тепла'
@@ -363,7 +368,8 @@ class PostRepairWork(models.Model):
         verbose_name='Дата редактирования'
     )
     number_post = models.PositiveIntegerField(
-        verbose_name='Номер записи'
+        verbose_name='Номер записи',
+        unique=True,
     )
     district = models.ForeignKey(
         'District',

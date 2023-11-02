@@ -139,3 +139,10 @@ a.btn.btn-back:hover {
     width: 50px;
     height: 50px;
 }
+
+/* Икноки контактов */
+i {
+    font-size: 2em;
+    padding-left: 1em;
+    padding-right: 1em;
+}

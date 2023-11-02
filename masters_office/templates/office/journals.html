@@ -6,8 +6,9 @@
 <br>
 <h1 class="text-center fw-light">ЖУРНАЛЫ</h1>
 <br>
-<div class="d-grid gap-2 col-6 mx-auto">
+<div class="d-grid gap-2 col-4 mx-auto">
   {% for journal in all_journals %}
     <a href="{{ journal.get_absolute_url }}" class="btn btn-outline-dark btn-lg" role="button">{{ journal }}</a>
   {% endfor %}
+</div>
 {% endblock content %}

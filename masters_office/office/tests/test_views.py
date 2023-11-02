@@ -54,11 +54,13 @@ class OfficeViewsTest(TestCase):
             title=TITLE_DISTRICT,
             slug=SLUG_DISTRICT,
             master=cls.user,
+            energy_district=cls.energy_district
         )
         cls.district_2 = District.objects.create(
             title=TITLE_DISTRICT_2,
             slug=SLUG_DISTRICT_2,
             master=cls.user,
+            energy_district=cls.energy_district_2
         )
         cls.position = Position.objects.create(
             name_position=NAME_POSITION,
@@ -191,7 +193,7 @@ class OfficeViewsTest(TestCase):
         """Шаблон districts сформирован с правильным контекстом."""
         response = self.authorized_client.get(DISTRICTS_URL)
         expected_journal = Journal.objects.get(title=self.journal)
-        expected_districts = District.objects.all()
+        expected_districts = District.objects.filter(energy_district=self.user.energy_district)
         self.assertEqual(response.context['journal'], expected_journal)
         self.assertQuerysetEqual(
             response.context['districts'], expected_districts, ordered=False

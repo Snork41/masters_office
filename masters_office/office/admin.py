@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.contrib import messages
 
-from .forms import PostWalkingForm
+from .forms import PostWalkingForm, PostRepairWorkForm
 from .models import (Journal, PostWalking,
                      Personal, District, Position,
                      EnergyDistrict, Brigade, Resolution, PostRepairWork)
@@ -23,6 +23,7 @@ class ResolutionInline(admin.TabularInline):
 
 @admin.register(PostRepairWork)
 class PostRepairWorkAdmin(admin.ModelAdmin):
+    form = PostRepairWorkForm
     list_display = (
         'id',
         'number_post',
@@ -35,11 +36,24 @@ class PostRepairWorkAdmin(admin.ModelAdmin):
         'author',
         'is_deleted',
     )
+    fields = (
+        'journal',
+        'district',
+        'order',
+        'number_order',
+        'description',
+        'date_start_working',
+        'date_end_working',
+        'author',
+        'is_deleted',
+    )
     list_display_links = ('number_post', 'text_for_display')
     search_fields = ('description', 'date_start_working', 'date_end_working')
     list_filter = ('district', 'date_start_working', 'date_end_working', 'is_deleted', 'author')
     empty_value_display = '-пусто-'
     list_per_page = 20
+    save_on_top = True
+    readonly_fields = ('time_create', 'time_update', 'number_post')
 
 
 @admin.register(PostWalking)
@@ -117,9 +131,10 @@ class DistrictAdmin(admin.ModelAdmin):
         'pk',
         'title',
         'master',
+        'energy_district',
         'slug',
     )
-    list_editable = ('master',)
+    list_editable = ('master', 'energy_district')
     list_display_links = ('title',)
     empty_value_display = '-пусто-'
     prepopulated_fields = {'slug': ('title',)}

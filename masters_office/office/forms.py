@@ -4,7 +4,7 @@ from django.contrib.admin.widgets import FilteredSelectMultiple
 from django.core.validators import MaxValueValidator
 import os
 
-from .models import PostWalking, Personal, Resolution
+from .models import PostWalking, Personal, Resolution, PostRepairWork
 from masters_office.settings import BASE_DIR
 
 
@@ -100,3 +100,30 @@ class ResolutionForm(forms.ModelForm):
         widgets = {
             'text': forms.Textarea(attrs={'rows': '5', 'cols': '60', 'style': 'max-width: 100%'})
         }
+
+
+class PostRepairWorkForm(forms.ModelForm):
+    class Meta:
+        model = PostRepairWork
+        fields =(
+            'district',
+            'order',
+            'number_order',
+            'description',
+            'date_start_working',
+            'date_end_working',
+            'is_deleted',
+        )
+
+    def save(self, username=None, *args, commit=True, **kwargs):
+        """Сохранение записи с автоматической нумерацией."""
+        obj = super().save(commit=False, *args, **kwargs)
+        if not obj.number_post:
+            most_recent = PostRepairWork.objects.all().order_by('-number_post').first()
+            obj.number_post = most_recent.number_post + 1 if most_recent else 1
+            if username:
+                obj.author = username
+        if commit:
+            obj.save()
+            self._save_m2m()
+        return obj

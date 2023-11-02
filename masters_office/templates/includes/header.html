@@ -9,7 +9,7 @@
         <ul class="navbar-nav navbar-right">
           {% if user.is_active %}
             <span class="navbar-text">Пользователь: 
-              <span class="navbar-username">{{ user.username }}</span>
+              <span class="navbar-username">{{ user.username }} ({{ user.energy_district }})</span>
             </span>
             <li class="nav-item">
               <a class="nav-link" href="{% url 'logout' %}">Выйти</a>

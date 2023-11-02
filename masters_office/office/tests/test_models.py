@@ -32,6 +32,7 @@ class OfficeModelTest(TestCase):
             title=TITLE_DISTRICT,
             slug=SLUG_DISTRICT,
             master=cls.user,
+            energy_district=cls.energy_district
         )
         cls.position = Position.objects.create(
             name_position=NAME_POSITION,

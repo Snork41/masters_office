@@ -19,17 +19,25 @@
 
 <div class="d-grid gap-2 col-2 mx-auto">
   {% if not page_obj %}
+    {% if request.GET %}
+    <p class="text-center fs-1" style="color: red">Совпадений не найдено.</p>
+    <a class="btn btn-outline-dark fs-3 btn-back" href="{% url 'office:journal_repair_work' %}">Назад</a>      
+    {% else %}
     <p class="text-center fs-1">Записей нет.</p>
+    {% endif %}
   {% endif %}
   <a class="btn btn-outline-dark btn-lg fs-3" href="#">Новая запись</a>
+  {% if not request.GET %}
   <a class="btn btn-outline-dark fs-5 btn-back" href="{% url 'office:journals' %}">Назад к журналам</a>
+  {% endif %}
+
 </div>
 
 {% if page_obj %}
 <div class="row justify-content-center">
   <!-- Окно фильтрации -->
-  {% if filter and page_obj|length > 1 %}
-    <div class="col-3" style="padding-top: 7.5em; padding-left: 4em">
+  {% if filter %}
+    <div class="col-3" style="padding-top: 7.5em; padding-left: 4em; padding-bottom: 2em;">
       <div class="card shadow sticky-top sticky-offset">
         <div class="card-header" style="text-align: center">
           <span class="btn" style="font-size: larger">ФИЛЬТРАЦИЯ</span>
@@ -99,12 +107,7 @@
         </div>
       </div>
       {% endfor %}
-      {% elif request.GET %}
-      <p class="text-center fs-1" style="color: red">Совпадений не найдено.</p>
-      <div class="d-grid gap-2 col-2 mx-auto" style="padding-bottom: 1em">
-        <a class="btn btn-outline-dark btn-lg fs-3" href="{% url 'office:journal_repair_work' %}">Назад</a>
-      </div>
-      {% endif %}
+    {% endif %}
     </div>
 
     <!-- Стрелка возврата вверх -->
