@@ -1,14 +1,14 @@
 from django.contrib.auth import get_user_model
 from django.test import Client, TestCase
-from office.models import (District, EnergyDistrict, Journal, Personal,
+from office.models import (District, EnergyDistrict, Personal,
                            Position, PostWalking, Resolution)
 
-from .consts import (ADD_RESOLUTION_URL, DESCRIPTION_JOURNAL, FIRST_NAME_1,
+from .consts import (ADD_RESOLUTION_URL, FIRST_NAME_1,
                      LAST_NAME_1, MIDDLE_NAME_1, NAME_POSITION, PLAN_WLK,
                      POST_WLK_NUMBER, RANK, RESOLUTION_WALK, RESOLUTION_WALK_2,
-                     SLUG_DISTRICT, SLUG_JOURNAL, TAB_NUMBER_1, TASK_WLK,
+                     SLUG_DISTRICT, TAB_NUMBER_1, TASK_WLK,
                      TEXT_WLK, TEXT_WLK_2, TITLE_DISTRICT, TITLE_ENERGY_DISTRICT,
-                     TITLE_JOURNAL, TRANSFER_WLK, UPDATE_RESOLUTION_URL,
+                     TRANSFER_WLK, UPDATE_RESOLUTION_URL,
                      USERNAME, USERNAME_BOSS, WALK_DATE, CREATE_POST_WLK_URL,
                      WALK_DATE_NOT_VALID, EDIT_POST_WLK_URL, WALK_DATE_IN_EDIT_POST,
                      TASK_WLK_IN_EDIT_POST, PLAN_WLK_IN_EDIT_POST,
@@ -62,15 +62,9 @@ class PostFormTests(TestCase):
             rank=RANK,
             tab_number=TAB_NUMBER_2,
         )
-        cls.journal = Journal.objects.create(
-            title=TITLE_JOURNAL,
-            slug=SLUG_JOURNAL,
-            description=DESCRIPTION_JOURNAL,
-        )
         cls.post_walking = PostWalking.objects.create(
             number_post=POST_WLK_NUMBER,
             walk_date=WALK_DATE,
-            journal=cls.journal,
             district=cls.district,
             task=TASK_WLK,
             text=TEXT_WLK,
@@ -138,7 +132,6 @@ class PostFormTests(TestCase):
         self.assertEqual(PostWalking.objects.count(), expected_posts_walking_amount)
         self.assertEqual(new_post_walking.number_post, expected_new_post_walking_number)
         self.assertEqual(new_post_walking.author, self.user)
-        self.assertEqual(new_post_walking.journal, self.journal)
 
     def test_edit_post_walking(self):
         """Валидная форма редактирует запись обхода тепловых сетей."""

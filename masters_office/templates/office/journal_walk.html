@@ -19,8 +19,8 @@
 <br>
 {% if page_obj %}
 <div class="d-grid gap-2 col-2 mx-auto">
-  <a class="btn btn-outline-dark btn-lg fs-3" href="{% url 'office:create_post_walking' journal.slug district.slug %}">Новая запись</a>
-  <a class="btn btn-outline-dark fs-5 btn-back" href="{{ journal.get_absolute_url }}">Назад к районам</a>
+  <a class="btn btn-outline-dark btn-lg fs-3" href="{% url 'office:create_post_walking' district.slug %}">Новая запись</a>
+  <a class="btn btn-outline-dark fs-5 btn-back" href="{% url 'office:districts' %}">Назад к районам</a>
 </div>
 <div class="row justify-content-center">
   {% if filter %}
@@ -34,7 +34,7 @@
           {% bootstrap_form filter.form layout="floating" %}
           <div class="text-center">
           {% bootstrap_button button_type="submit" button_class="btn-outline-dark col-4" content="Применить" %}
-          <a href="{% url 'office:journal_walk' journal.slug district.slug %}" class="btn btn-outline-dark col-4" role="button">Сбросить</a>
+          <a href="{% url 'office:journal_walk' district.slug %}" class="btn btn-outline-dark col-4" role="button">Сбросить</a>
           </div>
         </form>
       </div>
@@ -89,7 +89,7 @@
           <div class="btn-group" role="group">
             <a type="button d-inline" class="btn btn-light btn-outline-dark btn-md" href="{{ post.get_absolute_url }}">Подробная информация</a>
             {% if post.author.id == user.id %}
-            <a type="button" class="btn btn-light btn-outline-dark btn-md" href="{% url 'office:edit_post_walking' journal.slug district.slug post.id %}">Редактировать запись</a>
+            <a type="button" class="btn btn-light btn-outline-dark btn-md" href="{% url 'office:edit_post_walking' district.slug post.id %}">Редактировать запись</a>
             {% else %}
             <span class="border border-black border-start-0 rounded-end" tabindex="0" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-title="Вы не автор записи!">
             <button type="button" class="btn btn-light btn-outline-dark btn-md border-0 d-inline" disabled>Редактировать запись</button>
@@ -102,7 +102,7 @@
 {% elif request.GET %}
           <p class="text-center fs-1" style="color: red;">Совпадений не найдено.</p>
           <div class="d-grid gap-2 col-2 mx-auto" style="padding-bottom: 1em;">
-            <a class="btn btn-outline-dark btn-lg fs-3" href="{% url 'office:journal_walk' journal.slug district.slug %}">Назад</a>
+            <a class="btn btn-outline-dark btn-lg fs-3" href="{% url 'office:journal_walk' district.slug %}">Назад</a>
           </div>
           {% else %}
           <p class="text-center fs-1">Записей нет.</p>
@@ -111,9 +111,9 @@
     </div>
   </div>
   <div class="d-grid gap-2 col-2 mx-auto">
-    <a class="btn btn-outline-dark btn-lg fs-3" href="{% url 'office:create_post_walking' journal.slug district.slug %}">Новая запись</a>
+    <a class="btn btn-outline-dark btn-lg fs-3" href="{% url 'office:create_post_walking' district.slug %}">Новая запись</a>
     {% if not request.GET %}
-    <a class="btn btn-outline-dark btn-back fs-5" href="{{ journal.get_absolute_url }}">Назад к районам</a>
+    <a class="btn btn-outline-dark btn-back fs-5" href="{% url 'office:districts' %}">Назад к районам</a>
     {% endif %}
   </div>
 {% endblock content %}

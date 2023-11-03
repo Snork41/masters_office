@@ -4,18 +4,18 @@ from django.test import Client, TestCase
 from django.urls import reverse
 
 from masters_office.settings import AMOUNT_POSTS_WALK
-from office.models import (Brigade, District, EnergyDistrict, Journal,
+from office.models import (Brigade, District, EnergyDistrict,
                            Personal, Position, PostWalking, Resolution)
-from .consts import (BRGD_NUMBER, CREATE_POST_WLK_URL, DESCRIPTION_JOURNAL,
+from .consts import (BRGD_NUMBER, CREATE_POST_WLK_URL,
                      DISTRICTS_URL, EDIT_POST_WLK_REVERSE, FIRST_NAME_1,
-                     FIRST_NAME_2, JOURNALS_URL, JRNL_WLK_URL, LAST_NAME_1,
+                     FIRST_NAME_2, JRNL_WLK_URL, LAST_NAME_1,
                      LAST_NAME_2, MIDDLE_NAME_1, MIDDLE_NAME_2, NAME_POSITION,
                      PLAN_WLK, POST_WLK_DETAIL_REVERSE, POST_WLK_NUMBER,
                      POST_WLK_NUMBER_2, RANK, RESOLUTION_WALK,
                      RESOLUTION_WALK_2, SLUG_DISTRICT, SLUG_DISTRICT_2,
-                     SLUG_JOURNAL, TAB_NUMBER_1, TAB_NUMBER_2, TASK_WLK,
+                     TAB_NUMBER_1, TAB_NUMBER_2, TASK_WLK,
                      TEXT_WLK, TITLE_DISTRICT, TITLE_DISTRICT_2,
-                     TITLE_ENERGY_DISTRICT, TITLE_JOURNAL, TRANSFER_WLK,
+                     TITLE_ENERGY_DISTRICT, TRANSFER_WLK,
                      USERNAME, USERNAME_AUTHOR, WALK_DATE, ADD_RESOLUTION_URL,
                      UPDATE_RESOLUTION_URL, BRIGADES_URL, TITLE_SECOND_ENERGY_DISTRICT,
                      USERNAME_SECOND_ENERGY_DISCRICT,
@@ -114,15 +114,9 @@ class OfficeViewsTest(TestCase):
             brigadier=cls.workman_3_SED,
         )
         cls.brigade_SED.members.set([cls.workman_4_SED])
-        cls.journal = Journal.objects.create(
-            title=TITLE_JOURNAL,
-            slug=SLUG_JOURNAL,
-            description=DESCRIPTION_JOURNAL,
-        )
         cls.post_walking = PostWalking.objects.create(
             number_post=POST_WLK_NUMBER,
             walk_date=WALK_DATE,
-            journal=cls.journal,
             district=cls.district,
             task=TASK_WLK,
             text=TEXT_WLK,
@@ -135,7 +129,6 @@ class OfficeViewsTest(TestCase):
         cls.post_walking_2 = PostWalking.objects.create(
             number_post=POST_WLK_NUMBER_2,
             walk_date=WALK_DATE,
-            journal=cls.journal,
             district=cls.district,
             task=TASK_WLK,
             text=TEXT_WLK,
@@ -153,7 +146,6 @@ class OfficeViewsTest(TestCase):
         cls.POST_WLK_DETAIL_URL = reverse(
             POST_WLK_DETAIL_REVERSE,
             kwargs={
-                'slug_journal': cls.journal.slug,
                 'slug_district': cls.district.slug,
                 'post_id': cls.post_walking.id
             }
@@ -161,7 +153,6 @@ class OfficeViewsTest(TestCase):
         cls.POST_WLK_2_DETAIL_URL = reverse(
             POST_WLK_DETAIL_REVERSE,
             kwargs={
-                'slug_journal': cls.journal.slug,
                 'slug_district': cls.district.slug,
                 'post_id': cls.post_walking_2.id
             }
@@ -169,7 +160,6 @@ class OfficeViewsTest(TestCase):
         cls.EDIT_POST_WLK_URL = reverse(
             EDIT_POST_WLK_REVERSE,
             kwargs={
-                'slug_journal': cls.journal.slug,
                 'slug_district': cls.district.slug,
                 'post_id': cls.post_walking.id
             }
@@ -181,20 +171,18 @@ class OfficeViewsTest(TestCase):
         self.author_client = Client()
         self.author_client.force_login(self.user_author)
 
-    def test_journals_page_show_correct_context(self):
-        """Шаблон journals сформирован с правильным контекстом."""
-        response = self.authorized_client.get(JOURNALS_URL)
-        last_object = response.context.get('all_journals').last()
-        self.assertEqual(last_object.title, self.journal.title)
-        self.assertEqual(last_object.description, self.journal.description)
-        self.assertEqual(last_object.slug, self.journal.slug)
+    # def test_journals_page_show_correct_context(self):
+    #     """Шаблон journals сформирован с правильным контекстом."""
+    #     response = self.authorized_client.get(JOURNALS_URL)
+    #     last_object = response.context.get('all_journals').last()
+    #     self.assertEqual(last_object.title, self.journal.title)
+    #     self.assertEqual(last_object.description, self.journal.description)
+    #     self.assertEqual(last_object.slug, self.journal.slug)
 
     def test_districts_page_show_correct_context(self):
         """Шаблон districts сформирован с правильным контекстом."""
         response = self.authorized_client.get(DISTRICTS_URL)
-        expected_journal = Journal.objects.get(title=self.journal)
         expected_districts = District.objects.filter(energy_district=self.user.energy_district)
-        self.assertEqual(response.context['journal'], expected_journal)
         self.assertQuerysetEqual(
             response.context['districts'], expected_districts, ordered=False
         )
@@ -232,11 +220,8 @@ class OfficeViewsTest(TestCase):
             id=self.post_walking.id).first()
         expected_district = District.objects.filter(
             id=self.district.id).first()
-        expected_journal = Journal.objects.filter(
-            id=self.journal.id).first()
         self.assertEqual(response.context.get('post'), expected_post)
         self.assertEqual(response.context.get('district'), expected_district)
-        self.assertEqual(response.context.get('journal'), expected_journal)
 
     def test_resolution_show_in_post(self):
         """При создании резолюции, она появляется в записи."""
@@ -266,7 +251,6 @@ class OfficeViewsTest(TestCase):
             posts.append(PostWalking(
                 number_post=POST_WLK_NUMBER + number,
                 walk_date=WALK_DATE,
-                journal=self.journal,
                 district=self.district,
                 task=TASK_WLK,
                 text=TEXT_WLK,

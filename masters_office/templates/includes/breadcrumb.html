@@ -13,10 +13,10 @@
       <li class="breadcrumb-item"><a href="{% url 'office:journals' %}">Журналы</a></li>
       {% endif %}
       {% if crumb.kwargs.slug_district in crumb.path %}
-      <li class="breadcrumb-item"><a href="{% url 'office:districts' crumb.kwargs.slug_journal %}">Районы</a></li>
+      <li class="breadcrumb-item"><a href="{% url 'office:districts' %}">Районы</a></li>
       {% endif %}
       {% if crumb.kwargs.post_id|stringformat:"d" in crumb.path or 'create-post-walking' in crumb.path %}
-      <li class="breadcrumb-item"><a href="{% url 'office:journal_walk' crumb.kwargs.slug_journal crumb.kwargs.slug_district %}">{{ crumb.journal.title }}</a></li>
+      <li class="breadcrumb-item"><a href="{% url 'office:journal_walk' crumb.kwargs.slug_district %}">Журнал обходов тепловых сетей</a></li>
       {% endif %}
     </ol>
 </nav>
