@@ -67,6 +67,7 @@ ADD_RESOLUTION_REVERSE = 'office:resolution_form'
 UPDATE_RESOLUTION_REVERSE = 'office:resolution_update_form'
 BRIGADES_REVERSE = 'office:brigades'
 EMPLOYEES_REVERSE = 'office:employees'
+JRNL_REPAIR_WORK_REVERSE = 'office:journal_repair_work'
 
 
 INDEX_URL = reverse(INDEX_REVERSE)
@@ -74,6 +75,7 @@ CABINET_URL = reverse(CABINET_REVERSE)
 BRIGADES_URL = reverse(BRIGADES_REVERSE)
 EMPLOYEES_URL = reverse(EMPLOYEES_REVERSE)
 JOURNALS_URL = reverse(JOURNALS_REVERSE)
+JRNL_REPAIR_WORK_URL = reverse(JRNL_REPAIR_WORK_REVERSE)
 DISTRICTS_URL = reverse(
     DISTRICTS_REVERSE,
     kwargs={
@@ -133,3 +135,4 @@ ADD_RESOLUTION_TMPLT = 'office/includes/resolution_form.html'
 UPDATE_RESOLUTION_TMPLT = 'office/includes/resolution_update_form.html'
 BRIGADES_TMPL = 'office/brigades.html'
 EMPLOYEES_TMPL = 'office/employees.html'
+JRNL_REPAIR_WORK_TMPL = 'office/journal_repair_work.html'

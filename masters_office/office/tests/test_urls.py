@@ -20,7 +20,9 @@ from .consts import (BRGD_NUMBER, CABINET_TMPLT, CABINET_URL,
                      TITLE_DISTRICT, TITLE_ENERGY_DISTRICT, TITLE_JOURNAL,
                      TRANSFER_WLK, UNEXISTING_PAGE, USERNAME, USERNAME_AUTHOR,
                      WALK_DATE, BRIGADES_URL, BRIGADES_TMPL, EMPLOYEES_URL,
-                     EMPLOYEES_TMPL)
+                     EMPLOYEES_TMPL, TITLE_SECOND_ENERGY_DISTRICT,
+                     USERNAME_SECOND_ENERGY_DISCRICT, ADD_RESOLUTION_URL,
+                     UPDATE_RESOLUTION_URL, JRNL_REPAIR_WORK_URL, JRNL_REPAIR_WORK_TMPL)
 
 User = get_user_model()
 
@@ -32,6 +34,9 @@ class OfficeURLTest(TestCase):
         cls.energy_district = EnergyDistrict.objects.create(
             title=TITLE_ENERGY_DISTRICT,
         )
+        cls.energy_district_2 = EnergyDistrict.objects.create(
+            title=TITLE_SECOND_ENERGY_DISTRICT,
+        )
         cls.user = User.objects.create_user(
             username=USERNAME,
             energy_district=cls.energy_district
@@ -39,6 +44,10 @@ class OfficeURLTest(TestCase):
         cls.user_author = User.objects.create_user(
             username=USERNAME_AUTHOR,
             energy_district=cls.energy_district
+        )
+        cls.user_SED = User.objects.create_user(
+            username=USERNAME_SECOND_ENERGY_DISCRICT,
+            energy_district=cls.energy_district_2
         )
         cls.district = District.objects.create(
             title=TITLE_DISTRICT,
@@ -115,6 +124,8 @@ class OfficeURLTest(TestCase):
         self.authorized_client.force_login(self.user)
         self.author_client = Client()
         self.author_client.force_login(self.user_author)
+        self.authorized_client_SED = Client()
+        self.authorized_client_SED.force_login(self.user_SED)
 
     def test_urls_access_for_anonymous(self):
         """Доступ страниц для анонимного пользователя"""
@@ -142,6 +153,7 @@ class OfficeURLTest(TestCase):
             self.EDIT_POST_WLK_URL: HTTPStatus.FOUND,
             BRIGADES_URL: HTTPStatus.OK,
             EMPLOYEES_URL: HTTPStatus.OK,
+            JRNL_REPAIR_WORK_URL: HTTPStatus.OK,
         }
         for url_name, expected_code in url.items():
             with self.subTest(url_name=url_name):
@@ -169,6 +181,7 @@ class OfficeURLTest(TestCase):
             self.EDIT_POST_WLK_URL: HTTPStatus.OK,
             BRIGADES_URL: HTTPStatus.OK,
             EMPLOYEES_URL: HTTPStatus.OK,
+            JRNL_REPAIR_WORK_URL: HTTPStatus.OK,
         }
         for url_name, expected_code in url.items():
             with self.subTest(url_name=url_name):
@@ -190,6 +203,7 @@ class OfficeURLTest(TestCase):
             self.EDIT_POST_WLK_URL,
             BRIGADES_URL,
             EMPLOYEES_URL,
+            JRNL_REPAIR_WORK_URL,
         ]
         for url in urls:
             with self.subTest(url=url):
@@ -211,8 +225,26 @@ class OfficeURLTest(TestCase):
             self.EDIT_POST_WLK_URL: EDIT_POST_WLK_TMPLT,
             BRIGADES_URL: BRIGADES_TMPL,
             EMPLOYEES_URL: EMPLOYEES_TMPL,
+            JRNL_REPAIR_WORK_URL: JRNL_REPAIR_WORK_TMPL,
         }
         for address, template in templates_url_names.items():
             with self.subTest(template=template):
                 response = self.author_client.get(address)
                 self.assertTemplateUsed(response, template)
+
+    def test_urls_access_for_authorized_client_SED(self):
+        """Пользователь c другим энергорайоном не имеет доступ к записям обходов."""
+        url = {
+            JRNL_WLK_URL: HTTPStatus.FOUND,
+            CREATE_POST_WLK_URL: HTTPStatus.FOUND,
+            self.POST_WLK_DETAIL_URL: HTTPStatus.FOUND,
+            self.EDIT_POST_WLK_URL: HTTPStatus.FOUND,
+            ADD_RESOLUTION_URL: HTTPStatus.FOUND,
+            UPDATE_RESOLUTION_URL: HTTPStatus.FOUND,
+        }
+        for url_name, expected_code in url.items():
+            with self.subTest(url_name=url_name):
+                self.assertRedirects(
+                    self.authorized_client_SED.get(url_name, follow=True),
+                    DISTRICTS_URL
+                )
