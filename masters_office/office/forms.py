@@ -85,7 +85,7 @@ class PostWalkingForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         self.instance = kwargs.get('instance')
-        super(PostWalkingForm, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         for field in ['district', 'walk_date', 'task', 'text', 'plan', 'fix_date', 'transfer']:
             if field in self.fields:
                 self.fields[field].widget.attrs.update({'class': 'focus-ring focus-ring-dark border'})
@@ -103,17 +103,23 @@ class ResolutionForm(forms.ModelForm):
 
 
 class PostRepairWorkForm(forms.ModelForm):
+
     class Meta:
         model = PostRepairWork
         fields =(
             'district',
             'order',
             'number_order',
+            'adress',
             'description',
             'date_start_working',
             'date_end_working',
             'is_deleted',
         )
+        widgets = {
+            'date_start_working': forms.DateTimeInput(format=('%Y-%m-%d'), attrs={'type': 'datetime-local'}),
+            'date_end_working': forms.DateTimeInput(format=('%Y-%m-%d'), attrs={'type': 'datetime-local'}),
+        }
 
     def save(self, username=None, *args, commit=True, **kwargs):
         """Сохранение записи с автоматической нумерацией."""
@@ -127,3 +133,9 @@ class PostRepairWorkForm(forms.ModelForm):
             obj.save()
             self._save_m2m()
         return obj
+    
+    def __init__(self, *args, **kwargs):
+        self.instance = kwargs.get('instance')
+        super().__init__(*args, **kwargs)
+        for field in self.fields:
+            self.fields[field].widget.attrs.update({'class': 'focus-ring focus-ring-dark border'})

@@ -350,6 +350,12 @@ class PostRepairWork(models.Model):
     number_order = models.PositiveIntegerField(
         verbose_name='Номер распоряжения/наряда',
     )
+    adress = models.CharField(
+        verbose_name='Адрес (объект)',
+        null=False,
+        blank=False,
+        max_length=200,
+    )
     description = models.TextField(
         verbose_name='Выполненные работы'
     )
@@ -385,3 +391,6 @@ class PostRepairWork(models.Model):
         if len(self.description) > 15:
             return f'{self.description[:20]}...'
         return self.description
+
+    def get_absolute_url(self):
+        return reverse('office:journal_repair_work')

@@ -26,7 +26,7 @@
     <p class="text-center fs-1">Записей нет.</p>
     {% endif %}
   {% endif %}
-  <a class="btn btn-outline-dark btn-lg fs-3" href="#">Новая запись</a>
+  <a class="btn btn-outline-dark btn-lg fs-3" href="{% url 'office:create_post_repair' %}">Новая запись</a>
   {% if not request.GET %}
   <a class="btn btn-outline-dark fs-5 btn-back" href="{% url 'office:journals' %}">Назад к журналам</a>
   {% endif %}

@@ -18,6 +18,9 @@ urlpatterns = [
         'cabinet/journals/journal-repair/',
         views.JournalRepairWorkView.as_view(), name='journal_repair_work'),
     path(
+        'cabinet/journals/journal-repair/create-post-repair/',
+        views.PostRepairWorkCreateView.as_view(), name='create_post_repair'),
+    path(
         'cabinet/journals/journal-walk/',
         views.DistrictsListView.as_view(), name='districts'),
     path(

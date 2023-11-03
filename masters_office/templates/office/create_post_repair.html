@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% load crispy_forms_tags %}
 {% block title %}
-  Новый запись
+  Новая запись
 {% endblock %}
 {% block content %}
 <main>
@@ -13,11 +13,12 @@
               Новая запись в журнале ремонтных работ
           </div>
           <div class="card-body">
-            <form method="post" enctype="multipart/form-data">
+            <form method="post">
               {% csrf_token %}
               <div class="form-error">{{ form.non_field_errors }}</div>
                 <div class="row gy-3">
-                  <div class="col-6">{{ form.district|as_crispy_field }}</div>
+                  <div class="col-12">{{ form.district|as_crispy_field }}</div>
+                  <div class="col-12">{{ form.adress|as_crispy_field }}</div>
                   <div class="col-6">{{ form.order|as_crispy_field }}</div>
                   <div class="col-6">{{ form.number_order|as_crispy_field }}</div>
                   <div class="col-12"> {{ form.description|as_crispy_field }}</div>

@@ -278,44 +278,21 @@ class PostRepairWorkCreateView(LoginRequiredMixin, CreateView):
     template_name = 'office/create_post_repair.html'
     form_class = PostRepairWorkForm
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['journal'] = get_object_or_404(
-            Journal, slug=self.kwargs.get('slug_journal')
-        )
-        return context
-
-    # def get_initial(self):
-    #     initial = super().get_initial()
-    #     initial['district'] = get_object_or_404(
-    #         District, slug=self.kwargs.get('slug_district')
-    #     )
-    #     return initial
-
     def form_valid(self, form):
-        # form = validated_planned_field(self, form)
-        # if form.errors:
-        #     return self.form_invalid(form)
         post = form.save(commit=False)
         post.author = self.request.user
-        post.journal = get_object_or_404(
-            Journal, slug=self.kwargs.get('slug_journal')
-        )
         post.save()
         return super().form_valid(form)
 
-    # def get_success_url(self):
-    #     logger.info(
-    #         f'PostWalking (pk: {self.object.id}) was created. '
-    #         f'User: {(self.object.author.username).upper()}'
-    #     )
-    #     messages.success(
-    #         self.request, mark_safe(
-    #             f'Запись № {self.object.number_post} успешно добавлена.'
-    #             f' <a href="{self.object.id}/">Открыть запись</a>'
-    #         )
-    #     )
-    #     return reverse('office:journal_walk', kwargs={
-    #              'slug_journal': self.kwargs.get('slug_journal'),
-    #              'slug_district': self.kwargs.get('slug_district'),
-    #         })
+    def get_success_url(self):
+        logger.info(
+            f'PostRepairWork (pk: {self.object.id}) was created. '
+            f'User: {(self.object.author.username).upper()}'
+        )
+        messages.success(
+            self.request, mark_safe(
+                f'Запись № {self.object.number_post} успешно добавлена.'
+                f' <a href="{self.object.id}/">Открыть запись</a>'
+            )
+        )
+        return reverse('office:journal_repair_work')
