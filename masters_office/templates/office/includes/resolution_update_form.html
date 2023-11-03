@@ -9,7 +9,7 @@
   <div class="card my-4">
     <h5 class="card-header">Редактирование резолюции:</h5>
     <div class="card-body">
-      <form method="post" action="{% url 'office:resolution_update_form' journal.slug district.slug post.id resolution.id %}">
+      <form method="post" action="{% url 'office:resolution_update_form' district.slug post.id resolution.id %}">
         {% csrf_token %}      
         <div class="form-group mb-2">
           {{ form.text }}          

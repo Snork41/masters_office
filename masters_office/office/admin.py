@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.contrib import messages
 
 from .forms import PostWalkingForm, PostRepairWorkForm
-from .models import (Journal, PostWalking,
+from .models import (PostWalking,
                      Personal, District, Position,
                      EnergyDistrict, Brigade, Resolution, PostRepairWork)
 
@@ -37,7 +37,6 @@ class PostRepairWorkAdmin(admin.ModelAdmin):
         'is_deleted',
     )
     fields = (
-        'journal',
         'district',
         'order',
         'number_order',
@@ -73,7 +72,6 @@ class PostWalkingAdmin(admin.ModelAdmin):
         'is_deleted',
     )
     fields = (
-        'journal',
         'author',
         'district',
         ('time_create', 'time_update'),
@@ -95,19 +93,6 @@ class PostWalkingAdmin(admin.ModelAdmin):
     readonly_fields = ('time_create', 'time_update', 'number_post')
     filter_horizontal = ('members',)
     list_per_page = 20
-
-
-@admin.register(Journal)
-class JournalAdmin(admin.ModelAdmin):
-    list_display = (
-        'pk',
-        'title',
-        'description',
-        'slug',
-    )
-    list_display_links = ('title',)
-    empty_value_display = '-пусто-'
-    prepopulated_fields = {'slug': ('title',)}
 
 
 @admin.register(Brigade)

@@ -4,20 +4,20 @@ from django.contrib.auth import get_user_model
 from django.test import Client, TestCase
 from django.urls import reverse
 
-from office.models import (Brigade, District, EnergyDistrict, Journal,
+from office.models import (Brigade, District, EnergyDistrict,
                            Personal, Position, PostWalking)
 from .consts import (BRGD_NUMBER, CABINET_TMPLT, CABINET_URL,
                      CREATE_POST_WLK_TMPLT, CREATE_POST_WLK_URL,
-                     DESCRIPTION_JOURNAL, DISTRICTS_TMPLT, DISTRICTS_URL,
+                     DISTRICTS_TMPLT, DISTRICTS_URL,
                      EDIT_POST_WLK_REVERSE, EDIT_POST_WLK_TMPLT, FIRST_NAME_1,
                      FIRST_NAME_2, INDEX_TMPLT, INDEX_URL, JOURNALS_TMPLT,
                      JOURNALS_URL, JRNL_WLK_TMPLT, JRNL_WLK_URL, LAST_NAME_1,
                      LAST_NAME_2, LOGIN_PAGE_REDIRECT, MIDDLE_NAME_1,
                      MIDDLE_NAME_2, NAME_POSITION, PLAN_WLK,
                      POST_WLK_DETAIL_REVERSE, POST_WLK_DETAIL_TMPLT,
-                     POST_WLK_NUMBER, RANK, SLUG_DISTRICT, SLUG_JOURNAL,
+                     POST_WLK_NUMBER, RANK, SLUG_DISTRICT,
                      TAB_NUMBER_1, TAB_NUMBER_2, TASK_WLK, TEXT_WLK,
-                     TITLE_DISTRICT, TITLE_ENERGY_DISTRICT, TITLE_JOURNAL,
+                     TITLE_DISTRICT, TITLE_ENERGY_DISTRICT,
                      TRANSFER_WLK, UNEXISTING_PAGE, USERNAME, USERNAME_AUTHOR,
                      WALK_DATE, BRIGADES_URL, BRIGADES_TMPL, EMPLOYEES_URL,
                      EMPLOYEES_TMPL, TITLE_SECOND_ENERGY_DISTRICT,
@@ -83,15 +83,9 @@ class OfficeURLTest(TestCase):
             brigadier=cls.workman,
         )
         cls.brigade.members.set([cls.workman_2])
-        cls.journal = Journal.objects.create(
-            title=TITLE_JOURNAL,
-            slug=SLUG_JOURNAL,
-            description=DESCRIPTION_JOURNAL,
-        )
         cls.post_walking = PostWalking.objects.create(
             number_post=POST_WLK_NUMBER,
             walk_date=WALK_DATE,
-            journal=cls.journal,
             district=cls.district,
             task=TASK_WLK,
             text=TEXT_WLK,
@@ -105,7 +99,6 @@ class OfficeURLTest(TestCase):
         cls.POST_WLK_DETAIL_URL = reverse(
             POST_WLK_DETAIL_REVERSE,
             kwargs={
-                'slug_journal': cls.journal.slug,
                 'slug_district': cls.district.slug,
                 'post_id': cls.post_walking.id
             }
@@ -113,7 +106,6 @@ class OfficeURLTest(TestCase):
         cls.EDIT_POST_WLK_URL = reverse(
             EDIT_POST_WLK_REVERSE,
             kwargs={
-                'slug_journal': cls.journal.slug,
                 'slug_district': cls.district.slug,
                 'post_id': cls.post_walking.id
             }
