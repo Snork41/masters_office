@@ -19,5 +19,5 @@ class CheckEnergyDistrictMixin:
         district_energy_district = get_object_or_404(District, slug=self.kwargs.get('slug_district')).energy_district
         user_energy_district = request.user.energy_district
         if user_energy_district != district_energy_district:
-            return redirect('office:districts', slug_journal=self.kwargs.get('slug_journal'))
+            return redirect('office:districts')
         return super().get(request, *args, **kwargs)

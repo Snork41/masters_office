@@ -21,13 +21,13 @@
       <h2 class="text-center fw-light">Журнал обходов тепловых сетей</h2>
       <h2 class="text-center fw-medium">{{ district }}</h2>
       <div class="d-grid col-2 mx-auto">
-        <a class="btn btn-outline-dark fs-5 btn-back"  style="margin-bottom: 10%;" href="{% url 'office:journal_walk' journal.slug district.slug %}">Назад к списку</a>
+        <a class="btn btn-outline-dark fs-5 btn-back"  style="margin-bottom: 10%;" href="{% url 'office:journal_walk' district.slug %}">Назад к списку</a>
         </div>
       <div class="row justify-content-center">
         <div class="col-8 d-inline-block" style="padding-bottom: 10px;">
         <div class="previous-button col-2">
           {% if post.get_previous_post %}
-          <a class="btn btn-outline-dark shadow" href="{% url 'office:post_walking_detail' journal.slug district.slug post.get_previous_post.id %} ">Предыдущая запись</a>
+          <a class="btn btn-outline-dark shadow" href="{% url 'office:post_walking_detail' district.slug post.get_previous_post.id %} ">Предыдущая запись</a>
           {% else %}
           <span class="d-inline-block" tabindex="0" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-title="Записи нет">
             <button class="btn btn-outline-secondary shadow" type="button" disabled>Предыдущая запись</button>
@@ -36,7 +36,7 @@
         </div>
         <div class="next-button col-2" style="text-align: end;">
           {% if post.get_next_post %}
-          <a class="btn btn-outline-dark shadow" href="{% url 'office:post_walking_detail' journal.slug district.slug post.get_next_post.id %} ">Следующая запись</a>
+          <a class="btn btn-outline-dark shadow" href="{% url 'office:post_walking_detail' district.slug post.get_next_post.id %} ">Следующая запись</a>
           {% else %}
           <span class="d-inline-block" tabindex="0" data-bs-toggle="tooltip" data-bs-placement="left" data-bs-title="Записи нет">
             <button class="btn btn-outline-secondary" type="button" disabled>Следующая запись</button>
@@ -129,7 +129,7 @@
             </table>
 
                   {% if post.author.id == user.id %}
-                    <a class="btn btn-outline-dark" href="{% url 'office:edit_post_walking' journal.slug district.slug post.id %}">Редактировать запись</a>
+                    <a class="btn btn-outline-dark" href="{% url 'office:edit_post_walking' district.slug post.id %}">Редактировать запись</a>
                   {% endif %}
                   {% if not resolution %}
                     {% include 'office/includes/resolution_form.html' %}

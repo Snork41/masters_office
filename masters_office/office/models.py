@@ -161,36 +161,6 @@ class Brigade(models.Model):
         return f'Бригада № {self.number}. Мастера {self.master}'
 
 
-class Journal(models.Model):
-    """Журнал."""
-
-    title = models.CharField(
-        max_length=100,
-        unique=True,
-        verbose_name='Название'
-    )
-    slug = models.SlugField(
-        null=False,
-        unique=True
-    )
-    description = models.TextField(
-        verbose_name='Описание'
-    )
-
-    class Meta:
-        verbose_name = 'Журнал'
-        verbose_name_plural = 'Журналы'
-
-    def __str__(self):
-        return self.title
-
-    def get_absolute_url(self):
-        return reverse('office:districts', kwargs={
-            'slug_journal': self.slug
-            }
-        )
-
-
 class PostWalking(models.Model):
     """Запись в журнале обхода."""
 
@@ -264,14 +234,6 @@ class PostWalking(models.Model):
         verbose_name='Автор',
         related_name='posts'
     )
-    journal = models.ForeignKey(
-        'Journal',
-        null=True,
-        on_delete=models.SET_NULL,
-        related_name='posts',
-        verbose_name='Журнал',
-        help_text='Журнал, в котором будет запись'
-    )
     is_deleted = models.BooleanField(
         default=False,
         verbose_name='Удаленная запись'
@@ -292,7 +254,6 @@ class PostWalking(models.Model):
 
     def get_absolute_url(self):
         return reverse('office:post_walking_detail', kwargs={
-            'slug_journal': self.journal.slug,
             'slug_district': self.district.slug,
             'post_id': self.id
             }
@@ -349,7 +310,6 @@ class Resolution(models.Model):
 
     def get_absolute_url(self):
         return reverse('office:post_walking_detail', kwargs={
-            'slug_journal': self.post_walking.journal.slug,
             'slug_district': self.post_walking.district.slug,
             'post_id': self.post_walking.id
             }
@@ -406,14 +366,6 @@ class PostRepairWork(models.Model):
         on_delete=models.SET_NULL,
         verbose_name='Автор',
         related_name='posts_repair'
-    )
-    journal = models.ForeignKey(
-        'Journal',
-        null=True,
-        on_delete=models.SET_NULL,
-        related_name='posts_repair',
-        verbose_name='Журнал',
-        help_text='Журнал, в котором будет запись'
     )
     is_deleted = models.BooleanField(
         default=False,

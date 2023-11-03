@@ -11,7 +11,7 @@ from django.views.generic import (
 from django.utils.safestring import mark_safe
 
 from .models import (
-    Brigade, District, Journal, PostWalking, Personal, Resolution, PostRepairWork)
+    Brigade, District, PostWalking, Personal, Resolution, PostRepairWork)
 from .tables import PersonalTable
 from .forms import PostWalkingForm, ResolutionForm, PostRepairWorkForm
 from .filters import PersonalFilter, PostWalkingFilter, PostRepairWorkFilter
@@ -31,10 +31,8 @@ class CabinetView(LoginRequiredMixin, TemplateView):
     template_name = 'office/cabinet.html'
 
 
-class JournalsListView(LoginRequiredMixin, ListView):
-    model = Journal
+class JournalsListView(LoginRequiredMixin, TemplateView):
     template_name = 'office/journals.html'
-    context_object_name = 'all_journals'
 
 
 class DistrictsListView(LoginRequiredMixin, ListView):
@@ -45,13 +43,6 @@ class DistrictsListView(LoginRequiredMixin, ListView):
     def get_queryset(self):
         return District.objects.filter(energy_district=self.request.user.energy_district)
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['journal'] = get_object_or_404(
-            Journal, slug=self.kwargs.get('slug_journal')
-        )
-        return context
-
 
 class JournalWalkView(LoginRequiredMixin, CheckEnergyDistrictMixin, FilterView):
     model = PostWalking
@@ -60,16 +51,13 @@ class JournalWalkView(LoginRequiredMixin, CheckEnergyDistrictMixin, FilterView):
     filterset_class = PostWalkingFilter
 
     def get_queryset(self):
-        journal = get_object_or_404(Journal, slug=self.kwargs.get('slug_journal'))
         district = get_object_or_404(District, slug=self.kwargs.get('slug_district'))
         return PostWalking.objects.filter(
-            journal=journal, district=district
-        ).select_related('author', 'journal', 'district').prefetch_related('members')
+            district=district).select_related('author', 'district').prefetch_related('members')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['district'] = get_object_or_404(District, slug=self.kwargs.get('slug_district'))
-        context['journal'] = get_object_or_404(Journal, slug=self.kwargs.get('slug_journal'))
         context['page_obj'] = get_paginator(
             self.request,
             context['posts'],
@@ -82,13 +70,6 @@ class PostWalkingCreateView(LoginRequiredMixin, CheckEnergyDistrictMixin, Create
     model = PostWalking
     template_name = 'office/create_post_walking.html'
     form_class = PostWalkingForm
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['journal'] = get_object_or_404(
-            Journal, slug=self.kwargs.get('slug_journal')
-        )
-        return context
 
     def get_initial(self):
         initial = super().get_initial()
@@ -103,9 +84,6 @@ class PostWalkingCreateView(LoginRequiredMixin, CheckEnergyDistrictMixin, Create
             return self.form_invalid(form)
         post = form.save(commit=False)
         post.author = self.request.user
-        post.journal = get_object_or_404(
-            Journal, slug=self.kwargs.get('slug_journal')
-        )
         post.save()
         return super().form_valid(form)
 
@@ -121,7 +99,6 @@ class PostWalkingCreateView(LoginRequiredMixin, CheckEnergyDistrictMixin, Create
             )
         )
         return reverse('office:journal_walk', kwargs={
-                 'slug_journal': self.kwargs.get('slug_journal'),
                  'slug_district': self.kwargs.get('slug_district'),
             })
 
@@ -142,18 +119,10 @@ class PostWalkingEditView(LoginRequiredMixin, CheckEnergyDistrictMixin, UpdateVi
         if post.author != request.user:
             return redirect(
                 'office:post_walking_detail',
-                slug_journal=self.kwargs.get('slug_journal'),
                 slug_district=self.kwargs.get('slug_district'),
                 post_id=self.kwargs.get('post_id')
             )
         return super().dispatch(request, *args, **kwargs)
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['journal'] = get_object_or_404(
-            Journal, slug=self.kwargs.get('slug_journal')
-        )
-        return context
 
     def form_valid(self, form):
         form = validated_planned_field(self, form)
@@ -173,7 +142,6 @@ class PostWalkingEditView(LoginRequiredMixin, CheckEnergyDistrictMixin, UpdateVi
             )
         )
         return reverse('office:journal_walk', kwargs={
-                 'slug_journal': self.kwargs.get('slug_journal'),
                  'slug_district': self.kwargs.get('slug_district'),
             })
 
@@ -187,12 +155,11 @@ class PostWalkingDetailView(LoginRequiredMixin, CheckEnergyDistrictMixin, Detail
 
     def get_queryset(self):
         return super().get_queryset().select_related(
-            'author', 'journal', 'district')
+            'author', 'district')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['district'] = context['post'].district
-        context['journal'] = context['post'].journal
         context['resolution'] = context['post'].resolution.first()
         return context
 
@@ -225,7 +192,6 @@ class ResolutionAddView(LoginRequiredMixin, CheckEnergyDistrictMixin, CreateView
         else:
             messages.warning(self.request, 'Резолюция не может быть пустой')
         return redirect('office:post_walking_detail',
-                        self.kwargs.get('slug_journal'),
                         self.kwargs.get('slug_district'),
                         self.kwargs.get('post_id')
                         )

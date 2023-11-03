@@ -2,16 +2,16 @@ from django.contrib.auth import get_user_model
 from django.test import Client, TestCase
 from django.urls import reverse
 
-from office.models import (Brigade, District, EnergyDistrict, Journal,
+from office.models import (Brigade, District, EnergyDistrict,
                            Personal, Position, PostWalking, Resolution)
-from .consts import (BRGD_NUMBER, DESCRIPTION_JOURNAL, FIRST_NAME_1,
+from .consts import (BRGD_NUMBER, FIRST_NAME_1,
                      FIRST_NAME_2, LAST_NAME_1, LAST_NAME_2, MIDDLE_NAME_1,
                      MIDDLE_NAME_2, NAME_POSITION, PLAN_WLK,
                      POST_WLK_DETAIL_REVERSE, POST_WLK_NUMBER,
                      POST_WLK_NUMBER_2, RANK,
-                     RESOLUTION_WALK, SLUG_DISTRICT, SLUG_JOURNAL,
+                     RESOLUTION_WALK, SLUG_DISTRICT,
                      TAB_NUMBER_1, TAB_NUMBER_2, TASK_WLK, TEXT_WLK,
-                     TITLE_DISTRICT, TITLE_ENERGY_DISTRICT, TITLE_JOURNAL,
+                     TITLE_DISTRICT, TITLE_ENERGY_DISTRICT,
                      TRANSFER_WLK, USERNAME, WALK_DATE)
 
 User = get_user_model()
@@ -62,15 +62,9 @@ class OfficeModelTest(TestCase):
             brigadier=cls.workman,
         )
         cls.brigade.members.set([cls.workman_2])
-        cls.journal = Journal.objects.create(
-            title=TITLE_JOURNAL,
-            slug=SLUG_JOURNAL,
-            description=DESCRIPTION_JOURNAL,
-        )
         cls.post_walking = PostWalking.objects.create(
             number_post=POST_WLK_NUMBER,
             walk_date=WALK_DATE,
-            journal=cls.journal,
             district=cls.district,
             task=TASK_WLK,
             text=TEXT_WLK,
@@ -83,7 +77,6 @@ class OfficeModelTest(TestCase):
         cls.post_walking_2 = PostWalking.objects.create(
             number_post=POST_WLK_NUMBER_2,
             walk_date=WALK_DATE,
-            journal=cls.journal,
             district=cls.district,
             task=TASK_WLK,
             text=TEXT_WLK,
@@ -101,7 +94,6 @@ class OfficeModelTest(TestCase):
         cls.POST_WLK_DETAIL_URL = reverse(
             POST_WLK_DETAIL_REVERSE,
             kwargs={
-                'slug_journal': cls.journal.slug,
                 'slug_district': cls.district.slug,
                 'post_id': cls.post_walking.id
             }
@@ -109,7 +101,6 @@ class OfficeModelTest(TestCase):
         cls.POST_WLK_2_DETAIL_URL = reverse(
             POST_WLK_DETAIL_REVERSE,
             kwargs={
-                'slug_journal': cls.journal.slug,
                 'slug_district': cls.district.slug,
                 'post_id': cls.post_walking_2.id
             }
@@ -126,7 +117,6 @@ class OfficeModelTest(TestCase):
         position = self.position
         workman = self.workman
         brigade = self.brigade
-        journal = self.journal
         post_walking = self.post_walking
         personal = self.workman
         resolution = self.resolution
@@ -137,7 +127,6 @@ class OfficeModelTest(TestCase):
             position: position.name_position,
             workman: f'{workman.last_name} {workman.first_name} {workman.middle_name}',
             brigade: f'Бригада № {brigade.number}. Мастера {brigade.master}',
-            journal: journal.title,
             post_walking: f'{district.title}, Запись № {post_walking.pk} от {post_walking.time_create.date()}',
             personal: f'{personal.last_name} {personal.first_name} {personal.middle_name}',
             resolution: resolution.text
@@ -153,9 +142,7 @@ class OfficeModelTest(TestCase):
         response = self.authorized_client.get(self.POST_WLK_DETAIL_URL)
         post = response.context.get('post')
         next_post_number = post.number_post + 1
-        expected = PostWalking.objects.get(
-            journal=post.journal, number_post=next_post_number
-        )
+        expected = PostWalking.objects.get(number_post=next_post_number)
         self.assertEqual(post.get_next_post(), expected)
 
     def test_previous_post_walking(self):
@@ -163,7 +150,5 @@ class OfficeModelTest(TestCase):
         response = self.authorized_client.get(self.POST_WLK_2_DETAIL_URL)
         post = response.context.get('post')
         previous_post_number = post.number_post - 1
-        expected = PostWalking.objects.get(
-            journal=post.journal, number_post=previous_post_number
-        )
+        expected = PostWalking.objects.get(number_post=previous_post_number)
         self.assertEqual(post.get_previous_post(), expected)

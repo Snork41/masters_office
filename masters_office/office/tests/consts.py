@@ -74,30 +74,21 @@ CABINET_URL = reverse(CABINET_REVERSE)
 BRIGADES_URL = reverse(BRIGADES_REVERSE)
 EMPLOYEES_URL = reverse(EMPLOYEES_REVERSE)
 JOURNALS_URL = reverse(JOURNALS_REVERSE)
-DISTRICTS_URL = reverse(
-    DISTRICTS_REVERSE,
+DISTRICTS_URL = reverse(DISTRICTS_REVERSE)
+JRNL_WLK_URL = reverse(JRNL_WLK_REVERSE,
     kwargs={
-        'slug_journal': SLUG_JOURNAL
-    }
-)
-JRNL_WLK_URL = reverse(
-    JRNL_WLK_REVERSE,
-    kwargs={
-        'slug_journal': SLUG_JOURNAL,
         'slug_district': SLUG_DISTRICT
     }
 )
 CREATE_POST_WLK_URL = reverse(
     CREATE_POST_WLK_REVERSE,
     kwargs={
-        'slug_journal': SLUG_JOURNAL,
         'slug_district': SLUG_DISTRICT
     }
 )
 EDIT_POST_WLK_URL = reverse(
     EDIT_POST_WLK_REVERSE,
     kwargs={
-        'slug_journal': SLUG_JOURNAL,
         'slug_district': SLUG_DISTRICT,
         'post_id': POST_WLK_NUMBER
     }
@@ -105,7 +96,6 @@ EDIT_POST_WLK_URL = reverse(
 ADD_RESOLUTION_URL = reverse(
     ADD_RESOLUTION_REVERSE,
     kwargs={
-        'slug_journal': SLUG_JOURNAL,
         'slug_district': SLUG_DISTRICT,
         'post_id': POST_WLK_NUMBER
     }
@@ -113,7 +103,6 @@ ADD_RESOLUTION_URL = reverse(
 UPDATE_RESOLUTION_URL = reverse(
     UPDATE_RESOLUTION_REVERSE,
     kwargs={
-        'slug_journal': SLUG_JOURNAL,
         'slug_district': SLUG_DISTRICT,
         'post_id': POST_WLK_NUMBER,
         'resolution_id': RESOLUTION_ID
