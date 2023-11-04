@@ -19,6 +19,7 @@
                 <div class="row gy-3">
                   <div class="col-6">{{ form.district|as_crispy_field }}</div>
                   <div class="col-6">{{ form.walk_date|as_crispy_field }}</div>
+                  <div class="col-12 form-error form-error-planned text-center">{{ form.errors.planned }}</div>
                   <div class="col-6 d-grid gap-2">
                     {{ form.planned }}
                     <label class="btn btn-outline-dark" for="btn-check-planned-outlined">Плановый</label>
@@ -27,8 +28,8 @@
                     {{ form.not_planned }}
                     <label class="btn btn-outline-dark" for="btn-check-not-planned-outlined">Внеплановый</label>
                   </div>
-                  <div class="col-12 form-error form-error-planned">{{ form.errors.planned }}</div>
-                    <div class="col-12 mw-100 d-flex" style="margin-top: 3%; margin-bottom: 3%;">
+                  <div class="col-12 form-error form-error-members text-center">{{ form.errors.members }}</div>
+                    <div class="col-12 mw-100 d-flex" style="margin-bottom: 3%;">
                       {{ form.members }}
                     </div>
                     {{ form.media }}

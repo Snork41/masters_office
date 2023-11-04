@@ -111,10 +111,10 @@ a.btn.btn-back:hover {
     scale: 1.05;
 }
 
-/* Ошибка при не выборе план/внеплан обход */
-.form-error-planned {
-    color: rgb(0, 255, 21);
-    font-weight: 110%;
+/* Ошибки при заполнении формы поста обхода */
+.form-error-planned, .form-error-members {
+    color: rgb(255, 0, 0);
+    font-weight: bold;
     display: block;
 }
 

@@ -137,6 +137,7 @@ class PersonalAdmin(admin.ModelAdmin):
         'energy_district',
     )
     list_display_links = ('first_name', 'last_name', 'middle_name')
+    list_filter = ('energy_district',)
 
 
 @admin.register(Position)

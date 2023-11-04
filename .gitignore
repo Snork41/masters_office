@@ -2,6 +2,7 @@
 .vscode/
 masters_office/sent_emails/
 thoughts.txt
+backlog.txt
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

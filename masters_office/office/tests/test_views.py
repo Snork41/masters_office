@@ -56,7 +56,7 @@ class OfficeViewsTest(TestCase):
             master=cls.user,
             energy_district=cls.energy_district
         )
-        cls.district_2 = District.objects.create(
+        cls.district_2_SED = District.objects.create(
             title=TITLE_DISTRICT_2,
             slug=SLUG_DISTRICT_2,
             master=cls.user,

@@ -15,7 +15,7 @@ from .models import (
 from .tables import PersonalTable
 from .forms import PostWalkingForm, ResolutionForm, PostRepairWorkForm
 from .filters import PersonalFilter, PostWalkingFilter, PostRepairWorkFilter
-from .validators import validated_planned_field, CheckEnergyDistrictMixin
+from .validators import CheckEnergyDistrictMixin, validate_fields_post_walking, get_filtered_energy_district
 from .utils import get_paginator
 from masters_office.settings import AMOUNT_POSTS_WALK, AMOUNT_POSTS_REPAIR_WORK
 
@@ -78,8 +78,12 @@ class PostWalkingCreateView(LoginRequiredMixin, CheckEnergyDistrictMixin, Create
         )
         return initial
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        return get_filtered_energy_district(self, context)
+
     def form_valid(self, form):
-        form = validated_planned_field(self, form)
+        form = validate_fields_post_walking(self, form)
         if form.errors:
             return self.form_invalid(form)
         post = form.save(commit=False)
@@ -124,8 +128,12 @@ class PostWalkingEditView(LoginRequiredMixin, CheckEnergyDistrictMixin, UpdateVi
             )
         return super().dispatch(request, *args, **kwargs)
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        return get_filtered_energy_district(self, context)
+
     def form_valid(self, form):
-        form = validated_planned_field(self, form)
+        form = validate_fields_post_walking(self, form)
         if form.errors:
             return self.form_invalid(form)
         return super().form_valid(form)
@@ -277,6 +285,10 @@ class PostRepairWorkCreateView(LoginRequiredMixin, CreateView):
     model = PostRepairWork
     template_name = 'office/create_post_repair.html'
     form_class = PostRepairWorkForm
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        return get_filtered_energy_district(self, context)
 
     def form_valid(self, form):
         post = form.save(commit=False)

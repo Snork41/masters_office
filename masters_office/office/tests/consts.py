@@ -77,11 +77,8 @@ EMPLOYEES_URL = reverse(EMPLOYEES_REVERSE)
 JOURNALS_URL = reverse(JOURNALS_REVERSE)
 DISTRICTS_URL = reverse(DISTRICTS_REVERSE)
 JRNL_REPAIR_WORK_URL = reverse(JRNL_REPAIR_WORK_REVERSE)
-JRNL_WLK_URL = reverse(JRNL_WLK_REVERSE,
-    kwargs={
-        'slug_district': SLUG_DISTRICT
-    }
-)
+JRNL_WLK_URL = reverse(
+    JRNL_WLK_REVERSE, kwargs={'slug_district': SLUG_DISTRICT})
 CREATE_POST_WLK_URL = reverse(
     CREATE_POST_WLK_REVERSE,
     kwargs={

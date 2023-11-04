@@ -13,7 +13,11 @@ from .consts import (ADD_RESOLUTION_URL, FIRST_NAME_1,
                      WALK_DATE_NOT_VALID, EDIT_POST_WLK_URL, WALK_DATE_IN_EDIT_POST,
                      TASK_WLK_IN_EDIT_POST, PLAN_WLK_IN_EDIT_POST,
                      TRANSFER_WLK__IN_EDIT_POST, FIRST_NAME_2, LAST_NAME_2,
-                     MIDDLE_NAME_2, TAB_NUMBER_2)
+                     MIDDLE_NAME_2, TAB_NUMBER_2, FIRST_NAME_3_SED, LAST_NAME_3_SED,
+                     MIDDLE_NAME_3_SED, FIRST_NAME_4_SED, LAST_NAME_4_SED,
+                     MIDDLE_NAME_4_SED, TAB_NUMBER_3_SED, TAB_NUMBER_4_SED,
+                     TITLE_SECOND_ENERGY_DISTRICT, TITLE_DISTRICT_2, SLUG_DISTRICT_2)
+
 
 User = get_user_model()
 
@@ -24,6 +28,9 @@ class PostFormTests(TestCase):
         super().setUpClass()
         cls.energy_district = EnergyDistrict.objects.create(
             title=TITLE_ENERGY_DISTRICT,
+        )
+        cls.energy_district_2 = EnergyDistrict.objects.create(
+            title=TITLE_SECOND_ENERGY_DISTRICT,
         )
         cls.user = User.objects.create_user(
             username=USERNAME,
@@ -39,6 +46,12 @@ class PostFormTests(TestCase):
             slug=SLUG_DISTRICT,
             master=cls.user,
             energy_district=cls.energy_district
+        )
+        cls.district_2_SED = District.objects.create(
+            title=TITLE_DISTRICT_2,
+            slug=SLUG_DISTRICT_2,
+            master=cls.user,
+            energy_district=cls.energy_district_2
         )
         cls.position = Position.objects.create(
             name_position=NAME_POSITION,
@@ -61,6 +74,24 @@ class PostFormTests(TestCase):
             position=cls.position,
             rank=RANK,
             tab_number=TAB_NUMBER_2,
+        )
+        cls.workman_3_SED = Personal.objects.create(
+            first_name=FIRST_NAME_3_SED,
+            last_name=LAST_NAME_3_SED,
+            middle_name=MIDDLE_NAME_3_SED,
+            energy_district=cls.energy_district_2,
+            position=cls.position,
+            rank=RANK,
+            tab_number=TAB_NUMBER_3_SED,
+        )
+        cls.workman_4_SED = Personal.objects.create(
+            first_name=FIRST_NAME_4_SED,
+            last_name=LAST_NAME_4_SED,
+            middle_name=MIDDLE_NAME_4_SED,
+            energy_district=cls.energy_district_2,
+            position=cls.position,
+            rank=RANK,
+            tab_number=TAB_NUMBER_4_SED,
         )
         cls.post_walking = PostWalking.objects.create(
             number_post=POST_WLK_NUMBER,
@@ -172,11 +203,9 @@ class PostFormTests(TestCase):
             'members': self.workman.id,
             'district': self.district.id
         }
-        self.assertTrue(
-            'walk_date' in self.authorized_client.post(
-                CREATE_POST_WLK_URL, data=form_data
-                ).context_data['form'].errors
-        )
+        response = self.authorized_client.post(CREATE_POST_WLK_URL, data=form_data)
+        self.assertFalse(response.context['form'].is_valid())
+        self.assertTrue('walk_date' in response.context_data['form'].errors)
 
     def test_validation_select_planned_in_new_post_walking(self):
         """При создании запись обхода не может быть без типа (план/внеплан)."""
@@ -189,8 +218,42 @@ class PostFormTests(TestCase):
             'members': self.workman.id,
             'district': self.district.id
         }
-        self.assertTrue(
-            'planned' in self.authorized_client.post(
-                CREATE_POST_WLK_URL, data=form_data
-                ).context_data['form'].errors
-        )
+        response = self.authorized_client.post(CREATE_POST_WLK_URL, data=form_data)
+        self.assertFalse(response.context['form'].is_valid())
+        self.assertTrue('planned' in response.context_data['form'].errors)
+
+    def test_validation_select_members_in_new_post_walking(self):
+        """При создании записи обхода члены бригады не могут быть с другого энергорайона."""
+        form_data = {
+            'planned': True,
+            'not_planned': False,
+            'walk_date': WALK_DATE,
+            'task': TASK_WLK,
+            'text': TEXT_WLK_2,
+            'plan': PLAN_WLK,
+            'fix_date': WALK_DATE,
+            'transfer': TRANSFER_WLK,
+            'members': self.workman_3_SED.id,
+            'district': self.district.id
+        }
+        response = self.authorized_client.post(CREATE_POST_WLK_URL, data=form_data)
+        self.assertFalse(response.context['form'].is_valid())
+        self.assertTrue('members' in response.context_data['form'].errors)
+
+    def test_validation_select_district_in_new_post_walking(self):
+        """При создании записи обхода источник (район) не может быть другого энергорайона."""
+        form_data = {
+            'planned': True,
+            'not_planned': False,
+            'walk_date': WALK_DATE,
+            'task': TASK_WLK,
+            'text': TEXT_WLK_2,
+            'plan': PLAN_WLK,
+            'fix_date': WALK_DATE,
+            'transfer': TRANSFER_WLK,
+            'members': self.workman.id,
+            'district': self.district_2_SED.id
+        }
+        response = self.authorized_client.post(CREATE_POST_WLK_URL, data=form_data)
+        self.assertFalse(response.context['form'].is_valid())
+        self.assertTrue('district' in response.context_data['form'].errors)
