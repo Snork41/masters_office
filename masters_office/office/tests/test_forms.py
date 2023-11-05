@@ -1,7 +1,7 @@
 from django.contrib.auth import get_user_model
 from django.test import Client, TestCase
 from office.models import (District, EnergyDistrict, Personal,
-                           Position, PostWalking, Resolution)
+                           Position, PostWalking, PostRepairWork, Resolution)
 
 from .consts import (ADD_RESOLUTION_URL, FIRST_NAME_1,
                      LAST_NAME_1, MIDDLE_NAME_1, NAME_POSITION, PLAN_WLK,
@@ -16,7 +16,11 @@ from .consts import (ADD_RESOLUTION_URL, FIRST_NAME_1,
                      MIDDLE_NAME_2, TAB_NUMBER_2, FIRST_NAME_3_SED, LAST_NAME_3_SED,
                      MIDDLE_NAME_3_SED, FIRST_NAME_4_SED, LAST_NAME_4_SED,
                      MIDDLE_NAME_4_SED, TAB_NUMBER_3_SED, TAB_NUMBER_4_SED,
-                     TITLE_SECOND_ENERGY_DISTRICT, TITLE_DISTRICT_2, SLUG_DISTRICT_2)
+                     TITLE_SECOND_ENERGY_DISTRICT, TITLE_DISTRICT_2, SLUG_DISTRICT_2,
+                     POST_REPAIR_NUMBER, ORDER_REPAIR, NUMBER_ORDER_REPAIR,
+                     ADRESS_REPAIR, DESCRIPTION_REPAIR, DATE_START_WORKING_REPAIR,
+                     DATE_END_WORKING_REPAIR, CREATE_POST_REPAIR_URL,
+                     DESCRIPTION_REPAIR_2, DATE_END_WORKING_REPAIR_NOT_VALID)
 
 
 User = get_user_model()
@@ -105,6 +109,17 @@ class PostFormTests(TestCase):
             author=cls.user,
         )
         cls.post_walking.members.set([cls.workman])
+        cls.post_repair = PostRepairWork.objects.create(
+            number_post=POST_REPAIR_NUMBER,
+            district=cls.district,
+            order=ORDER_REPAIR,
+            number_order=NUMBER_ORDER_REPAIR,
+            adress=ADRESS_REPAIR,
+            description=DESCRIPTION_REPAIR,
+            date_start_working=DATE_START_WORKING_REPAIR,
+            date_end_working=DATE_END_WORKING_REPAIR,
+            author=cls.user,
+        )
 
     def setUp(self):
         self.authorized_client = Client()
@@ -140,7 +155,7 @@ class PostFormTests(TestCase):
     def test_create_post_walking(self):
         """Валидная форма создаёт запись обхода тепловых сетей.
 
-        Номер записи, журнал и автор должны заполняться автоматически.
+        Номер записи и автор должны заполняться автоматически.
         """
         exist_posts_walking_amount = PostWalking.objects.count()
         expected_posts_walking_amount = exist_posts_walking_amount + 1
@@ -207,6 +222,21 @@ class PostFormTests(TestCase):
         self.assertFalse(response.context['form'].is_valid())
         self.assertTrue('walk_date' in response.context_data['form'].errors)
 
+    def test_validation_walk_date_in_edit_post_walking(self):
+        """Дата обхода не может быть будущей при редактировании записи."""
+        form_data = {
+            'planned': True,
+            'not_planned': False,
+            'walk_date': WALK_DATE_NOT_VALID,
+            'task': TASK_WLK,
+            'text': TEXT_WLK,
+            'members': self.workman.id,
+            'district': self.district.id
+        }
+        response = self.authorized_client.post(EDIT_POST_WLK_URL, data=form_data)
+        self.assertFalse(response.context['form'].is_valid())
+        self.assertTrue('walk_date' in response.context_data['form'].errors)
+
     def test_validation_select_planned_in_new_post_walking(self):
         """При создании запись обхода не может быть без типа (план/внеплан)."""
         form_data = {
@@ -222,6 +252,21 @@ class PostFormTests(TestCase):
         self.assertFalse(response.context['form'].is_valid())
         self.assertTrue('planned' in response.context_data['form'].errors)
 
+    def test_validation_select_planned_in_edit_post_walking(self):
+        """При редактировании запись обхода не может быть без типа (план/внеплан)."""
+        form_data = {
+            'planned': False,
+            'not_planned': False,
+            'walk_date': WALK_DATE,
+            'task': TASK_WLK,
+            'text': TEXT_WLK,
+            'members': self.workman.id,
+            'district': self.district.id
+        }
+        response = self.authorized_client.post(EDIT_POST_WLK_URL, data=form_data)
+        self.assertFalse(response.context['form'].is_valid())
+        self.assertTrue('planned' in response.context_data['form'].errors)
+
     def test_validation_select_members_in_new_post_walking(self):
         """При создании записи обхода члены бригады не могут быть с другого энергорайона."""
         form_data = {
@@ -230,13 +275,25 @@ class PostFormTests(TestCase):
             'walk_date': WALK_DATE,
             'task': TASK_WLK,
             'text': TEXT_WLK_2,
-            'plan': PLAN_WLK,
-            'fix_date': WALK_DATE,
-            'transfer': TRANSFER_WLK,
             'members': self.workman_3_SED.id,
             'district': self.district.id
         }
         response = self.authorized_client.post(CREATE_POST_WLK_URL, data=form_data)
+        self.assertFalse(response.context['form'].is_valid())
+        self.assertTrue('members' in response.context_data['form'].errors)
+
+    def test_validation_select_members_in_edit_post_walking(self):
+        """При редактировании записи обхода члены бригады не могут быть с другого энергорайона."""
+        form_data = {
+            'planned': True,
+            'not_planned': False,
+            'walk_date': WALK_DATE,
+            'task': TASK_WLK,
+            'text': TEXT_WLK_2,
+            'members': self.workman_3_SED.id,
+            'district': self.district.id
+        }
+        response = self.authorized_client.post(EDIT_POST_WLK_URL, data=form_data)
         self.assertFalse(response.context['form'].is_valid())
         self.assertTrue('members' in response.context_data['form'].errors)
 
@@ -248,12 +305,54 @@ class PostFormTests(TestCase):
             'walk_date': WALK_DATE,
             'task': TASK_WLK,
             'text': TEXT_WLK_2,
-            'plan': PLAN_WLK,
-            'fix_date': WALK_DATE,
-            'transfer': TRANSFER_WLK,
             'members': self.workman.id,
             'district': self.district_2_SED.id
         }
         response = self.authorized_client.post(CREATE_POST_WLK_URL, data=form_data)
         self.assertFalse(response.context['form'].is_valid())
         self.assertTrue('district' in response.context_data['form'].errors)
+
+    def test_create_post_repair_work(self):
+        """Валидная форма создаёт запись в журнале ремонтных работ.
+
+        Номер записи и автор должны заполняться автоматически.
+        """
+        exist_posts_repair_amount = PostRepairWork.objects.count()
+        expected_posts_repair_amount = exist_posts_repair_amount + 1
+        exist_post_repair_number = self.post_repair.number_post
+        expected_new_post_repair_number = exist_post_repair_number + 1
+        form_data = {
+            'district': self.district.id,
+            'order': ORDER_REPAIR,
+            'number_order': NUMBER_ORDER_REPAIR,
+            'adress': ADRESS_REPAIR,
+            'description': DESCRIPTION_REPAIR_2,
+            'date_start_working': DATE_START_WORKING_REPAIR,
+            'date_end_working': DATE_END_WORKING_REPAIR,
+        }
+        self.authorized_client.post(CREATE_POST_REPAIR_URL, data=form_data)
+        new_post_repair = PostRepairWork.objects.get(description=form_data['description'])
+        self.assertEqual(PostRepairWork.objects.count(), expected_posts_repair_amount)
+        self.assertEqual(new_post_repair.number_post, expected_new_post_repair_number)
+        self.assertEqual(new_post_repair.author, self.user)
+
+    def test_validation_date_end_working_in_new_post_repair(self):
+        """
+        При создании записи в журнале ремонтных работ,
+        дата окончания работ не может быть раньше даты начала работ.
+        """
+        form_data = {
+            'district': self.district.id,
+            'order': ORDER_REPAIR,
+            'number_order': NUMBER_ORDER_REPAIR,
+            'adress': ADRESS_REPAIR,
+            'description': DESCRIPTION_REPAIR_2,
+            'date_start_working': DATE_START_WORKING_REPAIR,
+            'date_end_working': DATE_END_WORKING_REPAIR_NOT_VALID,
+        }
+        response = self.authorized_client.post(CREATE_POST_REPAIR_URL, data=form_data)
+        self.assertFalse(response.context['form'].is_valid())
+        self.assertTrue('date_end_working' in response.context_data['form'].errors)
+
+    # def test_validation_district_in_edit_post_walking(self):
+    #     """При редактировании записи обхода источник (район) нельзя изменить."""

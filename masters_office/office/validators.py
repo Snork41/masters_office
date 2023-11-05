@@ -14,8 +14,19 @@ class CheckEnergyDistrictMixin:
         return super().get(request, *args, **kwargs)
 
 
+def validate_fields_post_repair(self, form):
+    """Проверка полей заполненной формы записи
+    в журнале ремонтых работ на соответствие требований."""
+    if form.cleaned_data['date_start_working'] >= form.cleaned_data['date_end_working']:
+        form.add_error(
+            'date_end_working', 'Дата окончания работ не может быть раньше даты начала'
+        )
+    return form
+
+
 def validate_fields_post_walking(self, form):
-    """Проверка полей заполненной формы на соответствие требований."""
+    """Проверка полей заполненной формы записи
+    в журнале обходов на соответствие требований."""
     if not any([form.cleaned_data['planned'], form.cleaned_data['not_planned']]):
         form.add_error(
             'planned', 'Выберите тип обхода (плановый/внеплановый/оба)'

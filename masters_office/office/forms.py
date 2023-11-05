@@ -5,6 +5,7 @@ from django.core.validators import MaxValueValidator
 import os
 
 from .models import PostWalking, Personal, Resolution, PostRepairWork
+from .utils import add_number_post
 from masters_office.settings import BASE_DIR
 
 
@@ -69,19 +70,9 @@ class PostWalkingForm(forms.ModelForm):
         }
         js = ('/admin/jsi18n',)
 
-    def save(self, username=None, *args, commit=True, **kwargs):
-        """Сохранение записи с автоматической нумерацией, учитывая район."""
+    def save(self, username=None, commit=True, *args, **kwargs):
         obj = super().save(commit=False, *args, **kwargs)
-        if not obj.number_post:
-            most_recent = PostWalking.objects.filter(
-                district=obj.district).order_by('-number_post').first()
-            obj.number_post = most_recent.number_post + 1 if most_recent else 1
-            if username:
-                obj.author = username
-        if commit:
-            obj.save()
-            self._save_m2m()
-        return obj
+        return add_number_post(self, obj, PostWalking, username, commit, *args, **kwargs)
 
     def __init__(self, *args, **kwargs):
         self.instance = kwargs.get('instance')
@@ -106,7 +97,7 @@ class PostRepairWorkForm(forms.ModelForm):
 
     class Meta:
         model = PostRepairWork
-        fields =(
+        fields = (
             'district',
             'order',
             'number_order',
@@ -122,17 +113,8 @@ class PostRepairWorkForm(forms.ModelForm):
         }
 
     def save(self, username=None, *args, commit=True, **kwargs):
-        """Сохранение записи с автоматической нумерацией."""
         obj = super().save(commit=False, *args, **kwargs)
-        if not obj.number_post:
-            most_recent = PostRepairWork.objects.all().order_by('-number_post').first()
-            obj.number_post = most_recent.number_post + 1 if most_recent else 1
-            if username:
-                obj.author = username
-        if commit:
-            obj.save()
-            self._save_m2m()
-        return obj
+        return add_number_post(self, obj, PostRepairWork, username, commit, *args, **kwargs)
 
     def __init__(self, *args, **kwargs):
         self.instance = kwargs.get('instance')

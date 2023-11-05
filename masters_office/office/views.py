@@ -15,7 +15,7 @@ from .models import (
 from .tables import PersonalTable
 from .forms import PostWalkingForm, ResolutionForm, PostRepairWorkForm
 from .filters import PersonalFilter, PostWalkingFilter, PostRepairWorkFilter
-from .validators import CheckEnergyDistrictMixin, validate_fields_post_walking, get_filtered_energy_district
+from .validators import CheckEnergyDistrictMixin, validate_fields_post_walking, validate_fields_post_repair, get_filtered_energy_district
 from .utils import get_paginator
 from masters_office.settings import AMOUNT_POSTS_WALK, AMOUNT_POSTS_REPAIR_WORK
 
@@ -291,6 +291,9 @@ class PostRepairWorkCreateView(LoginRequiredMixin, CreateView):
         return get_filtered_energy_district(self, context)
 
     def form_valid(self, form):
+        form = validate_fields_post_repair(self, form)
+        if form.errors:
+            return self.form_invalid(form)
         post = form.save(commit=False)
         post.author = self.request.user
         post.save()

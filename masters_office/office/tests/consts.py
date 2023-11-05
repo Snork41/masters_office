@@ -6,14 +6,12 @@ USERNAME = 'User'
 USERNAME_AUTHOR = 'authorUser'
 USERNAME_BOSS = 'bossUser'
 USERNAME_SECOND_ENERGY_DISCRICT = 'UserSecondEnergyDistrict'
-SLUG_JOURNAL = 'test-slug-journal'
 SLUG_DISTRICT = 'test-slug-district'
 SLUG_DISTRICT_2 = 'test-slug-district-2'
 TITLE_ENERGY_DISTRICT = 'Тестовый энергорайон'
 TITLE_SECOND_ENERGY_DISTRICT = 'Тестовый энергорайон_2'
 TITLE_DISTRICT = 'Тестовый район(источник)'
 TITLE_DISTRICT_2 = 'Тестовый район(источник)-2'
-TITLE_JOURNAL = 'Тестовый журнал'
 NAME_POSITION = 'Тестовая должность'
 FIRST_NAME_1 = 'Тестовое имя'
 FIRST_NAME_2 = 'Тестовое имя 2'
@@ -34,7 +32,9 @@ TAB_NUMBER_4_SED = 4
 RANK = 1
 BRGD_NUMBER = 1
 BRGD_SED_NUMBER = 2
-DESCRIPTION_JOURNAL = 'Тестовое описание'
+
+
+# <----- Запись в журнале обходов тепловых сетей ----->
 POST_WLK_NUMBER = 1
 POST_WLK_NUMBER_2 = 2
 TASK_WLK = 'Тестовое задание'
@@ -52,6 +52,19 @@ WALK_DATE = datetime.date.today()
 WALK_DATE_IN_EDIT_POST = datetime.date.today() - datetime.timedelta(days=1)
 WALK_DATE_NOT_VALID = datetime.date.today() + datetime.timedelta(days=1)
 
+# <----- Запись в журнале ремонтных работ ----->
+POST_REPAIR_NUMBER = 1
+POST_REPAIR_NUMBER_2 = 2
+ORDER_REPAIR = 'Наряд'
+NUMBER_ORDER_REPAIR = 1
+NUMBER_ORDER_2_REPAIR = 2
+ADRESS_REPAIR = 'Ул. Тестовая 1'
+DESCRIPTION_REPAIR = 'Тестовые работы выполнены'
+DESCRIPTION_REPAIR_2 = 'Тестовые работы выполнены 2'
+DATE_START_WORKING_REPAIR = datetime.date.today() - datetime.timedelta(days=1)
+DATE_END_WORKING_REPAIR = datetime.date.today()
+DATE_END_WORKING_REPAIR_NOT_VALID = DATE_START_WORKING_REPAIR - datetime.timedelta(days=1)
+
 
 LOGIN_PAGE_REDIRECT = '/auth/login/?next='
 UNEXISTING_PAGE = '/unexisting_page/'
@@ -68,6 +81,7 @@ UPDATE_RESOLUTION_REVERSE = 'office:resolution_update_form'
 BRIGADES_REVERSE = 'office:brigades'
 EMPLOYEES_REVERSE = 'office:employees'
 JRNL_REPAIR_WORK_REVERSE = 'office:journal_repair_work'
+CREATE_POST_REPAIR_REVERSE = 'office:create_post_repair'
 
 
 INDEX_URL = reverse(INDEX_REVERSE)
@@ -107,6 +121,7 @@ UPDATE_RESOLUTION_URL = reverse(
         'resolution_id': RESOLUTION_ID
     }
 )
+CREATE_POST_REPAIR_URL = reverse(CREATE_POST_REPAIR_REVERSE)
 
 
 INDEX_TMPLT = 'office/index.html'
