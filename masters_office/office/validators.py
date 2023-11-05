@@ -4,7 +4,10 @@ from .models import District
 
 
 class CheckEnergyDistrictMixin:
-    """Проверяет принадлежность юзера к требуемому энергорайону."""
+    """Проверяет принадлежность юзера к требуемому энергорайону.
+
+    Относится к журналу обходов тепловых сетей.
+    """
 
     def get(self, request, *args, **kwargs):
         district_energy_district = get_object_or_404(District, slug=self.kwargs.get('slug_district')).energy_district

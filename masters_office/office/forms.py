@@ -108,8 +108,9 @@ class PostRepairWorkForm(forms.ModelForm):
             'is_deleted',
         )
         widgets = {
-            'date_start_working': forms.DateTimeInput(format=('%Y-%m-%d'), attrs={'type': 'datetime-local'}),
-            'date_end_working': forms.DateTimeInput(format=('%Y-%m-%d'), attrs={'type': 'datetime-local'}),
+            'date_start_working': forms.DateTimeInput(format=('%Y-%m-%d %H:%M'), attrs={'type': 'datetime-local'}),
+            'date_end_working': forms.DateTimeInput(format=('%Y-%m-%d %H:%M'), attrs={'type': 'datetime-local'}),
+            'is_deleted': forms.CheckboxInput(attrs={'id': 'btn-check-deleted-outlined', 'type': 'checkbox', 'class': 'btn-check'})
         }
 
     def save(self, username=None, *args, commit=True, **kwargs):
@@ -119,5 +120,6 @@ class PostRepairWorkForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         self.instance = kwargs.get('instance')
         super().__init__(*args, **kwargs)
-        for field in self.fields:
-            self.fields[field].widget.attrs.update({'class': 'focus-ring focus-ring-dark border'})
+        for field in ['district', 'order', 'number_order', 'adress', 'description', 'date_start_working', 'date_end_working']:
+            if field in self.fields:
+                self.fields[field].widget.attrs.update({'class': 'focus-ring focus-ring-dark border'})

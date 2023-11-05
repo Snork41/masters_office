@@ -122,9 +122,7 @@ class PostWalkingEditView(LoginRequiredMixin, CheckEnergyDistrictMixin, UpdateVi
         post = self.get_object()
         if post.author != request.user:
             return redirect(
-                'office:post_walking_detail',
-                slug_district=self.kwargs.get('slug_district'),
-                post_id=self.kwargs.get('post_id')
+                'office:districts',
             )
         return super().dispatch(request, *args, **kwargs)
 
@@ -136,6 +134,9 @@ class PostWalkingEditView(LoginRequiredMixin, CheckEnergyDistrictMixin, UpdateVi
         form = validate_fields_post_walking(self, form)
         if form.errors:
             return self.form_invalid(form)
+        post = form.save(commit=False)
+        post.is_edit = True
+        post.save()
         return super().form_valid(form)
 
     def get_success_url(self):
@@ -273,6 +274,7 @@ class JournalRepairWorkView(LoginRequiredMixin, FilterView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        context['energy_district'] = self.request.user.energy_district
         context['page_obj'] = get_paginator(
             self.request,
             context['posts'],
@@ -307,7 +309,47 @@ class PostRepairWorkCreateView(LoginRequiredMixin, CreateView):
         messages.success(
             self.request, mark_safe(
                 f'Запись № {self.object.number_post} успешно добавлена.'
-                f' <a href="{self.object.id}/">Открыть запись</a>'
+            )
+        )
+        return reverse('office:journal_repair_work')
+
+
+class PostRepairWorkEditView(LoginRequiredMixin, UpdateView):
+    model = PostRepairWork
+    template_name = 'office/edit_post_repair.html'
+    form_class = PostRepairWorkForm
+    pk_url_kwarg = 'post_id'
+    context_object_name = 'post'
+
+    def dispatch(self, request, *args, **kwargs):
+        post = self.get_object()
+        if post.author != request.user:
+            return redirect(
+                'office:journal_repair_work',
+            )
+        return super().dispatch(request, *args, **kwargs)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        return get_filtered_energy_district(self, context)
+
+    def form_valid(self, form):
+        form = validate_fields_post_repair(self, form)
+        if form.errors:
+            return self.form_invalid(form)
+        post = form.save(commit=False)
+        post.is_edit = True
+        post.save()
+        return super().form_valid(form)
+
+    def get_success_url(self):
+        logger.info(
+            f'PostRepairWork (pk: {self.object.id}) was edited. '
+            f'User: {(self.object.author.username).upper()}'
+        )
+        messages.success(
+            self.request, mark_safe(
+                f'Запись № {self.object.number_post} успешно изменена.'
             )
         )
         return reverse('office:journal_repair_work')

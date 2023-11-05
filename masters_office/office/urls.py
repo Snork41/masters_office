@@ -21,6 +21,9 @@ urlpatterns = [
         'cabinet/journals/journal-repair/create-post-repair/',
         views.PostRepairWorkCreateView.as_view(), name='create_post_repair'),
     path(
+        'cabinet/journals/journal-repair/edit-post-repair/<int:post_id>/',
+        views.PostRepairWorkEditView.as_view(), name='edit_post_repair'),
+    path(
         'cabinet/journals/journal-walk/',
         views.DistrictsListView.as_view(), name='districts'),
     path(

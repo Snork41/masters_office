@@ -152,7 +152,7 @@ class OfficeURLTest(TestCase):
                 if expected_code == HTTPStatus.FOUND:
                     self.assertRedirects(
                         self.authorized_client.get(url_name, follow=True),
-                        self.POST_WLK_DETAIL_URL
+                        DISTRICTS_URL
                     )
                 else:
                     self.assertEqual(
@@ -201,7 +201,7 @@ class OfficeURLTest(TestCase):
             with self.subTest(url=url):
                 response = self.client.get(url, follow=True)
                 if 'edit_post_walking' in url:
-                    url = self.POST_WLK_DETAIL_URL
+                    url = DISTRICTS_URL
                 self.assertRedirects(response, LOGIN_PAGE_REDIRECT + url)
 
     def test_urls_uses_correct_template(self):

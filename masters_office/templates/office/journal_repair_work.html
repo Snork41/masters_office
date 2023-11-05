@@ -15,6 +15,7 @@
 
 <br>
 <h1 class="text-center fw-light">Журнал ремонтных работ</h1>
+<h2 class="text-center fw-light">{{ energy_district }}</h2>
 <br>
 
 <div class="d-grid gap-2 col-2 mx-auto">
@@ -30,7 +31,6 @@
   {% if not request.GET %}
   <a class="btn btn-outline-dark fs-5 btn-back" href="{% url 'office:journals' %}">Назад к журналам</a>
   {% endif %}
-
 </div>
 
 {% if page_obj %}
@@ -64,7 +64,13 @@
         <div class="card card-post-in-list shadow border-0" style="margin-bottom: 3em;">
           <div class="card-body fs-4">
             <table class="table table-hover">
-              <caption style="text-align: end">Автор: {{ post.author.get_full_name }} ({{ post.author }})</caption>
+              <caption style="text-align: end">
+                Автор: {{ post.author.get_full_name }} ({{ post.author }})<br>
+                Создана: {{ post.time_create }}<br>
+              {% if post.is_edit %}
+                Изменена: {{ post.time_update }}
+              {% endif %}
+              </caption>
               <thead class="text-align: end;">
                 {% if post.is_deleted %}
                 <span class="border border-danger" style="color: red; padding: 5px">ЗАПИСЬ ПОМЕЧЕНА НА УДАЛЕНИЕ</span>
@@ -78,6 +84,10 @@
                 <tr>
                   <td class="fs-5">Район:</td>
                   <td class="fs-4">{{ post.district }}</td>
+                </tr>
+                <tr>
+                  <td class="fs-5">Адрес (объект):</td>
+                  <td class="fs-4">{{ post.adress }}</td>
                 </tr>
                 <tr>
                   <td class="fs-5">Работы по:</td>
@@ -103,6 +113,16 @@
                 </tr>
               </tbody>
             </table>
+
+            <!-- Кнопки внизу записи -->
+              {% if post.author.id == user.id %}
+              <a type="button" class="btn btn-light btn-outline-dark btn-md" href="{% url 'office:edit_post_repair' post.id %}">Редактировать запись</a>
+              {% else %}
+              <span tabindex="0" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-title="Вы не автор записи!">
+              <button type="button" class="btn btn-light btn-outline-dark btn-md d-inline" disabled>Редактировать запись</button>
+              </span>
+              {% endif %}
+
           </div>
         </div>
       </div>
@@ -113,6 +133,7 @@
     <!-- Стрелка возврата вверх -->
     <a href="#" class="scroll-to-top"><img src="{% static 'img/row_up.png' %}" alt="Scroll To Top"></a>
   </div>
+
   <!-- Колонка справа от списка записей -->
   {% if page_obj|length > 1%}
   <div class="col-1" style="padding-top: 7.5em; padding-right: 3em">

@@ -238,6 +238,10 @@ class PostWalking(models.Model):
         default=False,
         verbose_name='Удаленная запись'
     )
+    is_edit = models.BooleanField(
+        default=False,
+        verbose_name='Редактировано'
+    )
 
     class Meta:
         verbose_name = 'Запись в журнале обхода'
@@ -376,6 +380,10 @@ class PostRepairWork(models.Model):
     is_deleted = models.BooleanField(
         default=False,
         verbose_name='Удаленная запись'
+    )
+    is_edit = models.BooleanField(
+        default=False,
+        verbose_name='Редактировано'
     )
 
     class Meta:

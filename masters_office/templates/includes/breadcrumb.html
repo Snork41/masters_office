@@ -15,8 +15,11 @@
       {% if crumb.kwargs.slug_district in crumb.path %}
       <li class="breadcrumb-item"><a href="{% url 'office:districts' %}">Районы</a></li>
       {% endif %}
-      {% if crumb.kwargs.post_id|stringformat:"d" in crumb.path or 'create-post-walking' in crumb.path %}
+      {% if 'create-post-walking' in crumb.path or 'edit-post-walking' in crumb.path %}
       <li class="breadcrumb-item"><a href="{% url 'office:journal_walk' crumb.kwargs.slug_district %}">Журнал обходов тепловых сетей</a></li>
+      {% endif %}
+      {% if 'create-post-repair' in crumb.path or 'edit-post-repair' in crumb.path %}
+      <li class="breadcrumb-item"><a href="{% url 'office:journal_repair_work' %}">Журнал ремонтных работ</a></li>
       {% endif %}
     </ol>
 </nav>
