@@ -5,7 +5,7 @@ from django.urls import reverse
 
 from masters_office.settings import AMOUNT_POSTS_WALK
 from office.models import (Brigade, District, EnergyDistrict,
-                           Personal, Position, PostWalking, Resolution)
+                           Personal, Position, PostWalking, PostRepairWork, Resolution)
 from .consts import (BRGD_NUMBER, CREATE_POST_WLK_URL,
                      DISTRICTS_URL, EDIT_POST_WLK_REVERSE, FIRST_NAME_1,
                      FIRST_NAME_2, JRNL_WLK_URL, LAST_NAME_1,
@@ -22,7 +22,19 @@ from .consts import (BRGD_NUMBER, CREATE_POST_WLK_URL,
                      FIRST_NAME_3_SED, FIRST_NAME_4_SED, LAST_NAME_3_SED,
                      LAST_NAME_4_SED, MIDDLE_NAME_3_SED, MIDDLE_NAME_4_SED,
                      BRGD_SED_NUMBER, TAB_NUMBER_3_SED, TAB_NUMBER_4_SED,
-                     EMPLOYEES_URL)
+                     EMPLOYEES_URL, POST_WLK_NUMBER_SED, WALK_DATE_SED,
+                     TASK_WLK_SED, TEXT_WLK_SED, PLAN_WLK_SED, TRANSFER_WLK_SED,
+                     TITLE_DISTRICT_SED, SLUG_DISTRICT_SED, JRNL_REPAIR_WORK_URL,
+                     POST_REPAIR_NUMBER, POST_REPAIR_NUMBER_2, POST_REPAIR_NUMBER_SED,
+                     ORDER_REPAIR, ORDER_REPAIR_2, ORDER_REPAIR_SED,
+                     NUMBER_ORDER_REPAIR, NUMBER_ORDER_REPAIR_2, NUMBER_ORDER_REPAIR_SED,
+                     ADRESS_REPAIR, ADRESS_REPAIR_2, ADRESS_REPAIR_SED,
+                     DESCRIPTION_REPAIR, DESCRIPTION_REPAIR_2, DESCRIPTION_REPAIR_SED,
+                     DATE_START_WORKING_REPAIR, DATE_END_WORKING_REPAIR,
+                     DATE_START_WORKING_REPAIR_2, DATE_END_WORKING_REPAIR_2,
+                     DATE_START_WORKING_REPAIR_SED, DATE_END_WORKING_REPAIR_SED,
+                     CREATE_POST_REPAIR_URL, EDIT_POST_REPAIR_URL, EDIT_POST_WLK_URL)
+
 
 User = get_user_model()
 
@@ -56,10 +68,16 @@ class OfficeViewsTest(TestCase):
             master=cls.user,
             energy_district=cls.energy_district
         )
-        cls.district_2_SED = District.objects.create(
+        cls.district_2 = District.objects.create(
             title=TITLE_DISTRICT_2,
             slug=SLUG_DISTRICT_2,
             master=cls.user,
+            energy_district=cls.energy_district
+        )
+        cls.district_2_SED = District.objects.create(
+            title=TITLE_DISTRICT_SED,
+            slug=SLUG_DISTRICT_SED,
+            master=cls.user_SED,
             energy_district=cls.energy_district_2
         )
         cls.position = Position.objects.create(
@@ -138,10 +156,55 @@ class OfficeViewsTest(TestCase):
             author=cls.user,
         )
         cls.post_walking_2.members.set([cls.workman_2])
+        cls.post_walking_SED = PostWalking.objects.create(
+            number_post=POST_WLK_NUMBER_SED,
+            walk_date=WALK_DATE_SED,
+            district=cls.district_2_SED,
+            task=TASK_WLK_SED,
+            text=TEXT_WLK_SED,
+            plan=PLAN_WLK_SED,
+            fix_date=WALK_DATE_SED,
+            transfer=TRANSFER_WLK_SED,
+            author=cls.user_SED,
+        )
+        cls.post_walking_SED.members.set([cls.workman_3_SED])
         cls.resolution = Resolution.objects.create(
             post_walking=cls.post_walking,
             author=cls.user,
             text=RESOLUTION_WALK,
+        )
+        cls.post_repair = PostRepairWork.objects.create(
+            number_post=POST_REPAIR_NUMBER,
+            district=cls.district,
+            order=ORDER_REPAIR,
+            number_order=NUMBER_ORDER_REPAIR,
+            adress=ADRESS_REPAIR,
+            description=DESCRIPTION_REPAIR,
+            date_start_working=DATE_START_WORKING_REPAIR,
+            date_end_working=DATE_END_WORKING_REPAIR,
+            author=cls.user,
+        )
+        cls.post_repair_2 = PostRepairWork.objects.create(
+            number_post=POST_REPAIR_NUMBER_2,
+            district=cls.district_2,
+            order=ORDER_REPAIR_2,
+            number_order=NUMBER_ORDER_REPAIR_2,
+            adress=ADRESS_REPAIR_2,
+            description=DESCRIPTION_REPAIR_2,
+            date_start_working=DATE_START_WORKING_REPAIR_2,
+            date_end_working=DATE_END_WORKING_REPAIR_2,
+            author=cls.user,
+        )
+        cls.post_repair_SED = PostRepairWork.objects.create(
+            number_post=POST_REPAIR_NUMBER_SED,
+            district=cls.district_2_SED,
+            order=ORDER_REPAIR_SED,
+            number_order=NUMBER_ORDER_REPAIR_SED,
+            adress=ADRESS_REPAIR_SED,
+            description=DESCRIPTION_REPAIR_SED,
+            date_start_working=DATE_START_WORKING_REPAIR_SED,
+            date_end_working=DATE_END_WORKING_REPAIR_SED,
+            author=cls.user_SED,
         )
         cls.POST_WLK_DETAIL_URL = reverse(
             POST_WLK_DETAIL_REVERSE,
@@ -171,14 +234,6 @@ class OfficeViewsTest(TestCase):
         self.author_client = Client()
         self.author_client.force_login(self.user_author)
 
-    # def test_journals_page_show_correct_context(self):
-    #     """Шаблон journals сформирован с правильным контекстом."""
-    #     response = self.authorized_client.get(JOURNALS_URL)
-    #     last_object = response.context.get('all_journals').last()
-    #     self.assertEqual(last_object.title, self.journal.title)
-    #     self.assertEqual(last_object.description, self.journal.description)
-    #     self.assertEqual(last_object.slug, self.journal.slug)
-
     def test_districts_page_show_correct_context(self):
         """Шаблон districts сформирован с правильным контекстом."""
         response = self.authorized_client.get(DISTRICTS_URL)
@@ -190,12 +245,32 @@ class OfficeViewsTest(TestCase):
     def test_journal_walk_page_show_correct_context(self):
         """Шаблон journal_walk сформирован с правильным контекстом."""
         response = self.authorized_client.get(JRNL_WLK_URL)
-        excepted = PostWalking.objects.filter()
+        excepted = PostWalking.objects.filter(district__energy_district=self.user.energy_district)
         self.assertQuerysetEqual(response.context.get('page_obj').object_list, excepted)
 
     def test_post_walking_create_page_show_correct_context(self):
         """Шаблон create_post_walking сформирован с правильным контекстом."""
         response = self.authorized_client.get(CREATE_POST_WLK_URL)
+        form_fields = {
+            'district': forms.fields.ChoiceField,
+            'planned': forms.fields.BooleanField,
+            'not_planned': forms.fields.BooleanField,
+            'walk_date': forms.fields.DateField,
+            'members': forms.models.ModelMultipleChoiceField,
+            'task': forms.fields.CharField,
+            'text': forms.fields.CharField,
+            'plan': forms.fields.CharField,
+            'fix_date': forms.fields.DateField,
+            'transfer': forms.fields.CharField,
+        }
+        for value, expected in form_fields.items():
+            with self.subTest(value=value):
+                form_field = response.context.get('form').fields.get(value)
+                self.assertIsInstance(form_field, expected)
+
+    def test_post_walking_edit_page_show_correct_context(self):
+        """Шаблон edit_post_walking сформирован с правильным контекстом."""
+        response = self.authorized_client.get(EDIT_POST_WLK_URL)
         form_fields = {
             'district': forms.fields.ChoiceField,
             'planned': forms.fields.BooleanField,
@@ -309,3 +384,45 @@ class OfficeViewsTest(TestCase):
         self.assertQuerysetEqual(
             response.context['employees'], expected_employees
         )
+
+    def test_journal_repair_work_page_show_correct_context(self):
+        """Шаблон journal_repair_work сформирован с правильным контекстом."""
+        response = self.authorized_client.get(JRNL_REPAIR_WORK_URL)
+        excepted = PostRepairWork.objects.filter(district__energy_district=self.user.energy_district)
+        self.assertQuerysetEqual(response.context.get('page_obj').object_list, excepted)
+
+    def test_post_repair_create_page_show_correct_context(self):
+        """Шаблон create_post_repair сформирован с правильным контекстом."""
+        response = self.authorized_client.get(CREATE_POST_REPAIR_URL)
+        form_fields = {
+            'district': forms.fields.ChoiceField,
+            'order': forms.fields.ChoiceField,
+            'number_order': forms.fields.IntegerField,
+            'adress': forms.fields.CharField,
+            'description': forms.fields.CharField,
+            'date_start_working': forms.fields.DateTimeField,
+            'date_end_working': forms.fields.DateTimeField,
+            'is_deleted': forms.fields.BooleanField,
+        }
+        for value, expected in form_fields.items():
+            with self.subTest(value=value):
+                form_field = response.context.get('form').fields.get(value)
+                self.assertIsInstance(form_field, expected)
+
+    def test_post_repair_edit_page_show_correct_context(self):
+        """Шаблон edit_post_repair сформирован с правильным контекстом."""
+        response = self.authorized_client.get(EDIT_POST_REPAIR_URL)
+        form_fields = {
+            'district': forms.fields.ChoiceField,
+            'order': forms.fields.ChoiceField,
+            'number_order': forms.fields.IntegerField,
+            'adress': forms.fields.CharField,
+            'description': forms.fields.CharField,
+            'date_start_working': forms.fields.DateTimeField,
+            'date_end_working': forms.fields.DateTimeField,
+            'is_deleted': forms.fields.BooleanField,
+        }
+        for value, expected in form_fields.items():
+            with self.subTest(value=value):
+                form_field = response.context.get('form').fields.get(value)
+                self.assertIsInstance(form_field, expected)

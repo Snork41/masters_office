@@ -41,8 +41,7 @@ class PostRepairWorkAdmin(admin.ModelAdmin):
         'order',
         'number_order',
         'description',
-        'date_start_working',
-        'date_end_working',
+        ('date_start_working', 'date_end_working'),
         'author',
         'is_deleted',
     )
@@ -87,7 +86,7 @@ class PostWalkingAdmin(admin.ModelAdmin):
     )
     list_display_links = ('number_post', 'task')
     search_fields = ('text', 'walk_date')
-    list_filter = ('walk_date', 'is_deleted',)
+    list_filter = ('walk_date', 'is_deleted', 'district')
     empty_value_display = '-пусто-'
     save_on_top = True
     readonly_fields = ('time_create', 'time_update', 'number_post')

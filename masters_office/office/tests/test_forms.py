@@ -16,11 +16,15 @@ from .consts import (ADD_RESOLUTION_URL, FIRST_NAME_1,
                      MIDDLE_NAME_2, TAB_NUMBER_2, FIRST_NAME_3_SED, LAST_NAME_3_SED,
                      MIDDLE_NAME_3_SED, FIRST_NAME_4_SED, LAST_NAME_4_SED,
                      MIDDLE_NAME_4_SED, TAB_NUMBER_3_SED, TAB_NUMBER_4_SED,
-                     TITLE_SECOND_ENERGY_DISTRICT, TITLE_DISTRICT_2, SLUG_DISTRICT_2,
+                     TITLE_SECOND_ENERGY_DISTRICT,
                      POST_REPAIR_NUMBER, ORDER_REPAIR, NUMBER_ORDER_REPAIR,
                      ADRESS_REPAIR, DESCRIPTION_REPAIR, DATE_START_WORKING_REPAIR,
                      DATE_END_WORKING_REPAIR, CREATE_POST_REPAIR_URL,
-                     DESCRIPTION_REPAIR_2, DATE_END_WORKING_REPAIR_NOT_VALID)
+                     DESCRIPTION_REPAIR_2, DATE_END_WORKING_REPAIR_NOT_VALID,
+                     ORDER_REPAIR_2, NUMBER_ORDER_REPAIR_2, ADRESS_REPAIR_2,
+                     DATE_START_WORKING_REPAIR_2, DATE_END_WORKING_REPAIR_2,
+                     EDIT_POST_REPAIR_URL, TITLE_DISTRICT_SED, SLUG_DISTRICT_SED,
+                     USERNAME_SECOND_ENERGY_DISCRICT)
 
 
 User = get_user_model()
@@ -45,6 +49,10 @@ class PostFormTests(TestCase):
             is_staff=True,
             energy_district=cls.energy_district
         )
+        cls.user_SED = User.objects.create_user(
+            username=USERNAME_SECOND_ENERGY_DISCRICT,
+            energy_district=cls.energy_district_2
+        )
         cls.district = District.objects.create(
             title=TITLE_DISTRICT,
             slug=SLUG_DISTRICT,
@@ -52,9 +60,9 @@ class PostFormTests(TestCase):
             energy_district=cls.energy_district
         )
         cls.district_2_SED = District.objects.create(
-            title=TITLE_DISTRICT_2,
-            slug=SLUG_DISTRICT_2,
-            master=cls.user,
+            title=TITLE_DISTRICT_SED,
+            slug=SLUG_DISTRICT_SED,
+            master=cls.user_SED,
             energy_district=cls.energy_district_2
         )
         cls.position = Position.objects.create(
@@ -335,6 +343,27 @@ class PostFormTests(TestCase):
         self.assertEqual(PostRepairWork.objects.count(), expected_posts_repair_amount)
         self.assertEqual(new_post_repair.number_post, expected_new_post_repair_number)
         self.assertEqual(new_post_repair.author, self.user)
+
+    def test_edit_post_repair_work(self):
+        """Валидная форма редактирует запись в журнале ремонтных работ."""
+        exist_post_repair = PostRepairWork.objects.get(author=self.user, number_post=POST_REPAIR_NUMBER)
+        form_data = {
+            'district': self.district.id,  # район не меняется
+            'order': ORDER_REPAIR_2,
+            'number_order': NUMBER_ORDER_REPAIR_2,
+            'adress': ADRESS_REPAIR_2,
+            'description': DESCRIPTION_REPAIR_2,
+            'date_start_working': DATE_START_WORKING_REPAIR_2,
+            'date_end_working': DATE_END_WORKING_REPAIR_2,
+        }
+        self.authorized_client.post(EDIT_POST_REPAIR_URL, data=form_data)
+        edit_post_repair = PostRepairWork.objects.get(author=self.user, number_post=POST_REPAIR_NUMBER)
+        self.assertNotEqual(exist_post_repair.order, edit_post_repair.order)
+        self.assertNotEqual(exist_post_repair.number_order, edit_post_repair.number_order)
+        self.assertNotEqual(exist_post_repair.adress, edit_post_repair.adress)
+        self.assertNotEqual(exist_post_repair.description, edit_post_repair.description)
+        self.assertNotEqual(exist_post_repair.date_start_working, edit_post_repair.date_start_working)
+        self.assertNotEqual(exist_post_repair.date_end_working, edit_post_repair.date_end_working)
 
     def test_validation_date_end_working_in_new_post_repair(self):
         """

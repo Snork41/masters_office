@@ -33,7 +33,7 @@ urlpatterns = [
         'cabinet/journals/journal-walk/<slug:slug_district>/create-post-walking/',
         views.PostWalkingCreateView.as_view(), name='create_post_walking'),
     path(
-        'cabinet/journals/journal-walk/<slug:slug_district>/edit_post_walking/<int:post_id>/',
+        'cabinet/journals/journal-walk/<slug:slug_district>/edit-post-walking/<int:post_id>/',
         views.PostWalkingEditView.as_view(), name='edit_post_walking'),
     path(
         'cabinet/journals/journal-walk/<slug:slug_district>/<int:post_id>/',

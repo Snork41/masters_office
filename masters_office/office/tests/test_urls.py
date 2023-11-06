@@ -5,7 +5,7 @@ from django.test import Client, TestCase
 from django.urls import reverse
 
 from office.models import (Brigade, District, EnergyDistrict,
-                           Personal, Position, PostWalking)
+                           Personal, Position, PostWalking, PostRepairWork)
 from .consts import (BRGD_NUMBER, CABINET_TMPLT, CABINET_URL,
                      CREATE_POST_WLK_TMPLT, CREATE_POST_WLK_URL,
                      DISTRICTS_TMPLT, DISTRICTS_URL,
@@ -22,7 +22,11 @@ from .consts import (BRGD_NUMBER, CABINET_TMPLT, CABINET_URL,
                      WALK_DATE, BRIGADES_URL, BRIGADES_TMPL, EMPLOYEES_URL,
                      EMPLOYEES_TMPL, TITLE_SECOND_ENERGY_DISTRICT,
                      USERNAME_SECOND_ENERGY_DISCRICT, ADD_RESOLUTION_URL,
-                     UPDATE_RESOLUTION_URL, JRNL_REPAIR_WORK_URL, JRNL_REPAIR_WORK_TMPL)
+                     UPDATE_RESOLUTION_URL, JRNL_REPAIR_WORK_URL, JRNL_REPAIR_WORK_TMPL,
+                     POST_REPAIR_NUMBER, ORDER_REPAIR, NUMBER_ORDER_REPAIR,
+                     ADRESS_REPAIR, DESCRIPTION_REPAIR, DATE_START_WORKING_REPAIR,
+                     DATE_END_WORKING_REPAIR, CREATE_POST_REPAIR_URL, EDIT_POST_REPAIR_REVERSE,
+                     CREATE_POST_REPAIR_TMPLT, EDIT_POST_REPAIR_TMPLT)
 
 User = get_user_model()
 
@@ -95,7 +99,17 @@ class OfficeURLTest(TestCase):
             author=cls.user_author,
         )
         cls.post_walking.members.set([cls.workman_2])
-
+        cls.post_repair = PostRepairWork.objects.create(
+            number_post=POST_REPAIR_NUMBER,
+            district=cls.district,
+            order=ORDER_REPAIR,
+            number_order=NUMBER_ORDER_REPAIR,
+            adress=ADRESS_REPAIR,
+            description=DESCRIPTION_REPAIR,
+            date_start_working=DATE_START_WORKING_REPAIR,
+            date_end_working=DATE_END_WORKING_REPAIR,
+            author=cls.user_author,
+        )
         cls.POST_WLK_DETAIL_URL = reverse(
             POST_WLK_DETAIL_REVERSE,
             kwargs={
@@ -108,6 +122,12 @@ class OfficeURLTest(TestCase):
             kwargs={
                 'slug_district': cls.district.slug,
                 'post_id': cls.post_walking.id
+            }
+        )
+        cls.EDIT_POST_REPAIR_URL = reverse(
+            EDIT_POST_REPAIR_REVERSE,
+            kwargs={
+                'post_id': cls.post_repair.id
             }
         )
 
@@ -146,13 +166,20 @@ class OfficeURLTest(TestCase):
             BRIGADES_URL: HTTPStatus.OK,
             EMPLOYEES_URL: HTTPStatus.OK,
             JRNL_REPAIR_WORK_URL: HTTPStatus.OK,
+            CREATE_POST_REPAIR_URL: HTTPStatus.OK,
+            self.EDIT_POST_REPAIR_URL: HTTPStatus.FOUND,
         }
         for url_name, expected_code in url.items():
             with self.subTest(url_name=url_name):
-                if expected_code == HTTPStatus.FOUND:
+                if url_name == self.EDIT_POST_WLK_URL:
                     self.assertRedirects(
                         self.authorized_client.get(url_name, follow=True),
                         DISTRICTS_URL
+                    )
+                elif url_name == self.EDIT_POST_REPAIR_URL:
+                    self.assertRedirects(
+                        self.authorized_client.get(url_name, follow=True),
+                        JRNL_REPAIR_WORK_URL
                     )
                 else:
                     self.assertEqual(
@@ -174,6 +201,8 @@ class OfficeURLTest(TestCase):
             BRIGADES_URL: HTTPStatus.OK,
             EMPLOYEES_URL: HTTPStatus.OK,
             JRNL_REPAIR_WORK_URL: HTTPStatus.OK,
+            CREATE_POST_REPAIR_URL: HTTPStatus.OK,
+            self.EDIT_POST_REPAIR_URL: HTTPStatus.OK,
         }
         for url_name, expected_code in url.items():
             with self.subTest(url_name=url_name):
@@ -183,7 +212,7 @@ class OfficeURLTest(TestCase):
 
     def test_urls_redirect_anonymous_to_login(self):
         """Страница по любому адресу, кроме index, перенаправит
-        анонимного пользователя на страницу логина
+        анонимного пользователя на страницу логина.
         """
         urls = [
             CABINET_URL,
@@ -196,12 +225,16 @@ class OfficeURLTest(TestCase):
             BRIGADES_URL,
             EMPLOYEES_URL,
             JRNL_REPAIR_WORK_URL,
+            CREATE_POST_REPAIR_URL,
+            self.EDIT_POST_REPAIR_URL,
         ]
         for url in urls:
             with self.subTest(url=url):
                 response = self.client.get(url, follow=True)
-                if 'edit_post_walking' in url:
+                if 'edit-post-walking' in url:
                     url = DISTRICTS_URL
+                elif 'edit-post-repair' in url:
+                    url = JRNL_REPAIR_WORK_URL
                 self.assertRedirects(response, LOGIN_PAGE_REDIRECT + url)
 
     def test_urls_uses_correct_template(self):
@@ -218,6 +251,8 @@ class OfficeURLTest(TestCase):
             BRIGADES_URL: BRIGADES_TMPL,
             EMPLOYEES_URL: EMPLOYEES_TMPL,
             JRNL_REPAIR_WORK_URL: JRNL_REPAIR_WORK_TMPL,
+            CREATE_POST_REPAIR_URL: CREATE_POST_REPAIR_TMPLT,
+            self.EDIT_POST_REPAIR_URL: EDIT_POST_REPAIR_TMPLT,
         }
         for address, template in templates_url_names.items():
             with self.subTest(template=template):

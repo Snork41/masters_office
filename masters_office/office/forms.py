@@ -95,6 +95,17 @@ class ResolutionForm(forms.ModelForm):
 
 class PostRepairWorkForm(forms.ModelForm):
 
+    date_start_working = forms.DateTimeField(
+        widget=forms.DateTimeInput(
+            format=('%Y-%m-%d %H:%M'), attrs={'type': 'datetime-local'}
+        )
+    )
+    date_end_working = forms.DateTimeField(
+        widget=forms.DateTimeInput(
+            format=('%Y-%m-%d %H:%M'), attrs={'type': 'datetime-local'}
+        )
+    )
+
     class Meta:
         model = PostRepairWork
         fields = (
@@ -108,8 +119,6 @@ class PostRepairWorkForm(forms.ModelForm):
             'is_deleted',
         )
         widgets = {
-            'date_start_working': forms.DateTimeInput(format=('%Y-%m-%d %H:%M'), attrs={'type': 'datetime-local'}),
-            'date_end_working': forms.DateTimeInput(format=('%Y-%m-%d %H:%M'), attrs={'type': 'datetime-local'}),
             'is_deleted': forms.CheckboxInput(attrs={'id': 'btn-check-deleted-outlined', 'type': 'checkbox', 'class': 'btn-check'})
         }
 

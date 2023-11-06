@@ -2,34 +2,47 @@ import datetime
 
 from django.urls import reverse
 
+
 USERNAME = 'User'
 USERNAME_AUTHOR = 'authorUser'
 USERNAME_BOSS = 'bossUser'
 USERNAME_SECOND_ENERGY_DISCRICT = 'UserSecondEnergyDistrict'
+
 SLUG_DISTRICT = 'test-slug-district'
 SLUG_DISTRICT_2 = 'test-slug-district-2'
+SLUG_DISTRICT_SED = 'test-slug-district-SED'
+
 TITLE_ENERGY_DISTRICT = 'Тестовый энергорайон'
 TITLE_SECOND_ENERGY_DISTRICT = 'Тестовый энергорайон_2'
+
 TITLE_DISTRICT = 'Тестовый район(источник)'
 TITLE_DISTRICT_2 = 'Тестовый район(источник)-2'
+TITLE_DISTRICT_SED = 'Тестовый район(источник) другого энергорайона!'
+
 NAME_POSITION = 'Тестовая должность'
+
 FIRST_NAME_1 = 'Тестовое имя'
 FIRST_NAME_2 = 'Тестовое имя 2'
 FIRST_NAME_3_SED = 'Тестовое имя рабочего со второго энергорайона'
 FIRST_NAME_4_SED = 'Тестовое имя второго рабочего со второго энергорайона'
+
 LAST_NAME_1 = 'Тестовая фамилия'
 LAST_NAME_2 = 'Тестовая фамилия 2'
 LAST_NAME_3_SED = 'Тестовая фамилия рабочего со второго энергорайона'
 LAST_NAME_4_SED = 'Тестовая фамилия второго рабочего со второго энергорайона'
+
 MIDDLE_NAME_1 = 'Тестовое отчество'
 MIDDLE_NAME_2 = 'Тестовое отчество 2'
 MIDDLE_NAME_3_SED = 'Тестовое отчество рабочего со второго энергорайона'
 MIDDLE_NAME_4_SED = 'Тестовое отчество второго рабочего со второго энергорайона'
+
 TAB_NUMBER_1 = 1
 TAB_NUMBER_2 = 2
 TAB_NUMBER_3_SED = 3
 TAB_NUMBER_4_SED = 4
+
 RANK = 1
+
 BRGD_NUMBER = 1
 BRGD_SED_NUMBER = 2
 
@@ -37,35 +50,69 @@ BRGD_SED_NUMBER = 2
 # <----- Запись в журнале обходов тепловых сетей ----->
 POST_WLK_NUMBER = 1
 POST_WLK_NUMBER_2 = 2
+POST_WLK_NUMBER_SED = 1
+
 TASK_WLK = 'Тестовое задание'
 TASK_WLK_IN_EDIT_POST = 'Тестовое задание измененное'
+TASK_WLK_SED = 'Тестовое задание другого энергорайона!'
+
 TEXT_WLK = 'Тестовые замечания'
 TEXT_WLK_2 = 'Тестовые замечания второй записи'
+TEXT_WLK_SED = 'Тестовые замечания другого энергорайона!'
+
 PLAN_WLK = 'Тестовые мероприятия'
 PLAN_WLK_IN_EDIT_POST = 'Тестовые мероприятия измененные'
+PLAN_WLK_SED = 'Тестовые мероприятия другого энергорайона!'
+
 RESOLUTION_WALK = 'Тестовая резолюция'
 RESOLUTION_WALK_2 = 'Тестовая резолюция 2'
+
 RESOLUTION_ID = 1
+
 TRANSFER_WLK = 'Тестовый перенос ремонта'
 TRANSFER_WLK__IN_EDIT_POST = 'Тестовый перенос ремонта измененный'
+TRANSFER_WLK_SED = 'Тестовый перенос ремонта другого энергорайона!'
+
 WALK_DATE = datetime.date.today()
+WALK_DATE_SED = datetime.date.today()
 WALK_DATE_IN_EDIT_POST = datetime.date.today() - datetime.timedelta(days=1)
 WALK_DATE_NOT_VALID = datetime.date.today() + datetime.timedelta(days=1)
+
 
 # <----- Запись в журнале ремонтных работ ----->
 POST_REPAIR_NUMBER = 1
 POST_REPAIR_NUMBER_2 = 2
+POST_REPAIR_NUMBER_SED = 3
+
 ORDER_REPAIR = 'Наряд'
+ORDER_REPAIR_2 = 'Распоряжение'
+ORDER_REPAIR_SED = 'Наряд'
+
 NUMBER_ORDER_REPAIR = 1
-NUMBER_ORDER_2_REPAIR = 2
+NUMBER_ORDER_REPAIR_2 = 2
+NUMBER_ORDER_REPAIR_SED = 3
+
 ADRESS_REPAIR = 'Ул. Тестовая 1'
+ADRESS_REPAIR_2 = 'Ул. Тестовая 2'
+ADRESS_REPAIR_SED = 'Ул. Тестовая 1 другого энергорайона!'
+
 DESCRIPTION_REPAIR = 'Тестовые работы выполнены'
 DESCRIPTION_REPAIR_2 = 'Тестовые работы выполнены 2'
+DESCRIPTION_REPAIR_SED = 'Тестовые работы другого энергорайона!'
+
 DATE_START_WORKING_REPAIR = datetime.date.today() - datetime.timedelta(days=1)
 DATE_END_WORKING_REPAIR = datetime.date.today()
+
 DATE_END_WORKING_REPAIR_NOT_VALID = DATE_START_WORKING_REPAIR - datetime.timedelta(days=1)
 
+DATE_START_WORKING_REPAIR_2 = datetime.date.today() - datetime.timedelta(days=2)
+DATE_END_WORKING_REPAIR_2 = DATE_START_WORKING_REPAIR_2 + datetime.timedelta(days=1)
 
+DATE_START_WORKING_REPAIR_SED = datetime.date.today() - datetime.timedelta(days=1)
+DATE_END_WORKING_REPAIR_SED = datetime.date.today()
+
+
+# <----- Реверсы  ----->
 LOGIN_PAGE_REDIRECT = '/auth/login/?next='
 UNEXISTING_PAGE = '/unexisting_page/'
 INDEX_REVERSE = 'office:index'
@@ -82,8 +129,10 @@ BRIGADES_REVERSE = 'office:brigades'
 EMPLOYEES_REVERSE = 'office:employees'
 JRNL_REPAIR_WORK_REVERSE = 'office:journal_repair_work'
 CREATE_POST_REPAIR_REVERSE = 'office:create_post_repair'
+EDIT_POST_REPAIR_REVERSE = 'office:edit_post_repair'
 
 
+# <----- Урлы ----->
 INDEX_URL = reverse(INDEX_REVERSE)
 CABINET_URL = reverse(CABINET_REVERSE)
 BRIGADES_URL = reverse(BRIGADES_REVERSE)
@@ -122,11 +171,21 @@ UPDATE_RESOLUTION_URL = reverse(
     }
 )
 CREATE_POST_REPAIR_URL = reverse(CREATE_POST_REPAIR_REVERSE)
+EDIT_POST_REPAIR_URL = reverse(
+    EDIT_POST_REPAIR_REVERSE,
+    kwargs={
+        'post_id': POST_REPAIR_NUMBER
+    }
+)
 
 
+# <----- Адреса шаблонов ----->
 INDEX_TMPLT = 'office/index.html'
+
 CABINET_TMPLT = 'office/cabinet.html'
+
 JOURNALS_TMPLT = 'office/journals.html'
+
 DISTRICTS_TMPLT = 'office/districts.html'
 JRNL_WLK_TMPLT = 'office/journal_walk.html'
 CREATE_POST_WLK_TMPLT = 'office/create_post_walking.html'
@@ -134,6 +193,11 @@ POST_WLK_DETAIL_TMPLT = 'office/post_walking_detail.html'
 EDIT_POST_WLK_TMPLT = 'office/edit_post_walking.html'
 ADD_RESOLUTION_TMPLT = 'office/includes/resolution_form.html'
 UPDATE_RESOLUTION_TMPLT = 'office/includes/resolution_update_form.html'
+
 BRIGADES_TMPL = 'office/brigades.html'
+
 EMPLOYEES_TMPL = 'office/employees.html'
+
 JRNL_REPAIR_WORK_TMPL = 'office/journal_repair_work.html'
+CREATE_POST_REPAIR_TMPLT = 'office/create_post_repair.html'
+EDIT_POST_REPAIR_TMPLT = 'office/edit_post_repair.html'
