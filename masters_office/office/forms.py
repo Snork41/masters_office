@@ -96,11 +96,13 @@ class ResolutionForm(forms.ModelForm):
 class PostRepairWorkForm(forms.ModelForm):
 
     date_start_working = forms.DateTimeField(
+        label='Дата начала работ',
         widget=forms.DateTimeInput(
             format=('%Y-%m-%d %H:%M'), attrs={'type': 'datetime-local'}
         )
     )
     date_end_working = forms.DateTimeField(
+        label='Дата окончания работ',
         widget=forms.DateTimeInput(
             format=('%Y-%m-%d %H:%M'), attrs={'type': 'datetime-local'}
         )

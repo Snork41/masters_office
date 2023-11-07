@@ -146,3 +146,27 @@ i {
     padding-left: 1em;
     padding-right: 1em;
 }
+
+/* cabinet.html */
+.card.card-in-cabinet:hover {
+    scale: 1.05;
+    background-color: black;
+}
+
+.card.card-in-cabinet,
+.card.card-in-cabinet-disabled {
+    height: 290;
+}
+
+.card-in-cabinet:hover img {
+    filter: invert(100%);
+}
+
+.card-in-cabinet:hover h3 {
+    color: #ffffff;;
+}
+
+.card.card-in-cabinet-disabled:hover {
+    scale: 1.05;
+    background-color: rgb(207, 207, 207);
+}
