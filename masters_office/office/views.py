@@ -11,7 +11,7 @@ from django.views.generic import (
 from django.utils.safestring import mark_safe
 
 from .models import (
-    Brigade, District, PostWalking, Personal, Resolution, PostRepairWork)
+    Brigade, District, PostWalking, Personal, Resolution, PostRepairWork, PostOrder)
 from .tables import PersonalTable
 from .forms import PostWalkingForm, ResolutionForm, PostRepairWorkForm
 from .filters import PersonalFilter, PostWalkingFilter, PostRepairWorkFilter
@@ -353,3 +353,34 @@ class PostRepairWorkEditView(LoginRequiredMixin, UpdateView):
             )
         )
         return reverse('office:journal_repair_work')
+
+
+class PostOrderCreateView(LoginRequiredMixin, CreateView):
+    model = PostOrder
+    template_name = 'office/create_post_order.html'
+    form_class = PostRepairWorkForm
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        return get_filtered_energy_district(self, context)
+
+    def form_valid(self, form):
+        # form = validate_fields_post_repair(self, form)
+        # if form.errors:
+        #     return self.form_invalid(form)
+        post = form.save(commit=False)
+        post.author = self.request.user
+        post.save()
+        return super().form_valid(form)
+
+    def get_success_url(self):
+        logger.info(
+            f'PostOrder (pk: {self.object.id}) was created. '
+            f'User: {(self.object.author.username).upper()}'
+        )
+        messages.success(
+            self.request, mark_safe(
+                f'Запись № {self.object.number_post} успешно добавлена.'
+            )
+        )
+        return reverse('office:journal_order')

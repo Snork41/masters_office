@@ -101,7 +101,7 @@
           {% endfor %}
 {% elif request.GET %}
           <p class="text-center fs-1" style="color: red;">Совпадений не найдено.</p>
-          <div class="d-grid gap-2 col-2 mx-auto" style="padding-bottom: 1em;">
+          <div class="d-grid gap-2 col-2 mx-auto">
             <a class="btn btn-outline-dark btn-lg fs-3" href="{% url 'office:journal_walk' district.slug %}">Назад</a>
           </div>
           {% else %}

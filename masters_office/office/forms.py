@@ -4,7 +4,7 @@ from django.contrib.admin.widgets import FilteredSelectMultiple
 from django.core.validators import MaxValueValidator
 import os
 
-from .models import PostWalking, Personal, Resolution, PostRepairWork
+from .models import PostWalking, Personal, Resolution, PostRepairWork, PostOrder
 from .utils import add_number_post
 from masters_office.settings import BASE_DIR
 
@@ -134,3 +134,38 @@ class PostRepairWorkForm(forms.ModelForm):
         for field in ['district', 'order', 'number_order', 'adress', 'description', 'date_start_working', 'date_end_working']:
             if field in self.fields:
                 self.fields[field].widget.attrs.update({'class': 'focus-ring focus-ring-dark border'})
+
+
+class PostOrderForm(forms.ModelForm):
+
+    date_start_working = forms.DateTimeField(
+        label='К работе приступили',
+        widget=forms.DateTimeInput(
+            format=('%Y-%m-%d %H:%M'), attrs={'type': 'datetime-local'}
+        )
+    )
+    date_end_working = forms.DateTimeField(
+        required=False,
+        label='Работа закончена',
+        widget=forms.DateTimeInput(
+            format=('%Y-%m-%d %H:%M'), attrs={'type': 'datetime-local'}
+        )
+    )
+
+    class Meta:
+        model = PostOrder
+        fields = (
+            'district',
+            'order',
+            'number_order',
+            'description',
+            'foreman',
+            'members',
+            'date_start_working',
+            'date_end_working',
+            'is_deleted',
+        )
+
+    def save(self, username=None, *args, commit=True, **kwargs):
+        obj = super().save(commit=False, *args, **kwargs)
+        return add_number_post(self, obj, PostOrder, username, commit, *args, **kwargs)

@@ -156,6 +156,7 @@ i {
 .card.card-in-cabinet,
 .card.card-in-cabinet-disabled {
     height: 290;
+    border-color: #000000;
 }
 
 .card-in-cabinet:hover img {

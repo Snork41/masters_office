@@ -116,6 +116,10 @@ class Personal(models.Model):
         unique=True,
         verbose_name='Табельный номер'
     )
+    foreman = models.BooleanField(
+        verbose_name='Может быть производителем работ',
+        default=False
+    )
 
     class Meta:
         verbose_name = 'Работник'
@@ -199,7 +203,7 @@ class PostWalking(models.Model):
         'Personal',
         related_name='brigade',
         verbose_name='Члены бригады',
-        blank=False,
+        blank=False
     )
     task = models.TextField(
         max_length=250,
@@ -282,20 +286,20 @@ class Resolution(models.Model):
         on_delete=models.CASCADE,
         related_name='resolution',
         blank=True,
-        null=True,
+        null=True
     )
     author = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
         verbose_name='Автор',
-        related_name='resolution',
+        related_name='resolution'
     )
     text = models.TextField(
-        verbose_name='Резолюция начальника энергорайона',
+        verbose_name='Резолюция начальника энергорайона'
     )
     created = models.DateTimeField(
         verbose_name='Дата создания резолюции',
-        auto_now_add=True,
+        auto_now_add=True
     )
 
     class Meta:
@@ -333,7 +337,7 @@ class PostRepairWork(models.Model):
     )
     number_post = models.PositiveIntegerField(
         verbose_name='Номер записи',
-        unique=True,
+        unique=True
     )
     district = models.ForeignKey(
         'District',
@@ -349,25 +353,25 @@ class PostRepairWork(models.Model):
         help_text='наряду или распоряжению',
         null=False,
         blank=False,
-        max_length=30,
+        max_length=30
     )
     number_order = models.PositiveIntegerField(
-        verbose_name='Номер распоряжения/наряда',
+        verbose_name='Номер распоряжения/наряда'
     )
     adress = models.CharField(
         verbose_name='Адрес (объект)',
         null=False,
         blank=False,
-        max_length=200,
+        max_length=200
     )
     description = models.TextField(
         verbose_name='Выполненные работы'
     )
     date_start_working = models.DateTimeField(
-        verbose_name='Дата начала работ',
+        verbose_name='Дата начала работ'
     )
     date_end_working = models.DateTimeField(
-        verbose_name='Дата окончания работ',
+        verbose_name='Дата окончания работ'
     )
     author = models.ForeignKey(
         User,
@@ -402,3 +406,83 @@ class PostRepairWork(models.Model):
 
     def get_absolute_url(self):
         return reverse('office:journal_repair_work')
+
+
+class PostOrder(models.Model):
+    """Запись в журнале учета работ по нарядам и распоряжениям."""
+
+    time_create = models.DateTimeField(
+        auto_now_add=True,
+        verbose_name='Дата создания'
+    )
+    time_update = models.DateTimeField(
+        auto_now=True,
+        verbose_name='Дата редактирования'
+    )
+    number_post = models.PositiveIntegerField(
+        verbose_name='Номер записи',
+        unique=True
+    )
+    district = models.ForeignKey(
+        'District',
+        blank=False,
+        null=True,
+        on_delete=models.SET_NULL,
+        related_name='posts_order',
+        verbose_name='источник (район)'
+    )
+    order = models.CharField(
+        choices=ORDER,
+        verbose_name='Наряд/распоряжение',
+        null=False,
+        blank=False,
+        max_length=30
+    )
+    number_order = models.PositiveIntegerField(
+        verbose_name='Номер наряда/распоряжения'
+    )
+    description = models.TextField(
+        verbose_name='Наименование работ'
+    )
+    foreman = models.ForeignKey(
+        'Personal',
+        blank=False,
+        null=True,
+        on_delete=models.SET_NULL,
+        verbose_name='Производитель работ',
+        related_name='post_order'
+    )
+    members = models.ManyToManyField(
+        'Personal',
+        related_name='post_order_brigade',
+        verbose_name='Члены бригады',
+        blank=False
+    )
+    date_start_working = models.DateTimeField(
+        verbose_name='К работе приступили'
+    )
+    date_end_working = models.DateTimeField(
+        blank=True,
+        null=True,
+        verbose_name='Работа закончена'
+    )
+    author = models.ForeignKey(
+        User,
+        blank=False,
+        null=True,
+        on_delete=models.SET_NULL,
+        verbose_name='Автор',
+        related_name='posts_order'
+    )
+    is_deleted = models.BooleanField(
+        default=False,
+        verbose_name='Удаленная запись'
+    )
+
+    class Meta:
+        verbose_name = 'Запись в журнале учета работ по нарядам и распоряжениям'
+        verbose_name_plural = 'Записи в журнале учета работ по нарядам и распоряжениям'
+        ordering = ['-number_post']
+
+    def __str__(self):
+        return f'Запись в журнале учета работ по нарядам и распоряжениям № {self.number_post}. {self.order} № {self.number_order}'

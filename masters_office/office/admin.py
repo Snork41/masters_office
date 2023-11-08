@@ -1,14 +1,15 @@
 from django.contrib import admin
 from django.contrib import messages
 
-from .forms import PostWalkingForm, PostRepairWorkForm
+from .forms import PostWalkingForm, PostRepairWorkForm, PostOrderForm
 from .models import (PostWalking,
                      Personal, District, Position,
-                     EnergyDistrict, Brigade, Resolution, PostRepairWork)
+                     EnergyDistrict, Brigade, Resolution, PostRepairWork, PostOrder)
 
 
 admin.site.site_header = '"Кабинет мастера" | Администрирование'
 admin.site.index_title = 'Управление кабинетом'
+
 
 admin.site.register(EnergyDistrict)
 
@@ -19,6 +20,42 @@ class ResolutionInline(admin.TabularInline):
     def get_max_num(self, request, obj=None, **kwargs):
         max_num = 1
         return max_num
+
+
+@admin.register(PostOrder)
+class PostOrderAdmin(admin.ModelAdmin):
+    form = PostOrderForm
+    list_display = (
+        'id',
+        'number_post',
+        'district',
+        'order',
+        'number_order',
+        'description',
+        'foreman',
+        'date_start_working',
+        'date_end_working',
+        'author',
+        'is_deleted',
+    )
+    fields = (
+        'district',
+        'order',
+        'number_order',
+        'description',
+        'foreman',
+        'members',
+        'author',
+        ('date_start_working', 'date_end_working'),
+        'is_deleted',
+    )
+    list_display_links = ('number_post', 'order', 'number_order', 'description')
+    # search_fields = ()
+    list_filter = ('order', 'district', 'date_start_working', 'date_end_working', 'is_deleted', 'author')
+    empty_value_display = '-пусто-'
+    list_per_page = 20
+    save_on_top = True
+    readonly_fields = ('time_create', 'time_update')
 
 
 @admin.register(PostRepairWork)
@@ -134,9 +171,11 @@ class PersonalAdmin(admin.ModelAdmin):
         'position',
         'rank',
         'energy_district',
+        'foreman',
     )
     list_display_links = ('first_name', 'last_name', 'middle_name')
-    list_filter = ('energy_district',)
+    list_filter = ('energy_district', 'position')
+    list_editable = ('foreman',)
 
 
 @admin.register(Position)

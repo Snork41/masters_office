@@ -8,7 +8,11 @@
 <br>
 <h1 class="text-center fw-light">Сотрудники</h1>
 <h2 class="text-center fw-light">{{ energy_district }}</h1>
-<div class="row row-table-employees">
+  <br>
+  <div class="d-grid gap-2 col-1 mx-auto">
+    <a class="btn btn-outline-dark fs-5 btn-back" href="{% url 'office:cabinet' %}">В кабинет</a> 
+  </div>
+<div class="row row-table-employees" style="padding-top: 3em;">
   <div class="col-6 col-md-3">
     <div class="card shadow sticky-top sticky-offset">
       <div class="card-header" style="text-align: center;">
