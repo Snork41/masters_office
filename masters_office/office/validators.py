@@ -48,12 +48,15 @@ def validate_fields_post_walking(self, form):
 
 
 def get_filtered_energy_district(self, context):
-    """Фильтруем для формы выбор источников и персонала при создании поста."""
+    """Фильтруем для формы выбор источников, членов бригады, производителей при создании поста."""
     district = context['form'].fields.get('district')
     members = context['form'].fields.get('members')
+    foreman = context['form'].fields.get('foreman')
     required_energy_district = self.request.user.energy_district
     if district:
         district.queryset = district.queryset.filter(energy_district=required_energy_district)
     if members:
         members.queryset = members.queryset.filter(energy_district=required_energy_district)
+    if foreman:
+        foreman.queryset = foreman.queryset.filter(energy_district=required_energy_district, foreman=True)
     return context

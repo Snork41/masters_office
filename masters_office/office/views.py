@@ -13,11 +13,11 @@ from django.utils.safestring import mark_safe
 from .models import (
     Brigade, District, PostWalking, Personal, Resolution, PostRepairWork, PostOrder)
 from .tables import PersonalTable
-from .forms import PostWalkingForm, ResolutionForm, PostRepairWorkForm
+from .forms import PostWalkingForm, ResolutionForm, PostRepairWorkForm, PostOrderForm
 from .filters import PersonalFilter, PostWalkingFilter, PostRepairWorkFilter
 from .validators import CheckEnergyDistrictMixin, validate_fields_post_walking, validate_fields_post_repair, get_filtered_energy_district
 from .utils import get_paginator
-from masters_office.settings import AMOUNT_POSTS_WALK, AMOUNT_POSTS_REPAIR_WORK
+from masters_office.settings import AMOUNT_POSTS_WALK, AMOUNT_POSTS_REPAIR_WORK, AMOUNT_POSTS_ORDER
 
 
 logger = logging.getLogger(__name__)
@@ -355,19 +355,39 @@ class PostRepairWorkEditView(LoginRequiredMixin, UpdateView):
         return reverse('office:journal_repair_work')
 
 
+class JournalOrderView(LoginRequiredMixin, ListView):
+    model = PostOrder
+    template_name = 'office/journal_order.html'
+    context_object_name = 'posts'
+    # filterset_class =
+    form_class = PostOrderForm
+
+    def get_queryset(self):
+        return PostOrder.objects.filter(
+            district__energy_district=self.request.user.energy_district
+        ).select_related('author', 'district')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['energy_district'] = self.request.user.energy_district
+        context['page_obj'] = get_paginator(
+            self.request,
+            context['posts'],
+            AMOUNT_POSTS_ORDER
+        )
+        return context
+
+
 class PostOrderCreateView(LoginRequiredMixin, CreateView):
     model = PostOrder
     template_name = 'office/create_post_order.html'
-    form_class = PostRepairWorkForm
+    form_class = PostOrderForm
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         return get_filtered_energy_district(self, context)
 
     def form_valid(self, form):
-        # form = validate_fields_post_repair(self, form)
-        # if form.errors:
-        #     return self.form_invalid(form)
         post = form.save(commit=False)
         post.author = self.request.user
         post.save()

@@ -112,6 +112,33 @@ DATE_START_WORKING_REPAIR_SED = datetime.date.today() - datetime.timedelta(days=
 DATE_END_WORKING_REPAIR_SED = datetime.date.today()
 
 
+# <----- Запись в журнале учета нарядов и распоряжений ----->
+POST_ORDER_NUMBER = 1
+POST_ORDER_NUMBER_2 = 2
+POST_ORDER_NUMBER_SED = 3
+
+ORDER_ORDER = 'Наряд'
+ORDER_ORDER_2 = 'Распоряжение'
+ORDER_ORDER_SED = 'Наряд'
+
+NUMBER_ORDER_ORDER = 1
+NUMBER_ORDER_ORDER_2 = 2
+NUMBER_ORDER_ORDER_SED = 3
+
+DESCRIPTION_ORDER = 'Тестовые наименования работ'
+DESCRIPTION_ORDER_2 = 'Тестовые наименования работ 2'
+DESCRIPTION_ORDER_SED = 'Тестовые наименования работ другого энергорайона!'
+
+DATE_START_WORKING_ORDER = datetime.date.today() - datetime.timedelta(days=1)
+DATE_END_WORKING_ORDER = datetime.date.today()
+
+DATE_START_WORKING_ORDER_2 = datetime.date.today() - datetime.timedelta(days=2)
+DATE_END_WORKING_ORDER_2 = DATE_START_WORKING_ORDER_2 + datetime.timedelta(days=1)
+
+DATE_START_WORKING_ORDER_SED = datetime.date.today() - datetime.timedelta(days=1)
+DATE_END_WORKING_ORDER_SED = datetime.date.today()
+
+
 # <----- Реверсы  ----->
 LOGIN_PAGE_REDIRECT = '/auth/login/?next='
 UNEXISTING_PAGE = '/unexisting_page/'
@@ -130,6 +157,8 @@ EMPLOYEES_REVERSE = 'office:employees'
 JRNL_REPAIR_WORK_REVERSE = 'office:journal_repair_work'
 CREATE_POST_REPAIR_REVERSE = 'office:create_post_repair'
 EDIT_POST_REPAIR_REVERSE = 'office:edit_post_repair'
+JRNL_ORDER_REVERSE = 'office:journal_order'
+CREATE_POST_ORDER_REVERSE = 'office:create_post_order'
 
 
 # <----- Урлы ----->
@@ -140,8 +169,10 @@ EMPLOYEES_URL = reverse(EMPLOYEES_REVERSE)
 JOURNALS_URL = reverse(JOURNALS_REVERSE)
 DISTRICTS_URL = reverse(DISTRICTS_REVERSE)
 JRNL_REPAIR_WORK_URL = reverse(JRNL_REPAIR_WORK_REVERSE)
+JRNL_ORDER_URL = reverse(JRNL_ORDER_REVERSE)
 JRNL_WLK_URL = reverse(
-    JRNL_WLK_REVERSE, kwargs={'slug_district': SLUG_DISTRICT})
+    JRNL_WLK_REVERSE, kwargs={'slug_district': SLUG_DISTRICT}
+)
 CREATE_POST_WLK_URL = reverse(
     CREATE_POST_WLK_REVERSE,
     kwargs={
@@ -177,6 +208,7 @@ EDIT_POST_REPAIR_URL = reverse(
         'post_id': POST_REPAIR_NUMBER
     }
 )
+CREATE_POST_ORDER_URL = reverse(CREATE_POST_ORDER_REVERSE)
 
 
 # <----- Адреса шаблонов ----->
@@ -201,3 +233,6 @@ EMPLOYEES_TMPL = 'office/employees.html'
 JRNL_REPAIR_WORK_TMPL = 'office/journal_repair_work.html'
 CREATE_POST_REPAIR_TMPLT = 'office/create_post_repair.html'
 EDIT_POST_REPAIR_TMPLT = 'office/edit_post_repair.html'
+
+JRNL_ORDER_TMPL = 'office/journal_order.html'
+CREATE_POST_ORDER_TMPLT = 'office/create_post_order.html'

@@ -21,6 +21,9 @@
       {% if 'create-post-repair' in crumb.path or 'edit-post-repair' in crumb.path %}
       <li class="breadcrumb-item"><a href="{% url 'office:journal_repair_work' %}">Журнал ремонтных работ</a></li>
       {% endif %}
+      {% if 'create-post-order' in crumb.path or 'edit-post-order' in crumb.path %}
+      <li class="breadcrumb-item"><a href="{% url 'office:journal_order' %}">Журнал учета работ по нарядам и распоряжениям</a></li>
+      {% endif %}
     </ol>
 </nav>
 {% endif %}

@@ -4,29 +4,32 @@ from django.contrib.auth import get_user_model
 from django.test import Client, TestCase
 from django.urls import reverse
 
-from office.models import (Brigade, District, EnergyDistrict,
-                           Personal, Position, PostWalking, PostRepairWork)
-from .consts import (BRGD_NUMBER, CABINET_TMPLT, CABINET_URL,
+from office.models import (Brigade, District, EnergyDistrict, Personal,
+                           Position, PostRepairWork, PostWalking)
+from .consts import (ADD_RESOLUTION_URL, ADRESS_REPAIR, BRGD_NUMBER,
+                     BRIGADES_TMPL, BRIGADES_URL, CABINET_TMPLT, CABINET_URL,
+                     CREATE_POST_ORDER_TMPLT, CREATE_POST_ORDER_URL,
+                     CREATE_POST_REPAIR_TMPLT, CREATE_POST_REPAIR_URL,
                      CREATE_POST_WLK_TMPLT, CREATE_POST_WLK_URL,
-                     DISTRICTS_TMPLT, DISTRICTS_URL,
-                     EDIT_POST_WLK_REVERSE, EDIT_POST_WLK_TMPLT, FIRST_NAME_1,
-                     FIRST_NAME_2, INDEX_TMPLT, INDEX_URL, JOURNALS_TMPLT,
-                     JOURNALS_URL, JRNL_WLK_TMPLT, JRNL_WLK_URL, LAST_NAME_1,
-                     LAST_NAME_2, LOGIN_PAGE_REDIRECT, MIDDLE_NAME_1,
-                     MIDDLE_NAME_2, NAME_POSITION, PLAN_WLK,
-                     POST_WLK_DETAIL_REVERSE, POST_WLK_DETAIL_TMPLT,
-                     POST_WLK_NUMBER, RANK, SLUG_DISTRICT,
-                     TAB_NUMBER_1, TAB_NUMBER_2, TASK_WLK, TEXT_WLK,
-                     TITLE_DISTRICT, TITLE_ENERGY_DISTRICT,
-                     TRANSFER_WLK, UNEXISTING_PAGE, USERNAME, USERNAME_AUTHOR,
-                     WALK_DATE, BRIGADES_URL, BRIGADES_TMPL, EMPLOYEES_URL,
-                     EMPLOYEES_TMPL, TITLE_SECOND_ENERGY_DISTRICT,
-                     USERNAME_SECOND_ENERGY_DISCRICT, ADD_RESOLUTION_URL,
-                     UPDATE_RESOLUTION_URL, JRNL_REPAIR_WORK_URL, JRNL_REPAIR_WORK_TMPL,
-                     POST_REPAIR_NUMBER, ORDER_REPAIR, NUMBER_ORDER_REPAIR,
-                     ADRESS_REPAIR, DESCRIPTION_REPAIR, DATE_START_WORKING_REPAIR,
-                     DATE_END_WORKING_REPAIR, CREATE_POST_REPAIR_URL, EDIT_POST_REPAIR_REVERSE,
-                     CREATE_POST_REPAIR_TMPLT, EDIT_POST_REPAIR_TMPLT)
+                     DATE_END_WORKING_REPAIR, DATE_START_WORKING_REPAIR,
+                     DESCRIPTION_REPAIR, DISTRICTS_TMPLT, DISTRICTS_URL,
+                     EDIT_POST_REPAIR_REVERSE, EDIT_POST_REPAIR_TMPLT,
+                     EDIT_POST_WLK_REVERSE, EDIT_POST_WLK_TMPLT,
+                     EMPLOYEES_TMPL, EMPLOYEES_URL, FIRST_NAME_1, FIRST_NAME_2,
+                     INDEX_TMPLT, INDEX_URL, JOURNALS_TMPLT, JOURNALS_URL,
+                     JRNL_ORDER_TMPL, JRNL_ORDER_URL, JRNL_REPAIR_WORK_TMPL,
+                     JRNL_REPAIR_WORK_URL, JRNL_WLK_TMPLT, JRNL_WLK_URL,
+                     LAST_NAME_1, LAST_NAME_2, LOGIN_PAGE_REDIRECT,
+                     MIDDLE_NAME_1, MIDDLE_NAME_2, NAME_POSITION,
+                     NUMBER_ORDER_REPAIR, ORDER_REPAIR, PLAN_WLK,
+                     POST_REPAIR_NUMBER, POST_WLK_DETAIL_REVERSE,
+                     POST_WLK_DETAIL_TMPLT, POST_WLK_NUMBER, RANK,
+                     SLUG_DISTRICT, TAB_NUMBER_1, TAB_NUMBER_2, TASK_WLK,
+                     TEXT_WLK, TITLE_DISTRICT, TITLE_ENERGY_DISTRICT,
+                     TITLE_SECOND_ENERGY_DISTRICT, TRANSFER_WLK,
+                     UNEXISTING_PAGE, UPDATE_RESOLUTION_URL, USERNAME,
+                     USERNAME_AUTHOR, USERNAME_SECOND_ENERGY_DISCRICT,
+                     WALK_DATE)
 
 User = get_user_model()
 
@@ -168,6 +171,8 @@ class OfficeURLTest(TestCase):
             JRNL_REPAIR_WORK_URL: HTTPStatus.OK,
             CREATE_POST_REPAIR_URL: HTTPStatus.OK,
             self.EDIT_POST_REPAIR_URL: HTTPStatus.FOUND,
+            JRNL_ORDER_URL: HTTPStatus.OK,
+            CREATE_POST_ORDER_URL: HTTPStatus.OK,
         }
         for url_name, expected_code in url.items():
             with self.subTest(url_name=url_name):
@@ -203,6 +208,8 @@ class OfficeURLTest(TestCase):
             JRNL_REPAIR_WORK_URL: HTTPStatus.OK,
             CREATE_POST_REPAIR_URL: HTTPStatus.OK,
             self.EDIT_POST_REPAIR_URL: HTTPStatus.OK,
+            JRNL_ORDER_URL: HTTPStatus.OK,
+            CREATE_POST_ORDER_URL: HTTPStatus.OK,
         }
         for url_name, expected_code in url.items():
             with self.subTest(url_name=url_name):
@@ -227,6 +234,8 @@ class OfficeURLTest(TestCase):
             JRNL_REPAIR_WORK_URL,
             CREATE_POST_REPAIR_URL,
             self.EDIT_POST_REPAIR_URL,
+            JRNL_ORDER_URL,
+            CREATE_POST_ORDER_URL,
         ]
         for url in urls:
             with self.subTest(url=url):
@@ -253,6 +262,8 @@ class OfficeURLTest(TestCase):
             JRNL_REPAIR_WORK_URL: JRNL_REPAIR_WORK_TMPL,
             CREATE_POST_REPAIR_URL: CREATE_POST_REPAIR_TMPLT,
             self.EDIT_POST_REPAIR_URL: EDIT_POST_REPAIR_TMPLT,
+            JRNL_ORDER_URL: JRNL_ORDER_TMPL,
+            CREATE_POST_ORDER_URL: CREATE_POST_ORDER_TMPLT,
         }
         for address, template in templates_url_names.items():
             with self.subTest(template=template):

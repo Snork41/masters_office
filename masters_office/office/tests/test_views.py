@@ -4,37 +4,49 @@ from django.test import Client, TestCase
 from django.urls import reverse
 
 from masters_office.settings import AMOUNT_POSTS_WALK
-from office.models import (Brigade, District, EnergyDistrict,
-                           Personal, Position, PostWalking, PostRepairWork, Resolution)
-from .consts import (BRGD_NUMBER, CREATE_POST_WLK_URL,
-                     DISTRICTS_URL, EDIT_POST_WLK_REVERSE, FIRST_NAME_1,
-                     FIRST_NAME_2, JRNL_WLK_URL, LAST_NAME_1,
-                     LAST_NAME_2, MIDDLE_NAME_1, MIDDLE_NAME_2, NAME_POSITION,
-                     PLAN_WLK, POST_WLK_DETAIL_REVERSE, POST_WLK_NUMBER,
-                     POST_WLK_NUMBER_2, RANK, RESOLUTION_WALK,
-                     RESOLUTION_WALK_2, SLUG_DISTRICT, SLUG_DISTRICT_2,
-                     TAB_NUMBER_1, TAB_NUMBER_2, TASK_WLK,
-                     TEXT_WLK, TITLE_DISTRICT, TITLE_DISTRICT_2,
-                     TITLE_ENERGY_DISTRICT, TRANSFER_WLK,
-                     USERNAME, USERNAME_AUTHOR, WALK_DATE, ADD_RESOLUTION_URL,
-                     UPDATE_RESOLUTION_URL, BRIGADES_URL, TITLE_SECOND_ENERGY_DISTRICT,
-                     USERNAME_SECOND_ENERGY_DISCRICT,
-                     FIRST_NAME_3_SED, FIRST_NAME_4_SED, LAST_NAME_3_SED,
-                     LAST_NAME_4_SED, MIDDLE_NAME_3_SED, MIDDLE_NAME_4_SED,
-                     BRGD_SED_NUMBER, TAB_NUMBER_3_SED, TAB_NUMBER_4_SED,
-                     EMPLOYEES_URL, POST_WLK_NUMBER_SED, WALK_DATE_SED,
-                     TASK_WLK_SED, TEXT_WLK_SED, PLAN_WLK_SED, TRANSFER_WLK_SED,
-                     TITLE_DISTRICT_SED, SLUG_DISTRICT_SED, JRNL_REPAIR_WORK_URL,
-                     POST_REPAIR_NUMBER, POST_REPAIR_NUMBER_2, POST_REPAIR_NUMBER_SED,
-                     ORDER_REPAIR, ORDER_REPAIR_2, ORDER_REPAIR_SED,
-                     NUMBER_ORDER_REPAIR, NUMBER_ORDER_REPAIR_2, NUMBER_ORDER_REPAIR_SED,
-                     ADRESS_REPAIR, ADRESS_REPAIR_2, ADRESS_REPAIR_SED,
-                     DESCRIPTION_REPAIR, DESCRIPTION_REPAIR_2, DESCRIPTION_REPAIR_SED,
-                     DATE_START_WORKING_REPAIR, DATE_END_WORKING_REPAIR,
-                     DATE_START_WORKING_REPAIR_2, DATE_END_WORKING_REPAIR_2,
-                     DATE_START_WORKING_REPAIR_SED, DATE_END_WORKING_REPAIR_SED,
-                     CREATE_POST_REPAIR_URL, EDIT_POST_REPAIR_URL, EDIT_POST_WLK_URL)
-
+from office.models import (Brigade, District, EnergyDistrict, Personal,
+                           Position, PostOrder, PostRepairWork, PostWalking,
+                           Resolution)
+from .consts import (ADD_RESOLUTION_URL, ADRESS_REPAIR, ADRESS_REPAIR_2,
+                     ADRESS_REPAIR_SED, BRGD_NUMBER, BRGD_SED_NUMBER,
+                     BRIGADES_URL, CREATE_POST_ORDER_URL,
+                     CREATE_POST_REPAIR_URL, CREATE_POST_WLK_URL,
+                     DATE_END_WORKING_ORDER, DATE_END_WORKING_ORDER_2,
+                     DATE_END_WORKING_ORDER_SED, DATE_END_WORKING_REPAIR,
+                     DATE_END_WORKING_REPAIR_2, DATE_END_WORKING_REPAIR_SED,
+                     DATE_START_WORKING_ORDER, DATE_START_WORKING_ORDER_2,
+                     DATE_START_WORKING_ORDER_SED, DATE_START_WORKING_REPAIR,
+                     DATE_START_WORKING_REPAIR_2,
+                     DATE_START_WORKING_REPAIR_SED, DESCRIPTION_ORDER,
+                     DESCRIPTION_ORDER_2, DESCRIPTION_ORDER_SED,
+                     DESCRIPTION_REPAIR, DESCRIPTION_REPAIR_2,
+                     DESCRIPTION_REPAIR_SED, DISTRICTS_URL,
+                     EDIT_POST_REPAIR_URL, EDIT_POST_WLK_REVERSE,
+                     EDIT_POST_WLK_URL, EMPLOYEES_URL, FIRST_NAME_1,
+                     FIRST_NAME_2, FIRST_NAME_3_SED, FIRST_NAME_4_SED,
+                     JRNL_ORDER_URL, JRNL_REPAIR_WORK_URL, JRNL_WLK_URL,
+                     LAST_NAME_1, LAST_NAME_2, LAST_NAME_3_SED,
+                     LAST_NAME_4_SED, MIDDLE_NAME_1, MIDDLE_NAME_2,
+                     MIDDLE_NAME_3_SED, MIDDLE_NAME_4_SED, NAME_POSITION,
+                     NUMBER_ORDER_ORDER, NUMBER_ORDER_ORDER_2,
+                     NUMBER_ORDER_ORDER_SED, NUMBER_ORDER_REPAIR,
+                     NUMBER_ORDER_REPAIR_2, NUMBER_ORDER_REPAIR_SED,
+                     ORDER_ORDER, ORDER_ORDER_2, ORDER_ORDER_SED, ORDER_REPAIR,
+                     ORDER_REPAIR_2, ORDER_REPAIR_SED, PLAN_WLK, PLAN_WLK_SED,
+                     POST_ORDER_NUMBER, POST_ORDER_NUMBER_2,
+                     POST_ORDER_NUMBER_SED, POST_REPAIR_NUMBER,
+                     POST_REPAIR_NUMBER_2, POST_REPAIR_NUMBER_SED,
+                     POST_WLK_DETAIL_REVERSE, POST_WLK_NUMBER,
+                     POST_WLK_NUMBER_2, POST_WLK_NUMBER_SED, RANK,
+                     RESOLUTION_WALK, RESOLUTION_WALK_2, SLUG_DISTRICT,
+                     SLUG_DISTRICT_2, SLUG_DISTRICT_SED, TAB_NUMBER_1,
+                     TAB_NUMBER_2, TAB_NUMBER_3_SED, TAB_NUMBER_4_SED,
+                     TASK_WLK, TASK_WLK_SED, TEXT_WLK, TEXT_WLK_SED,
+                     TITLE_DISTRICT, TITLE_DISTRICT_2, TITLE_DISTRICT_SED,
+                     TITLE_ENERGY_DISTRICT, TITLE_SECOND_ENERGY_DISTRICT,
+                     TRANSFER_WLK, TRANSFER_WLK_SED, UPDATE_RESOLUTION_URL,
+                     USERNAME, USERNAME_AUTHOR,
+                     USERNAME_SECOND_ENERGY_DISCRICT, WALK_DATE, WALK_DATE_SED)
 
 User = get_user_model()
 
@@ -206,6 +218,42 @@ class OfficeViewsTest(TestCase):
             date_end_working=DATE_END_WORKING_REPAIR_SED,
             author=cls.user_SED,
         )
+        cls.post_order = PostOrder.objects.create(
+            number_post=POST_ORDER_NUMBER,
+            district=cls.district,
+            order=ORDER_ORDER,
+            number_order=NUMBER_ORDER_ORDER,
+            description=DESCRIPTION_ORDER,
+            foreman=cls.workman,
+            date_start_working=DATE_START_WORKING_ORDER,
+            date_end_working=DATE_END_WORKING_ORDER,
+            author=cls.user,
+        )
+        cls.post_order.members.set([cls.workman_2])
+        cls.post_order_2 = PostOrder.objects.create(
+            number_post=POST_ORDER_NUMBER_2,
+            district=cls.district_2,
+            order=ORDER_ORDER_2,
+            number_order=NUMBER_ORDER_ORDER_2,
+            description=DESCRIPTION_ORDER_2,
+            foreman=cls.workman_2,
+            date_start_working=DATE_START_WORKING_ORDER_2,
+            date_end_working=DATE_END_WORKING_ORDER_2,
+            author=cls.user,
+        )
+        cls.post_order_SED = PostOrder.objects.create(
+            number_post=POST_ORDER_NUMBER_SED,
+            district=cls.district_2_SED,
+            order=ORDER_ORDER_SED,
+            number_order=NUMBER_ORDER_ORDER_SED,
+            description=DESCRIPTION_ORDER_SED,
+            foreman=cls.workman_3_SED,
+            date_start_working=DATE_START_WORKING_ORDER_SED,
+            date_end_working=DATE_END_WORKING_ORDER_SED,
+            author=cls.user_SED,
+        )
+        cls.post_order_SED.members.set([cls.workman_4_SED])
+        cls.post_order_2.members.set([cls.workman])
         cls.POST_WLK_DETAIL_URL = reverse(
             POST_WLK_DETAIL_REVERSE,
             kwargs={
@@ -262,6 +310,7 @@ class OfficeViewsTest(TestCase):
             'plan': forms.fields.CharField,
             'fix_date': forms.fields.DateField,
             'transfer': forms.fields.CharField,
+            'is_deleted': forms.BooleanField,
         }
         for value, expected in form_fields.items():
             with self.subTest(value=value):
@@ -282,6 +331,7 @@ class OfficeViewsTest(TestCase):
             'plan': forms.fields.CharField,
             'fix_date': forms.fields.DateField,
             'transfer': forms.fields.CharField,
+            'is_deleted': forms.BooleanField,
         }
         for value, expected in form_fields.items():
             with self.subTest(value=value):
@@ -418,6 +468,31 @@ class OfficeViewsTest(TestCase):
             'number_order': forms.fields.IntegerField,
             'adress': forms.fields.CharField,
             'description': forms.fields.CharField,
+            'date_start_working': forms.fields.DateTimeField,
+            'date_end_working': forms.fields.DateTimeField,
+            'is_deleted': forms.fields.BooleanField,
+        }
+        for value, expected in form_fields.items():
+            with self.subTest(value=value):
+                form_field = response.context.get('form').fields.get(value)
+                self.assertIsInstance(form_field, expected)
+
+    def test_journal_order_page_show_correct_context(self):
+        """Шаблон journal_order сформирован с правильным контекстом."""
+        response = self.authorized_client.get(JRNL_ORDER_URL)
+        excepted = PostOrder.objects.filter(district__energy_district=self.user.energy_district)
+        self.assertQuerysetEqual(response.context.get('page_obj').object_list, excepted)
+
+    def test_post_order_create_page_show_correct_context(self):
+        """Шаблон create_post_order сформирован с правильным контекстом."""
+        response = self.authorized_client.get(CREATE_POST_ORDER_URL)
+        form_fields = {
+            'district': forms.fields.ChoiceField,
+            'order': forms.fields.ChoiceField,
+            'number_order': forms.fields.IntegerField,
+            'description': forms.fields.CharField,
+            'foreman': forms.ChoiceField,
+            'members': forms.models.ModelMultipleChoiceField,
             'date_start_working': forms.fields.DateTimeField,
             'date_end_working': forms.fields.DateTimeField,
             'is_deleted': forms.fields.BooleanField,

@@ -147,9 +147,18 @@ class PostOrderForm(forms.ModelForm):
     date_end_working = forms.DateTimeField(
         required=False,
         label='Работа закончена',
+        help_text='Заполняется после окончания работ',
         widget=forms.DateTimeInput(
             format=('%Y-%m-%d %H:%M'), attrs={'type': 'datetime-local'}
         )
+    )
+    members = forms.ModelMultipleChoiceField(
+        label='Члены бригады',
+        queryset=Personal.objects.all(),
+        widget=FilteredSelectMultiple(
+            verbose_name='Члены бригады',
+            is_stacked=False
+        ),
     )
 
     class Meta:
@@ -165,6 +174,12 @@ class PostOrderForm(forms.ModelForm):
             'date_end_working',
             'is_deleted',
         )
+
+    class Media:
+        css = {
+            'all': [os.path.join(BASE_DIR, 'static/css/select_multiple.css')],
+        }
+        js = ('/admin/jsi18n',)
 
     def save(self, username=None, *args, commit=True, **kwargs):
         obj = super().save(commit=False, *args, **kwargs)
