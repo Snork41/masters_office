@@ -5,7 +5,7 @@ from django.core.validators import MaxValueValidator
 import os
 
 from .models import PostWalking, Personal, Resolution, PostRepairWork, PostOrder
-from .utils import add_number_post
+from .utils import add_number_post, add_number_order
 from masters_office.settings import BASE_DIR
 
 
@@ -72,7 +72,9 @@ class PostWalkingForm(forms.ModelForm):
 
     def save(self, username=None, commit=True, *args, **kwargs):
         obj = super().save(commit=False, *args, **kwargs)
-        return add_number_post(self, obj, PostWalking, username, commit, *args, **kwargs)
+        return add_number_post(
+            self, obj=obj, model=obj.__class__, username=username, commit=commit, *args, **kwargs
+        )
 
     def __init__(self, *args, **kwargs):
         self.instance = kwargs.get('instance')
@@ -126,7 +128,9 @@ class PostRepairWorkForm(forms.ModelForm):
 
     def save(self, username=None, *args, commit=True, **kwargs):
         obj = super().save(commit=False, *args, **kwargs)
-        return add_number_post(self, obj, PostRepairWork, username, commit, *args, **kwargs)
+        return add_number_post(
+            self, obj=obj, model=obj.__class__, username=username, commit=commit, *args, **kwargs
+        )
 
     def __init__(self, *args, **kwargs):
         self.instance = kwargs.get('instance')
@@ -166,7 +170,6 @@ class PostOrderForm(forms.ModelForm):
         fields = (
             'district',
             'order',
-            'number_order',
             'description',
             'foreman',
             'members',
@@ -183,4 +186,14 @@ class PostOrderForm(forms.ModelForm):
 
     def save(self, username=None, *args, commit=True, **kwargs):
         obj = super().save(commit=False, *args, **kwargs)
-        return add_number_post(self, obj, PostOrder, username, commit, *args, **kwargs)
+        obj = add_number_order(self, obj=obj, model=obj.__class__, *args, **kwargs)
+        return add_number_post(
+            self, obj=obj, model=obj.__class__, username=username, commit=commit, *args, **kwargs
+        )
+
+    def __init__(self, *args, **kwargs):
+        self.instance = kwargs.get('instance')
+        super().__init__(*args, **kwargs)
+        for field in ['district', 'order', 'description', 'foreman', 'date_start_working', 'date_end_working']:
+            if field in self.fields:
+                self.fields[field].widget.attrs.update({'class': 'focus-ring focus-ring-dark border'})

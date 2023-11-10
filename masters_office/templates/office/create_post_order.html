@@ -17,9 +17,8 @@
               {% csrf_token %}
               <div class="form-error">{{ form.non_field_errors }}</div>
                 <div class="row gy-3">
-                  <div class="col-12">{{ form.district|as_crispy_field }}</div>
+                  <div class="col-6">{{ form.district|as_crispy_field }}</div>
                   <div class="col-6">{{ form.order|as_crispy_field }}</div>
-                  <div class="col-6">{{ form.number_order|as_crispy_field }}</div>
                   <div class="col-12"> {{ form.description|as_crispy_field }}</div>
                   <div class="col-12"> {{ form.foreman|as_crispy_field }}</div>
                   <div class="col-12 form-error form-error-members text-center">{{ form.errors.members }}</div>

@@ -132,6 +132,8 @@ DESCRIPTION_ORDER_SED = 'Тестовые наименования работ д
 DATE_START_WORKING_ORDER = datetime.date.today() - datetime.timedelta(days=1)
 DATE_END_WORKING_ORDER = datetime.date.today()
 
+DATE_END_WORKING_ORDER_NOT_VALID = DATE_START_WORKING_ORDER - datetime.timedelta(days=1)
+
 DATE_START_WORKING_ORDER_2 = datetime.date.today() - datetime.timedelta(days=2)
 DATE_END_WORKING_ORDER_2 = DATE_START_WORKING_ORDER_2 + datetime.timedelta(days=1)
 

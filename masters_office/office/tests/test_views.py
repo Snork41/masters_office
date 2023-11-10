@@ -489,7 +489,6 @@ class OfficeViewsTest(TestCase):
         form_fields = {
             'district': forms.fields.ChoiceField,
             'order': forms.fields.ChoiceField,
-            'number_order': forms.fields.IntegerField,
             'description': forms.fields.CharField,
             'foreman': forms.ChoiceField,
             'members': forms.models.ModelMultipleChoiceField,

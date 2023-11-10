@@ -434,6 +434,7 @@ class PostOrder(models.Model):
     order = models.CharField(
         choices=ORDER,
         verbose_name='Наряд/распоряжение',
+        help_text='Номер присвоится после создания записи',
         null=False,
         blank=False,
         max_length=30

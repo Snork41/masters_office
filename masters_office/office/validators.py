@@ -17,13 +17,14 @@ class CheckEnergyDistrictMixin:
         return super().get(request, *args, **kwargs)
 
 
-def validate_fields_post_repair(self, form):
+def validate_date_fields_post(self, form):
     """Проверка полей заполненной формы записи
-    в журнале ремонтых работ на соответствие требований."""
-    if form.cleaned_data['date_start_working'] >= form.cleaned_data['date_end_working']:
-        form.add_error(
-            'date_end_working', 'Дата окончания работ не может быть раньше даты начала'
-        )
+    в журналах на соответствие требований по датам."""
+    if form.cleaned_data['date_end_working']:
+        if form.cleaned_data['date_start_working'] >= form.cleaned_data['date_end_working']:
+            form.add_error(
+                'date_end_working', 'Дата окончания работ не может быть раньше даты начала'
+            )
     return form
 
 

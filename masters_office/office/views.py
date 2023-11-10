@@ -1,24 +1,29 @@
 import logging
 
+from django.contrib import messages
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.shortcuts import get_object_or_404, redirect
+from django.urls import reverse
+from django.utils.safestring import mark_safe
+from django.views.generic import (CreateView, DetailView, FormView, ListView,
+                                  TemplateView, UpdateView)
 from django_filters.views import FilterView
 from django_tables2 import SingleTableMixin
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.contrib import messages
-from django.urls import reverse
-from django.shortcuts import get_object_or_404, redirect
-from django.views.generic import (
-    ListView, TemplateView, DetailView, FormView, CreateView, UpdateView)
-from django.utils.safestring import mark_safe
 
-from .models import (
-    Brigade, District, PostWalking, Personal, Resolution, PostRepairWork, PostOrder)
+from masters_office.settings import (AMOUNT_POSTS_ORDER,
+                                     AMOUNT_POSTS_REPAIR_WORK,
+                                     AMOUNT_POSTS_WALK)
+from .filters import PersonalFilter, PostRepairWorkFilter, PostWalkingFilter
+from .forms import (PostOrderForm, PostRepairWorkForm, PostWalkingForm,
+                    ResolutionForm)
+from .models import (Brigade, District, Personal, PostOrder, PostRepairWork,
+                     PostWalking, Resolution)
 from .tables import PersonalTable
-from .forms import PostWalkingForm, ResolutionForm, PostRepairWorkForm, PostOrderForm
-from .filters import PersonalFilter, PostWalkingFilter, PostRepairWorkFilter
-from .validators import CheckEnergyDistrictMixin, validate_fields_post_walking, validate_fields_post_repair, get_filtered_energy_district
 from .utils import get_paginator
-from masters_office.settings import AMOUNT_POSTS_WALK, AMOUNT_POSTS_REPAIR_WORK, AMOUNT_POSTS_ORDER
-
+from .validators import (CheckEnergyDistrictMixin,
+                         get_filtered_energy_district,
+                         validate_date_fields_post,
+                         validate_fields_post_walking)
 
 logger = logging.getLogger(__name__)
 
@@ -293,7 +298,7 @@ class PostRepairWorkCreateView(LoginRequiredMixin, CreateView):
         return get_filtered_energy_district(self, context)
 
     def form_valid(self, form):
-        form = validate_fields_post_repair(self, form)
+        form = validate_date_fields_post(self, form)
         if form.errors:
             return self.form_invalid(form)
         post = form.save(commit=False)
@@ -334,7 +339,7 @@ class PostRepairWorkEditView(LoginRequiredMixin, UpdateView):
         return get_filtered_energy_district(self, context)
 
     def form_valid(self, form):
-        form = validate_fields_post_repair(self, form)
+        form = validate_date_fields_post(self, form)
         if form.errors:
             return self.form_invalid(form)
         post = form.save(commit=False)
@@ -388,6 +393,9 @@ class PostOrderCreateView(LoginRequiredMixin, CreateView):
         return get_filtered_energy_district(self, context)
 
     def form_valid(self, form):
+        form = validate_date_fields_post(self, form)
+        if form.errors:
+            return self.form_invalid(form)
         post = form.save(commit=False)
         post.author = self.request.user
         post.save()
@@ -400,7 +408,7 @@ class PostOrderCreateView(LoginRequiredMixin, CreateView):
         )
         messages.success(
             self.request, mark_safe(
-                f'Запись № {self.object.number_post} успешно добавлена.'
+                f'Запись № {self.object.number_post} ({self.object.order} № {self.object.number_order}) успешно добавлена.'
             )
         )
         return reverse('office:journal_order')

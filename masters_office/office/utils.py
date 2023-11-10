@@ -34,3 +34,15 @@ def add_number_post(self, obj, model, username, commit, *args, **kwargs):
         obj.save()
         self._save_m2m()
     return obj
+
+
+def add_number_order(self, obj, model, *args, **kwargs):
+    """Присвоение записи в журнале нарядов и распоряжений
+    номера наряда/распоряжения."""
+    if not obj.number_order:
+        if obj.order == 'Наряд':
+            most_recent = model.objects.filter(order='Наряд').order_by('-number_order').first()
+        elif obj.order == 'Распоряжение':
+            most_recent = model.objects.filter(order='Распоряжение').order_by('-number_order').first()
+        obj.number_order = most_recent.number_order + 1 if most_recent else 1
+    return obj

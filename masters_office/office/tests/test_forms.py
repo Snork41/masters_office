@@ -1,31 +1,38 @@
 from django.contrib.auth import get_user_model
 from django.test import Client, TestCase
-from office.models import (District, EnergyDistrict, Personal,
-                           Position, PostWalking, PostRepairWork, Resolution)
 
-from .consts import (ADD_RESOLUTION_URL, FIRST_NAME_1,
-                     LAST_NAME_1, MIDDLE_NAME_1, NAME_POSITION, PLAN_WLK,
-                     POST_WLK_NUMBER, RANK, RESOLUTION_WALK, RESOLUTION_WALK_2,
-                     SLUG_DISTRICT, TAB_NUMBER_1, TASK_WLK,
-                     TEXT_WLK, TEXT_WLK_2, TITLE_DISTRICT, TITLE_ENERGY_DISTRICT,
-                     TRANSFER_WLK, UPDATE_RESOLUTION_URL,
-                     USERNAME, USERNAME_BOSS, WALK_DATE, CREATE_POST_WLK_URL,
-                     WALK_DATE_NOT_VALID, EDIT_POST_WLK_URL, WALK_DATE_IN_EDIT_POST,
-                     TASK_WLK_IN_EDIT_POST, PLAN_WLK_IN_EDIT_POST,
-                     TRANSFER_WLK__IN_EDIT_POST, FIRST_NAME_2, LAST_NAME_2,
-                     MIDDLE_NAME_2, TAB_NUMBER_2, FIRST_NAME_3_SED, LAST_NAME_3_SED,
-                     MIDDLE_NAME_3_SED, FIRST_NAME_4_SED, LAST_NAME_4_SED,
-                     MIDDLE_NAME_4_SED, TAB_NUMBER_3_SED, TAB_NUMBER_4_SED,
-                     TITLE_SECOND_ENERGY_DISTRICT,
-                     POST_REPAIR_NUMBER, ORDER_REPAIR, NUMBER_ORDER_REPAIR,
-                     ADRESS_REPAIR, DESCRIPTION_REPAIR, DATE_START_WORKING_REPAIR,
-                     DATE_END_WORKING_REPAIR, CREATE_POST_REPAIR_URL,
-                     DESCRIPTION_REPAIR_2, DATE_END_WORKING_REPAIR_NOT_VALID,
-                     ORDER_REPAIR_2, NUMBER_ORDER_REPAIR_2, ADRESS_REPAIR_2,
-                     DATE_START_WORKING_REPAIR_2, DATE_END_WORKING_REPAIR_2,
-                     EDIT_POST_REPAIR_URL, TITLE_DISTRICT_SED, SLUG_DISTRICT_SED,
-                     USERNAME_SECOND_ENERGY_DISCRICT)
-
+from office.models import (District, EnergyDistrict, Personal, Position,
+                           PostOrder, PostRepairWork, PostWalking, Resolution)
+from .consts import (ADD_RESOLUTION_URL, ADRESS_REPAIR, ADRESS_REPAIR_2,
+                     CREATE_POST_ORDER_URL, CREATE_POST_REPAIR_URL,
+                     CREATE_POST_WLK_URL, DATE_END_WORKING_ORDER,
+                     DATE_END_WORKING_ORDER_2,
+                     DATE_END_WORKING_ORDER_NOT_VALID, DATE_END_WORKING_REPAIR,
+                     DATE_END_WORKING_REPAIR_2,
+                     DATE_END_WORKING_REPAIR_NOT_VALID,
+                     DATE_START_WORKING_ORDER, DATE_START_WORKING_ORDER_2,
+                     DATE_START_WORKING_REPAIR, DATE_START_WORKING_REPAIR_2,
+                     DESCRIPTION_ORDER, DESCRIPTION_ORDER_2,
+                     DESCRIPTION_REPAIR, DESCRIPTION_REPAIR_2,
+                     EDIT_POST_REPAIR_URL, EDIT_POST_WLK_URL, FIRST_NAME_1,
+                     FIRST_NAME_2, FIRST_NAME_3_SED, FIRST_NAME_4_SED,
+                     LAST_NAME_1, LAST_NAME_2, LAST_NAME_3_SED,
+                     LAST_NAME_4_SED, MIDDLE_NAME_1, MIDDLE_NAME_2,
+                     MIDDLE_NAME_3_SED, MIDDLE_NAME_4_SED, NAME_POSITION,
+                     NUMBER_ORDER_ORDER, NUMBER_ORDER_REPAIR,
+                     NUMBER_ORDER_REPAIR_2, ORDER_ORDER, ORDER_ORDER_2,
+                     ORDER_REPAIR, ORDER_REPAIR_2, PLAN_WLK,
+                     PLAN_WLK_IN_EDIT_POST, POST_ORDER_NUMBER,
+                     POST_REPAIR_NUMBER, POST_WLK_NUMBER, RANK,
+                     RESOLUTION_WALK, RESOLUTION_WALK_2, SLUG_DISTRICT,
+                     SLUG_DISTRICT_SED, TAB_NUMBER_1, TAB_NUMBER_2,
+                     TAB_NUMBER_3_SED, TAB_NUMBER_4_SED, TASK_WLK,
+                     TASK_WLK_IN_EDIT_POST, TEXT_WLK, TEXT_WLK_2,
+                     TITLE_DISTRICT, TITLE_DISTRICT_SED, TITLE_ENERGY_DISTRICT,
+                     TITLE_SECOND_ENERGY_DISTRICT, TRANSFER_WLK,
+                     TRANSFER_WLK__IN_EDIT_POST, UPDATE_RESOLUTION_URL,
+                     USERNAME, USERNAME_BOSS, USERNAME_SECOND_ENERGY_DISCRICT,
+                     WALK_DATE, WALK_DATE_IN_EDIT_POST, WALK_DATE_NOT_VALID)
 
 User = get_user_model()
 
@@ -128,6 +135,18 @@ class PostFormTests(TestCase):
             date_end_working=DATE_END_WORKING_REPAIR,
             author=cls.user,
         )
+        cls.post_order = PostOrder.objects.create(
+            number_post=POST_ORDER_NUMBER,
+            district=cls.district,
+            order=ORDER_ORDER,
+            number_order=NUMBER_ORDER_ORDER,
+            description=DESCRIPTION_ORDER,
+            foreman=cls.workman,
+            date_start_working=DATE_START_WORKING_ORDER,
+            date_end_working=DATE_END_WORKING_ORDER,
+            author=cls.user,
+        )
+        cls.post_order.members.set([cls.workman_2])
 
     def setUp(self):
         self.authorized_client = Client()
@@ -380,6 +399,52 @@ class PostFormTests(TestCase):
             'date_end_working': DATE_END_WORKING_REPAIR_NOT_VALID,
         }
         response = self.authorized_client.post(CREATE_POST_REPAIR_URL, data=form_data)
+        self.assertFalse(response.context['form'].is_valid())
+        self.assertTrue('date_end_working' in response.context_data['form'].errors)
+
+    def test_create_post_order(self):
+        """Валидная форма создаёт запись в журнале учета работ по нарядам и распоряжениям.
+
+        Номер записи, номер наряда/распоряжения и автор должны заполняться автоматически.
+        """
+        exist_posts_order_amount = PostOrder.objects.count()
+        expected_posts_order_amount = exist_posts_order_amount + 1
+        exist_post_order_number = self.post_order.number_post
+        expected_new_post_order_number = exist_post_order_number + 1
+        exist_post_order_number_order = self.post_order.number_order
+        expected_new_post_order_number_order = exist_post_order_number_order + 1
+
+        form_data = {
+            'district': self.district.id,
+            'order': ORDER_ORDER,
+            'description': DESCRIPTION_ORDER_2,
+            'foreman': self.workman_2.id,
+            'members': self.workman.id,
+            'date_start_working': DATE_START_WORKING_ORDER_2,
+            'date_end_working': DATE_END_WORKING_ORDER_2,
+        }
+        self.authorized_client.post(CREATE_POST_ORDER_URL, data=form_data)
+        new_post_order = PostOrder.objects.get(description=form_data['description'])
+        self.assertEqual(PostOrder.objects.count(), expected_posts_order_amount)
+        self.assertEqual(new_post_order.number_post, expected_new_post_order_number)
+        self.assertEqual(new_post_order.number_order, expected_new_post_order_number_order)
+        self.assertEqual(new_post_order.author, self.user)
+
+    def test_validation_date_end_working_in_new_post_order(self):
+        """
+        При создании записи в журнале учета нарядов и распоряжений
+        дата окончания работ не может быть раньше даты начала работ.
+        """
+        form_data = {
+            'district': self.district.id,
+            'order': ORDER_ORDER,
+            'description': DESCRIPTION_ORDER_2,
+            'foreman': self.workman_2.id,
+            'members': self.workman.id,
+            'date_start_working': DATE_START_WORKING_ORDER,
+            'date_end_working': DATE_END_WORKING_ORDER_NOT_VALID,
+        }
+        response = self.authorized_client.post(CREATE_POST_ORDER_URL, data=form_data)
         self.assertFalse(response.context['form'].is_valid())
         self.assertTrue('date_end_working' in response.context_data['form'].errors)
 
