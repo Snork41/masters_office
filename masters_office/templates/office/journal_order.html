@@ -1,8 +1,8 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load render_table from django_tables2 %}
 {% load django_bootstrap5 %}
 {% block title %} Журнал учета работ по нарядам и распоряжениям {% endblock title %}
-
 {% block content %}
  {% for message in messages %}
   {% if message.tags == 'success' %}
@@ -12,154 +12,47 @@
     </div>
   {% endif %}
 {% endfor %}
-
 <br>
 <h1 class="text-center fw-light">Журнал учета работ по нарядам и распоряжениям</h1>
 <h2 class="text-center fw-light">{{ energy_district }}</h2>
 <br>
-
 <div class="d-grid gap-2 col-2 mx-auto">
-  {% if not page_obj %}
+  {% if not posts %}
     {% if request.GET %}
-    <p class="text-center fs-1" style="color: red">Совпадений не найдено.</p>
-    <a class="btn btn-outline-dark fs-3 btn-back" href="{% url 'office:journal_order' %}">Назад</a>      
+    <p class="text-center fs-2" style="color: red">Совпадений не найдено.</p>
     {% else %}
     <p class="text-center fs-1">Записей нет.</p>
     {% endif %}
   {% endif %}
   <a class="btn btn-outline-dark btn-lg fs-3" href="{% url 'office:create_post_order' %}">Новая запись</a>
-  {% if not request.GET %}
   <a class="btn btn-outline-dark fs-5 btn-back" href="{% url 'office:journals' %}">Назад к журналам</a>
-  {% endif %}
 </div>
-
-{% if page_obj %}
-<div class="row justify-content-center">
-  <!-- Окно фильтрации -->
-  {% if filter %}
-    <div class="col-3" style="padding-top: 7.5em; padding-left: 4em; padding-bottom: 2em;">
-      <div class="card shadow sticky-top sticky-offset">
-        <div class="card-header" style="text-align: center">
-          <span class="btn" style="font-size: larger">ФИЛЬТРАЦИЯ</span>
-        </div>
-        <div class="card-body">
-          <form action="" method="get" class="form form-floating">
+<div class="row row-table-posts-order" style="padding-top: 3em;">
+  <div class="col-4 col-md-2">
+    <div class="card shadow sticky-top sticky-offset">
+      <div class="card-header" style="text-align: center;">
+        <span class="btn" style="font-size: larger;">ФИЛЬТРАЦИЯ</button>
+      </div>      
+      <div class="card-body">
+        {% if filter %}
+          <form action="" method="get" class="form form-floating ">
             {% bootstrap_form filter.form layout="floating" %}
             <div class="text-center">
-            {% bootstrap_button button_type="submit" button_class="btn-outline-dark col-4" content="Применить" %}
-            <a href="{% url 'office:journal_repair_work' %}" class="btn btn-outline-dark col-4" role="button">Сбросить</a >
+            {% bootstrap_button button_type="submit" button_class="btn-outline-dark col-6" content="Применить" %}
+            <a href="{% url 'office:journal_order' %}" class="btn btn-outline-dark col-6 mt-2" role="button">Сбросить</a>
             </div>
           </form>
-        </div>
+        {% endif %}
       </div>
     </div>
-  {% endif %}
-
-
-
-  <!-- Список записей -->
-  <div class="col-8 p-5">
-    {% include 'includes/paginator.html' %}
-    <div data-bs-spy="scroll" data-bs-target="#list-journal" data-bs-smooth-scroll="true" class="scrollspy-journal" tabindex="0">
-      {% for post in page_obj %}
-      <div id="list-item-{{ forloop.counter }}">
-        <div class="card card-post-in-list shadow border-0" style="margin-bottom: 3em;">
-          <div class="card-body fs-4">
-            <table class="table table-hover">
-              <caption style="text-align: end">
-                Автор: {{ post.author.get_full_name }} ({{ post.author }})<br>
-                Создана: {{ post.time_create }}<br>
-              {% if post.is_edit %}
-                Изменена: {{ post.time_update }}
-              {% endif %}
-              </caption>
-              <thead class="text-align: end;">
-                {% if post.is_deleted %}
-                <span class="border border-danger" style="color: red; padding: 5px">ЗАПИСЬ ПОМЕЧЕНА НА УДАЛЕНИЕ</span>
-                {% endif %}
-              </thead>
-              <tbody>
-                <tr>
-                  <td class="fs-5" style="width: 40%">Номер записи:</td>
-                  <td class="fs-4">{{ post.number_post }}</td>
-                </tr>
-                <tr>
-                  <td class="fs-5">Район:</td>
-                  <td class="fs-4">{{ post.district }}</td>
-                </tr>
-                <tr>
-                  <td class="fs-5">Работы по:</td>
-                  <td class="fs-4">
-                    {{ post.order }} № {{ post.number_order }}
-                  </td>
-                </tr>
-                <tr>
-                  <td class="fs-5">Наименование работ:</td>
-                  <td class="fs-4">{{ post.description }}</td>
-                </tr>
-                <tr>
-                  <td class="fs-5">Производитель работ:</td>
-                  <td class="fs-4">{{ post.foreman }}</td>
-                </tr>
-                <tr>
-                  <td class="fs-5">Члены бригады:</td>
-                  <td>
-                    <ol class="list-group list-group-flush">
-                      {% for member in post.members.all %}
-                        <li class="list-group-item fs-5">{{ member }}</li>
-                      {% endfor %}    
-                    </ol>
-                  </td>
-                </tr>
-                <tr>
-                  <td class="fs-5">К работе приступили:</td>
-                  <td class="fs-4">
-                    {{ post.date_start_working|date:"d.m.Y - H:i" }}
-                  </td>
-                </tr>
-                <tr>
-                  <td class="fs-5">Работа закончена:</td>
-                  <td class="fs-4">
-                    {{ post.date_end_working|date:"d.m.Y - H:i" }}
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-
-            <!-- Кнопки внизу записи -->
-            {% comment %}
-              {% if post.author.id == user.id %}
-              <a type="button" class="btn btn-light btn-outline-dark btn-md" href="{% url 'office:edit_post_repair' post.id %}">Редактировать запись</a>
-              {% else %}
-              <span tabindex="0" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-title="Вы не автор записи!">
-              <button type="button" class="btn btn-light btn-outline-dark btn-md d-inline" disabled>Редактировать запись</button>
-              </span>
-              {% endif %}
-            {% endcomment %}
-          </div>
-        </div>
-      </div>
-      {% endfor %}
-    {% endif %}
-    </div>
-
-    <!-- Стрелка возврата вверх -->
-    <a href="#" class="scroll-to-top"><img src="{% static 'img/row_up.png' %}" alt="Scroll To Top"></a>
   </div>
-
-{% comment %}
-  <!-- Колонка справа от списка записей -->
-  {% if page_obj|length > 1%}
-  <div class="col-1" style="padding-top: 7.5em; padding-right: 3em">
-    <div id="list-journal" class="list-group sticky-top sticky-offset">
-      {% for post in page_obj %}
-      <a class="list-group-item list-group-item-action" href="#list-item-{{ forloop.counter }}" style="--bs-list-group-active-bg: black; --bs-list-group-active-border-color: black;">Запись {{ post.number_post }}</a>
-      {% endfor %}
+  <div class="col-md-10">
+    <div class="card shadow">
+      {% render_table table %}
     </div>
   </div>
-  {% endif %} 
-  {% endcomment %}
-
-
-{% endblock content %}
 </div>
+
+<!-- Стрелка возврата вверх -->
+<a href="#" class="scroll-to-top"><img src="{% static 'img/row_up.png' %}" alt="Scroll To Top"></a>
+{% endblock content %}

@@ -1,6 +1,9 @@
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
+from django.contrib.auth import get_user_model
 
-from .models import PostWalking, PostRepairWork, PostOrder
+from .models import PostWalking, PostRepairWork, PostOrder, District, Personal
+
+User = get_user_model()
 
 
 def get_paginator(request, queryset, amount_posts):
@@ -46,3 +49,18 @@ def add_number_order(self, obj, model, *args, **kwargs):
             most_recent = model.objects.filter(order='Распоряжение').order_by('-number_order').first()
         obj.number_order = most_recent.number_order + 1 if most_recent else 1
     return obj
+
+
+def filter_district(request):
+    """Фильтрует выбор района в зависимости от энергорайона пользователя."""
+    return District.objects.filter(energy_district=request.user.energy_district)
+
+
+def filter_foreman(request):
+    """Фильтрует выбор производителя работ в зависимости от энергорайона пользователя."""
+    return Personal.objects.filter(energy_district=request.user.energy_district, foreman=True)
+
+
+def filter_author(request):
+    """Фильтрует выбор автора записи в зависимости от энергорайона пользователя."""
+    return User.objects.filter(energy_district=request.user.energy_district)

@@ -481,7 +481,7 @@ class OfficeViewsTest(TestCase):
         """Шаблон journal_order сформирован с правильным контекстом."""
         response = self.authorized_client.get(JRNL_ORDER_URL)
         excepted = PostOrder.objects.filter(district__energy_district=self.user.energy_district)
-        self.assertQuerysetEqual(response.context.get('page_obj').object_list, excepted)
+        self.assertQuerysetEqual(response.context.get('posts'), excepted)
 
     def test_post_order_create_page_show_correct_context(self):
         """Шаблон create_post_order сформирован с правильным контекстом."""

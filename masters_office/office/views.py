@@ -10,15 +10,15 @@ from django.views.generic import (CreateView, DetailView, FormView, ListView,
 from django_filters.views import FilterView
 from django_tables2 import SingleTableMixin
 
-from masters_office.settings import (AMOUNT_POSTS_ORDER,
+from masters_office.settings import (
                                      AMOUNT_POSTS_REPAIR_WORK,
                                      AMOUNT_POSTS_WALK)
-from .filters import PersonalFilter, PostRepairWorkFilter, PostWalkingFilter
+from .filters import PersonalFilter, PostRepairWorkFilter, PostWalkingFilter, PostOrderFilter
 from .forms import (PostOrderForm, PostRepairWorkForm, PostWalkingForm,
                     ResolutionForm)
 from .models import (Brigade, District, Personal, PostOrder, PostRepairWork,
                      PostWalking, Resolution)
-from .tables import PersonalTable
+from .tables import PersonalTable, PostOrderTable
 from .utils import get_paginator
 from .validators import (CheckEnergyDistrictMixin,
                          get_filtered_energy_district,
@@ -360,12 +360,12 @@ class PostRepairWorkEditView(LoginRequiredMixin, UpdateView):
         return reverse('office:journal_repair_work')
 
 
-class JournalOrderView(LoginRequiredMixin, ListView):
+class JournalOrderView(LoginRequiredMixin, SingleTableMixin, FilterView):
     model = PostOrder
     template_name = 'office/journal_order.html'
     context_object_name = 'posts'
-    # filterset_class =
-    form_class = PostOrderForm
+    filterset_class = PostOrderFilter
+    table_class = PostOrderTable
 
     def get_queryset(self):
         return PostOrder.objects.filter(
@@ -375,11 +375,6 @@ class JournalOrderView(LoginRequiredMixin, ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['energy_district'] = self.request.user.energy_district
-        context['page_obj'] = get_paginator(
-            self.request,
-            context['posts'],
-            AMOUNT_POSTS_ORDER
-        )
         return context
 
 

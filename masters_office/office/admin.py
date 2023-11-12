@@ -11,7 +11,12 @@ admin.site.site_header = '"Кабинет мастера" | Администри
 admin.site.index_title = 'Управление кабинетом'
 
 
-admin.site.register(EnergyDistrict)
+@admin.register(EnergyDistrict)
+class EnergyDistrictAdmin(admin.ModelAdmin):
+    list_display = (
+        'id',
+        'title',
+    )
 
 
 class ResolutionInline(admin.TabularInline):
@@ -26,7 +31,6 @@ class ResolutionInline(admin.TabularInline):
 class PostOrderAdmin(admin.ModelAdmin):
     form = PostOrderForm
     list_display = (
-        'id',
         'number_post',
         'district',
         'order',
@@ -49,8 +53,8 @@ class PostOrderAdmin(admin.ModelAdmin):
         ('date_start_working', 'date_end_working'),
         'is_deleted',
     )
+    list_editable = ('is_deleted',)
     list_display_links = ('number_post', 'order', 'number_order', 'description')
-    # search_fields = ()
     list_filter = ('order', 'district', 'date_start_working', 'date_end_working', 'is_deleted', 'author')
     empty_value_display = '-пусто-'
     list_per_page = 20
@@ -62,7 +66,6 @@ class PostOrderAdmin(admin.ModelAdmin):
 class PostRepairWorkAdmin(admin.ModelAdmin):
     form = PostRepairWorkForm
     list_display = (
-        'id',
         'number_post',
         'district',
         'order',
@@ -82,6 +85,7 @@ class PostRepairWorkAdmin(admin.ModelAdmin):
         'author',
         'is_deleted',
     )
+    list_editable = ('is_deleted',)
     list_display_links = ('number_post', 'text_for_display')
     search_fields = ('description', 'date_start_working', 'date_end_working')
     list_filter = ('district', 'date_start_working', 'date_end_working', 'is_deleted', 'author')
@@ -96,7 +100,6 @@ class PostWalkingAdmin(admin.ModelAdmin):
     form = PostWalkingForm
     inlines = (ResolutionInline,)
     list_display = (
-        'id',
         'number_post',
         'district',
         'planned',
@@ -121,6 +124,7 @@ class PostWalkingAdmin(admin.ModelAdmin):
         'transfer',
         'is_deleted',
     )
+    list_editable = ('is_deleted',)
     list_display_links = ('number_post', 'task')
     search_fields = ('text', 'walk_date')
     list_filter = ('walk_date', 'is_deleted', 'district')

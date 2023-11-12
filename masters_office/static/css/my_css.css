@@ -85,8 +85,9 @@ body {
     float: left;
 }
 
+/* Таблица сотрудников */
 .row-table-employees {
-    padding: 5%;;
+    padding: 3%;;
 }
 
 a.table-head-employees, span.table-head-employees {
@@ -96,11 +97,18 @@ a.table-head-employees, span.table-head-employees {
     text-transform: uppercase;
 }
 
-a.table-head-employees:hover {
-    color: #000000;
-    font-weight: bold;
+/* Таблица записей журнала нарядов и распоряжений */
+.row-table-posts-order {
+    padding: 3%;;
 }
 
+a.table-head-posts-order, span.table-head-posts-order {
+    font-size: larger;
+    text-decoration: none;
+    color: #000000;
+}
+
+/* Кнопки */
 a.btn.btn-lg {
     margin-bottom: 0%;
 }
