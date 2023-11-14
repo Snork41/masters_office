@@ -12,7 +12,7 @@
                 <thead {{ table.attrs.thead.as_html }}>
                 <tr>
                 {% for column in table.columns %}
-                    <th {{ column.attrs.th.as_html }} scope="col" style="text-align: center; padding-bottom: 3em;">                        
+                    <th {{ column.attrs.th.as_html }} scope="col" style="text-align: center;">                        
                         {% if column.orderable %}
                           <a class="btn table-head-posts-order" href="{% querystring table.prefixed_order_by_field=column.order_by_alias.next %}" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Нажмите для сортировки">{{ column.header }}</a>
                         {% else %}

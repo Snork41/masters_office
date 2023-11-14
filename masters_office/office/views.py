@@ -366,11 +366,12 @@ class JournalOrderView(LoginRequiredMixin, SingleTableMixin, FilterView):
     context_object_name = 'posts'
     filterset_class = PostOrderFilter
     table_class = PostOrderTable
+    paginate_by = 50
 
     def get_queryset(self):
         return PostOrder.objects.filter(
             district__energy_district=self.request.user.energy_district
-        ).select_related('author', 'district')
+        ).select_related('author', 'district', 'foreman')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -404,6 +405,47 @@ class PostOrderCreateView(LoginRequiredMixin, CreateView):
         messages.success(
             self.request, mark_safe(
                 f'Запись № {self.object.number_post} ({self.object.order} № {self.object.number_order}) успешно добавлена.'
+            )
+        )
+        return reverse('office:journal_order')
+
+
+class PostOrderEditView(LoginRequiredMixin, UpdateView):
+    model = PostOrder
+    template_name = 'office/edit_post_order.html'
+    form_class = PostOrderForm
+    pk_url_kwarg = 'post_id'
+    context_object_name = 'post'
+
+    def dispatch(self, request, *args, **kwargs):
+        post = self.get_object()
+        if post.author != request.user:
+            return redirect(
+                'office:journal_order',
+            )
+        return super().dispatch(request, *args, **kwargs)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        return get_filtered_energy_district(self, context)
+
+    def form_valid(self, form):
+        form = validate_date_fields_post(self, form)
+        if form.errors:
+            return self.form_invalid(form)
+        post = form.save(commit=False)
+        post.is_edit = True
+        post.save()
+        return super().form_valid(form)
+
+    def get_success_url(self):
+        logger.info(
+            f'PostOrder (pk: {self.object.id}) was edited. '
+            f'User: {(self.object.author.username).upper()}'
+        )
+        messages.success(
+            self.request, mark_safe(
+                f'Запись № {self.object.number_post} ({self.object.order} № {self.object.number_order}) успешно изменена.'
             )
         )
         return reverse('office:journal_order')

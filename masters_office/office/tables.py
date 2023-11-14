@@ -1,10 +1,13 @@
 import django_tables2 as tables
 import itertools
+import pytz
 
 from django.utils.safestring import mark_safe
+from django.urls import reverse
 
 from .models import Personal, PostOrder
-from masters_office.settings import EMPLOYEES_TABLE_TEMPLATE, POSTS_ORDER_TABLE_TEMPLATE
+from masters_office.settings import (
+    EMPLOYEES_TABLE_TEMPLATE, POSTS_ORDER_TABLE_TEMPLATE, TIME_ZONE)
 
 
 class PersonalTable(tables.Table):
@@ -36,10 +39,11 @@ class PostOrderTable(tables.Table):
     number_post = tables.Column(verbose_name='№', attrs={'td': {'class': 'text-center', 'style': 'width: 10%'}})
     district = tables.Column(attrs={'td': {'class': 'text-center', 'style': 'width: 10%'}})
     order = tables.Column(verbose_name='Оформление работ', attrs={'td': {'class': 'text-center', 'style': 'width: 10%'}})
-    number_order = tables.Column(attrs={'td': {'class': 'text-center', 'style': 'width: 10%'}})
+    number_order = tables.Column(verbose_name='Номер', attrs={'td': {'class': 'text-center', 'style': 'width: 5%'}})
     description = tables.Column(attrs={'td': {'style': 'width: 100%'}})
     date_start_working = tables.Column(verbose_name='Работа начата', attrs={'td': {'style': 'width: 10%'}})
     is_deleted = tables.Column(attrs={'td': {'class': 'text-center', 'style': 'width: 10%'}})
+    redact = tables.Column(verbose_name='Изменить', empty_values=(), orderable=False)
 
     class Meta:
         model = PostOrder
@@ -53,8 +57,18 @@ class PostOrderTable(tables.Table):
             'foreman',
             'date_start_working',
             'date_end_working',
-            'is_deleted'
+            'is_deleted',
+            'redact'
         )
+        attrs = {
+            'class': 'table table-bordered table-hover',
+            'thead': {'class': 'table-light sticky-top sticky-offset'}
+        }
+
+    def render_redact(self, value, *args, **kwargs):
+        url = reverse('office:edit_post_order', kwargs={'post_id': kwargs.get('record').id})
+        link = f'<a href="{url}" class="text-reset"><i class="bi bi-pencil-square"></i></a>'
+        return mark_safe(link)
 
     def render_is_deleted(self, value):
         if value:
@@ -62,9 +76,13 @@ class PostOrderTable(tables.Table):
         return 'Нет'
 
     def render_date_start_working(self, value):
+        target_timezone = pytz.timezone(TIME_ZONE)
+        value = value.astimezone(target_timezone)
         return value.strftime('%d.%m.%Y %H:%M')
 
     def render_date_end_working(self, value):
         if not value:
             return 'В работе'
+        target_timezone = pytz.timezone(TIME_ZONE)
+        value = value.astimezone(target_timezone)
         return mark_safe(f'<span style="color: rgb(0, 240, 70);">{value.strftime("%d.%m.%Y %H:%M")}</span>')

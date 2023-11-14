@@ -217,6 +217,7 @@ AMOUNT_POSTS_REPAIR_WORK = 10  # ремонтных работ
 AMOUNT_POSTS_ORDER = 10  # учета работ по нарядам и распоряжениям
 
 # django-tables2 css
+# Обшие настройки таблиц
 DJANGO_TABLES2_TABLE_ATTRS = {
     'class': 'table table-hover',
     'thead': {

@@ -177,6 +177,9 @@ class PostOrderForm(forms.ModelForm):
             'date_end_working',
             'is_deleted',
         )
+        widgets = {
+            'is_deleted': forms.CheckboxInput(attrs={'id': 'btn-check-deleted-outlined', 'type': 'checkbox', 'class': 'btn-check'})
+        }
 
     class Media:
         css = {
