@@ -3,7 +3,7 @@ from django.test import Client, TestCase
 from django.urls import reverse
 
 from office.models import (Brigade, District, EnergyDistrict,
-                           Personal, Position, PostWalking, Resolution)
+                           Personal, Position, PostWalking, Resolution, PostRepairWork, PostOrder)
 from .consts import (BRGD_NUMBER, FIRST_NAME_1,
                      FIRST_NAME_2, LAST_NAME_1, LAST_NAME_2, MIDDLE_NAME_1,
                      MIDDLE_NAME_2, NAME_POSITION, PLAN_WLK,
@@ -12,7 +12,12 @@ from .consts import (BRGD_NUMBER, FIRST_NAME_1,
                      RESOLUTION_WALK, SLUG_DISTRICT,
                      TAB_NUMBER_1, TAB_NUMBER_2, TASK_WLK, TEXT_WLK,
                      TITLE_DISTRICT, TITLE_ENERGY_DISTRICT,
-                     TRANSFER_WLK, USERNAME, WALK_DATE)
+                     TRANSFER_WLK, USERNAME, WALK_DATE, POST_REPAIR_NUMBER,
+                     ORDER_REPAIR, NUMBER_ORDER_REPAIR, ADRESS_REPAIR,
+                     DESCRIPTION_REPAIR, DATE_START_WORKING_REPAIR,
+                     DATE_END_WORKING_REPAIR, POST_ORDER_NUMBER,
+                     ORDER_ORDER, NUMBER_ORDER_ORDER, DESCRIPTION_ORDER,
+                     DATE_START_WORKING_ORDER, DATE_END_WORKING_ORDER)
 
 User = get_user_model()
 
@@ -91,6 +96,29 @@ class OfficeModelTest(TestCase):
             author=cls.user,
             text=RESOLUTION_WALK,
         )
+        cls.post_repair = PostRepairWork.objects.create(
+            number_post=POST_REPAIR_NUMBER,
+            district=cls.district,
+            order=ORDER_REPAIR,
+            number_order=NUMBER_ORDER_REPAIR,
+            adress=ADRESS_REPAIR,
+            description=DESCRIPTION_REPAIR,
+            date_start_working=DATE_START_WORKING_REPAIR,
+            date_end_working=DATE_END_WORKING_REPAIR,
+            author=cls.user,
+        )
+        cls.post_order = PostOrder.objects.create(
+            number_post=POST_ORDER_NUMBER,
+            district=cls.district,
+            order=ORDER_ORDER,
+            number_order=NUMBER_ORDER_ORDER,
+            description=DESCRIPTION_ORDER,
+            foreman=cls.workman,
+            date_start_working=DATE_START_WORKING_ORDER,
+            date_end_working=DATE_END_WORKING_ORDER,
+            author=cls.user,
+        )
+        cls.post_order.members.set([cls.workman_2])
         cls.POST_WLK_DETAIL_URL = reverse(
             POST_WLK_DETAIL_REVERSE,
             kwargs={
@@ -120,6 +148,8 @@ class OfficeModelTest(TestCase):
         post_walking = self.post_walking
         personal = self.workman
         resolution = self.resolution
+        post_repair = self.post_repair
+        post_order = self.post_order
 
         object_names = {
             energy_district: energy_district.title,
@@ -129,7 +159,12 @@ class OfficeModelTest(TestCase):
             brigade: f'Бригада № {brigade.number}. Мастера {brigade.master}',
             post_walking: f'{district.title}, Запись № {post_walking.pk} от {post_walking.time_create.date()}',
             personal: f'{personal.last_name} {personal.first_name} {personal.middle_name}',
-            resolution: resolution.text
+            resolution: resolution.text,
+            post_repair: f'Запись в журнале ремонтных работ № {post_repair.number_post} от {post_repair.time_create.date()}',
+            post_order: (
+                f'Запись в журнале учета работ по нарядам и распоряжениям № '
+                f'{post_order.number_post}. {post_order.order} № {post_order.number_order}'
+            ),
         }
         for field, expected_value in object_names.items():
             with self.subTest(field=field):

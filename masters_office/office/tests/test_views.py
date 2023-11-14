@@ -46,7 +46,8 @@ from .consts import (ADD_RESOLUTION_URL, ADRESS_REPAIR, ADRESS_REPAIR_2,
                      TITLE_ENERGY_DISTRICT, TITLE_SECOND_ENERGY_DISTRICT,
                      TRANSFER_WLK, TRANSFER_WLK_SED, UPDATE_RESOLUTION_URL,
                      USERNAME, USERNAME_AUTHOR,
-                     USERNAME_SECOND_ENERGY_DISCRICT, WALK_DATE, WALK_DATE_SED)
+                     USERNAME_SECOND_ENERGY_DISCRICT, WALK_DATE, WALK_DATE_SED,
+                     EDIT_POST_ORDER_URL)
 
 User = get_user_model()
 
@@ -486,6 +487,24 @@ class OfficeViewsTest(TestCase):
     def test_post_order_create_page_show_correct_context(self):
         """Шаблон create_post_order сформирован с правильным контекстом."""
         response = self.authorized_client.get(CREATE_POST_ORDER_URL)
+        form_fields = {
+            'district': forms.fields.ChoiceField,
+            'order': forms.fields.ChoiceField,
+            'description': forms.fields.CharField,
+            'foreman': forms.ChoiceField,
+            'members': forms.models.ModelMultipleChoiceField,
+            'date_start_working': forms.fields.DateTimeField,
+            'date_end_working': forms.fields.DateTimeField,
+            'is_deleted': forms.fields.BooleanField,
+        }
+        for value, expected in form_fields.items():
+            with self.subTest(value=value):
+                form_field = response.context.get('form').fields.get(value)
+                self.assertIsInstance(form_field, expected)
+
+    def test_post_order_edit_page_show_correct_context(self):
+        """Шаблон edit_post_order сформирован с правильным контекстом."""
+        response = self.authorized_client.get(EDIT_POST_ORDER_URL)
         form_fields = {
             'district': forms.fields.ChoiceField,
             'order': forms.fields.ChoiceField,

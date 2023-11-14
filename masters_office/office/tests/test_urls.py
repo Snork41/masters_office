@@ -5,7 +5,7 @@ from django.test import Client, TestCase
 from django.urls import reverse
 
 from office.models import (Brigade, District, EnergyDistrict, Personal,
-                           Position, PostRepairWork, PostWalking)
+                           Position, PostRepairWork, PostWalking, PostOrder)
 from .consts import (ADD_RESOLUTION_URL, ADRESS_REPAIR, BRGD_NUMBER,
                      BRIGADES_TMPL, BRIGADES_URL, CABINET_TMPLT, CABINET_URL,
                      CREATE_POST_ORDER_TMPLT, CREATE_POST_ORDER_URL,
@@ -29,7 +29,10 @@ from .consts import (ADD_RESOLUTION_URL, ADRESS_REPAIR, BRGD_NUMBER,
                      TITLE_SECOND_ENERGY_DISTRICT, TRANSFER_WLK,
                      UNEXISTING_PAGE, UPDATE_RESOLUTION_URL, USERNAME,
                      USERNAME_AUTHOR, USERNAME_SECOND_ENERGY_DISCRICT,
-                     WALK_DATE)
+                     WALK_DATE, POST_ORDER_NUMBER, ORDER_ORDER,
+                     NUMBER_ORDER_ORDER, DESCRIPTION_ORDER, DATE_START_WORKING_ORDER,
+                     DATE_END_WORKING_ORDER, EDIT_POST_ORDER_REVERSE,
+                     EDIT_POST_ORDER_TMPLT)
 
 User = get_user_model()
 
@@ -113,6 +116,18 @@ class OfficeURLTest(TestCase):
             date_end_working=DATE_END_WORKING_REPAIR,
             author=cls.user_author,
         )
+        cls.post_order = PostOrder.objects.create(
+            number_post=POST_ORDER_NUMBER,
+            district=cls.district,
+            order=ORDER_ORDER,
+            number_order=NUMBER_ORDER_ORDER,
+            description=DESCRIPTION_ORDER,
+            foreman=cls.workman,
+            date_start_working=DATE_START_WORKING_ORDER,
+            date_end_working=DATE_END_WORKING_ORDER,
+            author=cls.user_author,
+        )
+        cls.post_order.members.set([cls.workman_2])
         cls.POST_WLK_DETAIL_URL = reverse(
             POST_WLK_DETAIL_REVERSE,
             kwargs={
@@ -131,6 +146,12 @@ class OfficeURLTest(TestCase):
             EDIT_POST_REPAIR_REVERSE,
             kwargs={
                 'post_id': cls.post_repair.id
+            }
+        )
+        cls.EDIT_POST_ORDER_URL = reverse(
+            EDIT_POST_ORDER_REVERSE,
+            kwargs={
+                'post_id': cls.post_order.id
             }
         )
 
@@ -173,6 +194,7 @@ class OfficeURLTest(TestCase):
             self.EDIT_POST_REPAIR_URL: HTTPStatus.FOUND,
             JRNL_ORDER_URL: HTTPStatus.OK,
             CREATE_POST_ORDER_URL: HTTPStatus.OK,
+            self.EDIT_POST_ORDER_URL: HTTPStatus.FOUND,
         }
         for url_name, expected_code in url.items():
             with self.subTest(url_name=url_name):
@@ -185,6 +207,11 @@ class OfficeURLTest(TestCase):
                     self.assertRedirects(
                         self.authorized_client.get(url_name, follow=True),
                         JRNL_REPAIR_WORK_URL
+                    )
+                elif url_name == self.EDIT_POST_ORDER_URL:
+                    self.assertRedirects(
+                        self.authorized_client.get(url_name, follow=True),
+                        JRNL_ORDER_URL
                     )
                 else:
                     self.assertEqual(
@@ -210,6 +237,7 @@ class OfficeURLTest(TestCase):
             self.EDIT_POST_REPAIR_URL: HTTPStatus.OK,
             JRNL_ORDER_URL: HTTPStatus.OK,
             CREATE_POST_ORDER_URL: HTTPStatus.OK,
+            self.EDIT_POST_ORDER_URL: HTTPStatus.OK,
         }
         for url_name, expected_code in url.items():
             with self.subTest(url_name=url_name):
@@ -236,6 +264,7 @@ class OfficeURLTest(TestCase):
             self.EDIT_POST_REPAIR_URL,
             JRNL_ORDER_URL,
             CREATE_POST_ORDER_URL,
+            self.EDIT_POST_ORDER_URL,
         ]
         for url in urls:
             with self.subTest(url=url):
@@ -244,6 +273,8 @@ class OfficeURLTest(TestCase):
                     url = DISTRICTS_URL
                 elif 'edit-post-repair' in url:
                     url = JRNL_REPAIR_WORK_URL
+                elif 'edit-post-order' in url:
+                    url = JRNL_ORDER_URL
                 self.assertRedirects(response, LOGIN_PAGE_REDIRECT + url)
 
     def test_urls_uses_correct_template(self):
@@ -264,6 +295,7 @@ class OfficeURLTest(TestCase):
             self.EDIT_POST_REPAIR_URL: EDIT_POST_REPAIR_TMPLT,
             JRNL_ORDER_URL: JRNL_ORDER_TMPL,
             CREATE_POST_ORDER_URL: CREATE_POST_ORDER_TMPLT,
+            self.EDIT_POST_ORDER_URL: EDIT_POST_ORDER_TMPLT,
         }
         for address, template in templates_url_names.items():
             with self.subTest(template=template):

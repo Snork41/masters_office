@@ -32,7 +32,8 @@ from .consts import (ADD_RESOLUTION_URL, ADRESS_REPAIR, ADRESS_REPAIR_2,
                      TITLE_SECOND_ENERGY_DISTRICT, TRANSFER_WLK,
                      TRANSFER_WLK__IN_EDIT_POST, UPDATE_RESOLUTION_URL,
                      USERNAME, USERNAME_BOSS, USERNAME_SECOND_ENERGY_DISCRICT,
-                     WALK_DATE, WALK_DATE_IN_EDIT_POST, WALK_DATE_NOT_VALID)
+                     WALK_DATE, WALK_DATE_IN_EDIT_POST, WALK_DATE_NOT_VALID,
+                     EDIT_POST_ORDER_URL)
 
 User = get_user_model()
 
@@ -447,6 +448,29 @@ class PostFormTests(TestCase):
         response = self.authorized_client.post(CREATE_POST_ORDER_URL, data=form_data)
         self.assertFalse(response.context['form'].is_valid())
         self.assertTrue('date_end_working' in response.context_data['form'].errors)
+
+    def test_edit_post_order(self):
+        """Валидная форма редактирует запись в журнале учета нарядов и распоряжений."""
+        exist_post_order = PostOrder.objects.get(author=self.user, number_post=POST_ORDER_NUMBER)
+        member = exist_post_order.members.first()
+        form_data = {
+            'district': self.district.id,
+            'order': ORDER_ORDER_2,
+            'description': DESCRIPTION_ORDER_2,
+            'foreman': self.workman_2.id,
+            'members': self.workman.id,
+            'date_start_working': DATE_START_WORKING_ORDER_2,
+            'date_end_working': DATE_END_WORKING_ORDER_2,
+        }
+        self.authorized_client.post(EDIT_POST_ORDER_URL, data=form_data)
+        edit_post_order = PostOrder.objects.get(author=self.user, number_post=POST_ORDER_NUMBER)
+        self.assertNotEqual(exist_post_order.order, edit_post_order.order)
+        self.assertNotEqual(exist_post_order.description, edit_post_order.description)
+        self.assertNotEqual(exist_post_order.foreman, edit_post_order.foreman)
+        self.assertNotEqual(member, edit_post_order.members.first())
+        self.assertNotEqual(exist_post_order.date_start_working, edit_post_order.date_start_working)
+        self.assertNotEqual(exist_post_order.date_end_working, edit_post_order.date_end_working)
+        self.assertEqual(exist_post_order.number_order, edit_post_order.number_order)
 
     # def test_validation_district_in_edit_post_walking(self):
     #     """При редактировании записи обхода источник (район) нельзя изменить."""

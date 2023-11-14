@@ -161,6 +161,7 @@ CREATE_POST_REPAIR_REVERSE = 'office:create_post_repair'
 EDIT_POST_REPAIR_REVERSE = 'office:edit_post_repair'
 JRNL_ORDER_REVERSE = 'office:journal_order'
 CREATE_POST_ORDER_REVERSE = 'office:create_post_order'
+EDIT_POST_ORDER_REVERSE = 'office:edit_post_order'
 
 
 # <----- Урлы ----->
@@ -211,6 +212,12 @@ EDIT_POST_REPAIR_URL = reverse(
     }
 )
 CREATE_POST_ORDER_URL = reverse(CREATE_POST_ORDER_REVERSE)
+EDIT_POST_ORDER_URL = reverse(
+    EDIT_POST_ORDER_REVERSE,
+    kwargs={
+        'post_id': POST_ORDER_NUMBER
+    }
+)
 
 
 # <----- Адреса шаблонов ----->
@@ -238,3 +245,4 @@ EDIT_POST_REPAIR_TMPLT = 'office/edit_post_repair.html'
 
 JRNL_ORDER_TMPL = 'office/journal_order.html'
 CREATE_POST_ORDER_TMPLT = 'office/create_post_order.html'
+EDIT_POST_ORDER_TMPLT = 'office/edit_post_order.html'
