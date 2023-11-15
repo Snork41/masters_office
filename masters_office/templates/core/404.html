@@ -1,7 +1,13 @@
 {% extends 'base.html' %}
-{% block title %}Custom 404{% endblock %}
+{% block title %}Error 404{% endblock %}
 {% block content %}
-  <h1>Custom 404</h1>
-  <p>Страницы с адресом {{ path }} не существует</p>
-  <a href="{% url 'office:index' %}">Вернуться на главную страницу</a>
+<div class="col-4 mx-auto">
+  <div class="card shadow">
+    <div class="card-body mx-auto text-center">
+      <p style="font-size: 2em; text-align: center;">ОЙ!</p> 
+      <p style="font-size: 1.5em; text-align: center;">Страницы с адресом {{ path }} не существует :(</p> 
+      <a class="link-opacity-50-hover text-decoration-none" href="{% url 'office:index' %}" style="font-size: 1.5em;">Вернуться на главную страницу проекта</a>
+    </div>
+  </div>
+</div>
 {% endblock %}

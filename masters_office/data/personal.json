@@ -1,0 +1,882 @@
+[
+    {
+        "first_name": "Макарина",
+        "last_name": "Марина",
+        "middle_name": "Николаевна",
+        "energy_district": "Сетевой район",
+        "position": "Оператор теплового пункта",
+        "rank": 2,
+        "tab_number": 996,
+        "foreman": false
+    },
+    {
+        "first_name": "Годбан",
+        "last_name": "Павел",
+        "middle_name": "Андреевич",
+        "energy_district": "Второй энергорайон",
+        "position": "Оператор теплового пункта",
+        "rank": 3,
+        "tab_number": 2369,
+        "foreman": false
+    },
+    {
+        "first_name": "Миронов",
+        "last_name": "Александр",
+        "middle_name": "Юрьевич",
+        "energy_district": "Сетевой район",
+        "position": "Слесарь по обслуживанию тепловых сетей",
+        "rank": 4,
+        "tab_number": 1770,
+        "foreman": true
+    },
+    {
+        "first_name": "Шахов",
+        "last_name": "Григорий",
+        "middle_name": "Анатольевич",
+        "energy_district": "Первый энергорайон",
+        "position": "Слесарь по обслуживанию тепловых сетей",
+        "rank": 4,
+        "tab_number": 974,
+        "foreman": true
+    },
+    {
+        "first_name": "Бондарко",
+        "last_name": "Александр",
+        "middle_name": "Кириллович",
+        "energy_district": "Сетевой район",
+        "position": "Слесарь по обслуживанию тепловых сетей",
+        "rank": 4,
+        "tab_number": 1012,
+        "foreman": true
+    },
+    {
+        "first_name": "Ефимов",
+        "last_name": "Иван",
+        "middle_name": "Николаевич",
+        "energy_district": "Сетевой район",
+        "position": "Слесарь по обслуживанию тепловых сетей",
+        "rank": 4,
+        "tab_number": 970,
+        "foreman": true
+    },
+    {
+        "first_name": "Уткин",
+        "last_name": "Роман",
+        "middle_name": "Владимирович",
+        "energy_district": "Сетевой район",
+        "position": "Слесарь по обслуживанию тепловых сетей",
+        "rank": 4,
+        "tab_number": 1957,
+        "foreman": true
+    },
+    {
+        "first_name": "Петров",
+        "last_name": "Александр",
+        "middle_name": "Александрович",
+        "energy_district": "Первый энергорайон",
+        "position": "Слесарь по обслуживанию тепловых сетей",
+        "rank": 4,
+        "tab_number": 1021,
+        "foreman": true
+    },
+    {
+        "first_name": "Рогинов",
+        "last_name": "Виктор",
+        "middle_name": "Ефимович",
+        "energy_district": "Второй энергорайон",
+        "position": "Слесарь по обслуживанию тепловых сетей",
+        "rank": 4,
+        "tab_number": 952,
+        "foreman": true
+    },
+    {
+        "first_name": "Голик",
+        "last_name": "Николай",
+        "middle_name": "Михайлович",
+        "energy_district": "Второй энергорайон",
+        "position": "Слесарь по обслуживанию тепловых сетей",
+        "rank": 4,
+        "tab_number": 948,
+        "foreman": true
+    },
+    {
+        "first_name": "Осиповский",
+        "last_name": "Дмитрий",
+        "middle_name": "Алексеевич",
+        "energy_district": "Первый энергорайон",
+        "position": "Слесарь по обслуживанию тепловых сетей",
+        "rank": 4,
+        "tab_number": 1025,
+        "foreman": true
+    },
+    {
+        "first_name": "Борисов",
+        "last_name": "Борис",
+        "middle_name": "Юрьевич",
+        "energy_district": "Сетевой район",
+        "position": "Слесарь по обслуживанию тепловых сетей",
+        "rank": 4,
+        "tab_number": 1010,
+        "foreman": true
+    },
+    {
+        "first_name": "Дерекин",
+        "last_name": "Андрей",
+        "middle_name": "Викторович",
+        "energy_district": "Второй энергорайон",
+        "position": "Слесарь по обслуживанию тепловых сетей",
+        "rank": 4,
+        "tab_number": 961,
+        "foreman": true
+    },
+    {
+        "first_name": "Коржавин",
+        "last_name": "Валерий",
+        "middle_name": "Иванович",
+        "energy_district": "Первый энергорайон",
+        "position": "Слесарь по ремонту оборудования тепловых сетей",
+        "rank": 5,
+        "tab_number": 972,
+        "foreman": true
+    },
+    {
+        "first_name": "Худов",
+        "last_name": "Николай",
+        "middle_name": "Николаевич",
+        "energy_district": "Первый энергорайон",
+        "position": "Слесарь по обслуживанию тепловых сетей",
+        "rank": 5,
+        "tab_number": 1942,
+        "foreman": true
+    },
+    {
+        "first_name": "Апетёнчик",
+        "last_name": "Евгений",
+        "middle_name": "Алексеевич",
+        "energy_district": "Сетевой район",
+        "position": "Слесарь по обслуживанию тепловых сетей",
+        "rank": 4,
+        "tab_number": 1763,
+        "foreman": true
+    },
+    {
+        "first_name": "Черноусов",
+        "last_name": "Сергей",
+        "middle_name": "Алексеевич",
+        "energy_district": "Второй энергорайон",
+        "position": "Слесарь по обслуживанию тепловых сетей",
+        "rank": 4,
+        "tab_number": 954,
+        "foreman": true
+    },
+    {
+        "first_name": "Тимошков",
+        "last_name": "Александр",
+        "middle_name": "Владимирович",
+        "energy_district": "Первый энергорайон",
+        "position": "Слесарь по обслуживанию тепловых сетей",
+        "rank": 4,
+        "tab_number": 994,
+        "foreman": true
+    },
+    {
+        "first_name": "Лебедев",
+        "last_name": "Евгений",
+        "middle_name": "Викторович",
+        "energy_district": "Второй энергорайон",
+        "position": "Слесарь по обслуживанию тепловых сетей",
+        "rank": 4,
+        "tab_number": 978,
+        "foreman": true
+    },
+    {
+        "first_name": "Северов",
+        "last_name": "Сергей",
+        "middle_name": "Анатольевич",
+        "energy_district": "Первый энергорайон",
+        "position": "Слесарь по обслуживанию тепловых сетей",
+        "rank": 4,
+        "tab_number": 969,
+        "foreman": true
+    },
+    {
+        "first_name": "Сидоров",
+        "last_name": "Виктор",
+        "middle_name": "Викторович",
+        "energy_district": "Сетевой район",
+        "position": "Слесарь по обслуживанию тепловых сетей",
+        "rank": 4,
+        "tab_number": 2080,
+        "foreman": true
+    },
+    {
+        "first_name": "Касакин",
+        "last_name": "Максим",
+        "middle_name": "Иванович",
+        "energy_district": "Второй энергорайон",
+        "position": "Слесарь по обслуживанию тепловых сетей",
+        "rank": 4,
+        "tab_number": 2099,
+        "foreman": true
+    },
+    {
+        "first_name": "Панратов",
+        "last_name": "Дмитрий",
+        "middle_name": "Владимирович",
+        "energy_district": "Первый энергорайон",
+        "position": "Слесарь по обслуживанию тепловых сетей",
+        "rank": 4,
+        "tab_number": 2204,
+        "foreman": true
+    },
+    {
+        "first_name": "Ленинский",
+        "last_name": "Ростислав",
+        "middle_name": "Игоревич",
+        "energy_district": "Второй энергорайон",
+        "position": "Слесарь по обслуживанию тепловых сетей",
+        "rank": 4,
+        "tab_number": 2260,
+        "foreman": true
+    },
+    {
+        "first_name": "Берард",
+        "last_name": "Григорий",
+        "middle_name": "Сергеевич",
+        "energy_district": "Второй энергорайон",
+        "position": "Слесарь по обслуживанию тепловых сетей",
+        "rank": 4,
+        "tab_number": 2280,
+        "foreman": true
+    },
+    {
+        "first_name": "Германов",
+        "last_name": "Леонид",
+        "middle_name": "Борисович",
+        "energy_district": "Второй энергорайон",
+        "position": "Слесарь по обслуживанию тепловых сетей",
+        "rank": 4,
+        "tab_number": 2357,
+        "foreman": true
+    },
+    {
+        "first_name": "Атногол",
+        "last_name": "Дмитрий",
+        "middle_name": "Сергеевич",
+        "energy_district": "Второй энергорайон",
+        "position": "Слесарь по обслуживанию тепловых сетей",
+        "rank": 4,
+        "tab_number": 2372,
+        "foreman": true
+    },
+    {
+        "first_name": "Имангул",
+        "last_name": "Михаил",
+        "middle_name": "Константинович",
+        "energy_district": "Сетевой район",
+        "position": "Слесарь по обслуживанию тепловых сетей",
+        "rank": 4,
+        "tab_number": 2383,
+        "foreman": true
+    },
+    {
+        "first_name": "Годинцев",
+        "last_name": "Олег",
+        "middle_name": "Александрович",
+        "energy_district": "Сетевой район",
+        "position": "Слесарь по обслуживанию тепловых сетей",
+        "rank": 4,
+        "tab_number": 2401,
+        "foreman": true
+    },
+    {
+        "first_name": "Макаренко",
+        "last_name": "Алексей",
+        "middle_name": "Андреевич",
+        "energy_district": "Сетевой район",
+        "position": "Слесарь по обслуживанию тепловых сетей",
+        "rank": 4,
+        "tab_number": 2404,
+        "foreman": true
+    },
+    {
+        "first_name": "Мерзлякин",
+        "last_name": "Денис",
+        "middle_name": "Григорьевич",
+        "energy_district": "Второй энергорайон",
+        "position": "Слесарь по обслуживанию тепловых сетей",
+        "rank": 4,
+        "tab_number": 2437,
+        "foreman": true
+    },
+    {
+        "first_name": "Зюзюль",
+        "last_name": "Иван",
+        "middle_name": "Анатольевич",
+        "energy_district": "Первый энергорайон",
+        "position": "Слесарь по обслуживанию тепловых сетей",
+        "rank": 4,
+        "tab_number": 2475,
+        "foreman": true
+    },
+    {
+        "first_name": "Брелов",
+        "last_name": "Александр",
+        "middle_name": "Вячеславович",
+        "energy_district": "Сетевой район",
+        "position": "Слесарь по обслуживанию тепловых сетей",
+        "rank": 4,
+        "tab_number": 2589,
+        "foreman": true
+    },
+    {
+        "first_name": "Кочнов",
+        "last_name": "Артём",
+        "middle_name": "Анатольевич",
+        "energy_district": "Второй энергорайон",
+        "position": "Слесарь-ремонтник",
+        "rank": 4,
+        "tab_number": 2016,
+        "foreman": true
+    },
+    {
+        "first_name": "Читайлов",
+        "last_name": "Александр",
+        "middle_name": "Юрьевич",
+        "energy_district": "Первый энергорайон",
+        "position": "Слесарь-ремонтник",
+        "rank": 4,
+        "tab_number": 2422,
+        "foreman": true
+    },
+    {
+        "first_name": "Дракон",
+        "last_name": "Андрей",
+        "middle_name": "Владимирович",
+        "energy_district": "Первый энергорайон",
+        "position": "Слесарь-ремонтник",
+        "rank": 4,
+        "tab_number": 959,
+        "foreman": true
+    },
+    {
+        "first_name": "Кремов",
+        "last_name": "Алексей",
+        "middle_name": "Юрьевич",
+        "energy_district": "Первый энергорайон",
+        "position": "Слесарь-ремонтник",
+        "rank": 4,
+        "tab_number": 70705,
+        "foreman": true
+    },
+    {
+        "first_name": "Бережный",
+        "last_name": "Алексей",
+        "middle_name": "Юрьевич",
+        "energy_district": "Первый энергорайон",
+        "position": "Слесарь-ремонтник",
+        "rank": 4,
+        "tab_number": 2560,
+        "foreman": true
+    },
+    {
+        "first_name": "Бронник",
+        "last_name": "Владимир",
+        "middle_name": "Анатольевич",
+        "energy_district": "Сетевой район",
+        "position": "Электрогазосварщик",
+        "rank": 4,
+        "tab_number": 982,
+        "foreman": false
+    },
+    {
+        "first_name": "Давидович",
+        "last_name": "Эдуард",
+        "middle_name": "Анатольевич",
+        "energy_district": "Первый энергорайон",
+        "position": "Электрогазосварщик",
+        "rank": 4,
+        "tab_number": 2172,
+        "foreman": false
+    },
+    {
+        "first_name": "Третьяк",
+        "last_name": "Александр",
+        "middle_name": "Вячеславович",
+        "energy_district": "Второй энергорайон",
+        "position": "Электрогазосварщик",
+        "rank": 5,
+        "tab_number": 937,
+        "foreman": false
+    },
+    {
+        "first_name": "Мирновский",
+        "last_name": "Алексей",
+        "middle_name": "Валерьевич",
+        "energy_district": "Второй энергорайон",
+        "position": "Электрогазосварщик",
+        "rank": 4,
+        "tab_number": 1773,
+        "foreman": false
+    },
+    {
+        "first_name": "Милов",
+        "last_name": "Сергей",
+        "middle_name": "Александрович",
+        "energy_district": "Сетевой район",
+        "position": "Электрогазосварщик",
+        "rank": 4,
+        "tab_number": 2471,
+        "foreman": false
+    },
+    {
+        "first_name": "Павлович",
+        "last_name": "Евгений",
+        "middle_name": "Викторович",
+        "energy_district": "Второй энергорайон",
+        "position": "Электрогазосварщик",
+        "rank": 4,
+        "tab_number": 2484,
+        "foreman": false
+    },
+    {
+        "first_name": "Плотник",
+        "last_name": "Антон",
+        "middle_name": "Геннадьевич",
+        "energy_district": "Второй энергорайон",
+        "position": "Электрогазосварщик",
+        "rank": 4,
+        "tab_number": 2505,
+        "foreman": false
+    },
+    {
+        "first_name": "Прозванный",
+        "last_name": "Андрей",
+        "middle_name": "Владимирович",
+        "energy_district": "Первый энергорайон",
+        "position": "Электрогазосварщик",
+        "rank": 5,
+        "tab_number": 2518,
+        "foreman": false
+    },
+    {
+        "first_name": "Бурцевский",
+        "last_name": "Владимир",
+        "middle_name": "Владимирович",
+        "energy_district": "Первый энергорайон",
+        "position": "Электрогазосварщик",
+        "rank": 4,
+        "tab_number": 2536,
+        "foreman": false
+    },
+    {
+        "first_name": "Сокол",
+        "last_name": "Дмитрий",
+        "middle_name": "Анатольевич",
+        "energy_district": "Сетевой район",
+        "position": "Мастер",
+        "rank": "-",
+        "tab_number": 1452,
+        "foreman": false
+    },
+    {
+        "first_name": "Тирион",
+        "last_name": "Николай",
+        "middle_name": "Владимирович",
+        "energy_district": "Сетевой район",
+        "position": "Мастер",
+        "rank": "-",
+        "tab_number": 2166,
+        "foreman": false
+    },
+    {
+        "first_name": "Семашкинский",
+        "last_name": "Виктор",
+        "middle_name": "Николаевич",
+        "energy_district": "Сетевой район",
+        "position": "Старший мастер",
+        "rank": "-",
+        "tab_number": 1017,
+        "foreman": false
+    },
+    {
+        "first_name": "Кирин",
+        "last_name": "Андрей",
+        "middle_name": "Сергеевич",
+        "energy_district": "Первый энергорайон",
+        "position": "Начальник",
+        "rank": "-",
+        "tab_number": 2448,
+        "foreman": false
+    },
+    {
+        "first_name": "Петров",
+        "last_name": "Степан",
+        "middle_name": "Михайлович",
+        "energy_district": "Первый энергорайон",
+        "position": "Мастер",
+        "rank": "-",
+        "tab_number": 2548,
+        "foreman": false
+    },
+    {
+        "first_name": "Карандашев",
+        "last_name": "Андрей",
+        "middle_name": "Алексеевич",
+        "energy_district": "Второй энергорайон",
+        "position": "Мастер",
+        "rank": "-",
+        "tab_number": 2565,
+        "foreman": false
+    },
+    {
+        "first_name": "Маков",
+        "last_name": "Валерий",
+        "middle_name": "Анатольевич",
+        "energy_district": "Второй энергорайон",
+        "position": "Мастер",
+        "rank": "-",
+        "tab_number": 2602,
+        "foreman": false
+    },
+    {
+        "first_name": "Поспел",
+        "last_name": "Александр",
+        "middle_name": "Сергеевич",
+        "energy_district": "Сетевой район",
+        "position": "Мастер",
+        "rank": "-",
+        "tab_number": 1009,
+        "foreman": false
+    },
+    {
+        "first_name": "Нагинова",
+        "last_name": "Галина",
+        "middle_name": "Витальевна",
+        "energy_district": "Первый энергорайон",
+        "position": "Уборщик производственных помещений",
+        "rank": "-",
+        "tab_number": 1000,
+        "foreman": false
+    },
+    {
+        "first_name": "Федорова",
+        "last_name": "Галина",
+        "middle_name": "Юрьевна",
+        "energy_district": "Первый энергорайон",
+        "position": "Уборщик производственных помещений",
+        "rank": "-",
+        "tab_number": 2075,
+        "foreman": false
+    },
+    {
+        "first_name": "Есенина",
+        "last_name": "Валерия",
+        "middle_name": "Дмитриевна",
+        "energy_district": "Второй энергорайон",
+        "position": "Уборщик производственных помещений",
+        "rank": "-",
+        "tab_number": 2559,
+        "foreman": false
+    },
+    {
+        "first_name": "Поздняковская",
+        "last_name": "Елена",
+        "middle_name": "Андреевна",
+        "energy_district": "Второй энергорайон",
+        "position": "Сторож",
+        "rank": "-",
+        "tab_number": 988,
+        "foreman": false
+    },
+    {
+        "first_name": "Болотин",
+        "last_name": "Валерий",
+        "middle_name": "Закирович",
+        "energy_district": "Второй энергорайон",
+        "position": "Сторож",
+        "rank": "-",
+        "tab_number": 627,
+        "foreman": false
+    },
+    {
+        "first_name": "Пусакова",
+        "last_name": "Надежда",
+        "middle_name": "Олеговна",
+        "energy_district": "Второй энергорайон",
+        "position": "Сторож",
+        "rank": "-",
+        "tab_number": 894,
+        "foreman": false
+    },
+    {
+        "first_name": "Иваненко",
+        "last_name": "Ольга",
+        "middle_name": "Александровна",
+        "energy_district": "Сетевой район",
+        "position": "Оператор теплового пункта",
+        "rank": 2,
+        "tab_number": 931,
+        "foreman": false
+    },
+    {
+        "first_name": "Азимут",
+        "last_name": "Ахмедали",
+        "middle_name": "Мамедали",
+        "energy_district": "Первый энергорайон",
+        "position": "Оператор теплового пункта",
+        "rank": 2,
+        "tab_number": 946,
+        "foreman": false
+    },
+    {
+        "first_name": "Буланова",
+        "last_name": "Светлана",
+        "middle_name": "Николаевна",
+        "energy_district": "Сетевой район",
+        "position": "Оператор теплового пункта",
+        "rank": 3,
+        "tab_number": 942,
+        "foreman": false
+    },
+    {
+        "first_name": "Бучев",
+        "last_name": "Сергей",
+        "middle_name": "Васильевич",
+        "energy_district": "Первый энергорайон",
+        "position": "Оператор теплового пункта",
+        "rank": 3,
+        "tab_number": 1019,
+        "foreman": false
+    },
+    {
+        "first_name": "Гованова",
+        "last_name": "Антонина",
+        "middle_name": "Александровна",
+        "energy_district": "Второй энергорайон",
+        "position": "Оператор теплового пункта",
+        "rank": 2,
+        "tab_number": 361,
+        "foreman": false
+    },
+    {
+        "first_name": "Хейхман",
+        "last_name": "Ирина",
+        "middle_name": "Миркасимовна",
+        "energy_district": "Сетевой район",
+        "position": "Оператор теплового пункта",
+        "rank": 3,
+        "tab_number": 933,
+        "foreman": false
+    },
+    {
+        "first_name": "Дагоева",
+        "last_name": "Валентина",
+        "middle_name": "Петровна",
+        "energy_district": "Первый энергорайон",
+        "position": "Оператор теплового пункта",
+        "rank": 3,
+        "tab_number": 932,
+        "foreman": false
+    },
+    {
+        "first_name": "Жуковская",
+        "last_name": "Светлана",
+        "middle_name": "Александровна",
+        "energy_district": "Сетевой район",
+        "position": "Оператор теплового пункта",
+        "rank": 2,
+        "tab_number": 1762,
+        "foreman": false
+    },
+    {
+        "first_name": "Журналёвская",
+        "last_name": "Татьяна",
+        "middle_name": "Германовна",
+        "energy_district": "Второй энергорайон",
+        "position": "Оператор теплового пункта",
+        "rank": 3,
+        "tab_number": 594,
+        "foreman": false
+    },
+    {
+        "first_name": "Истолина",
+        "last_name": "Елена",
+        "middle_name": "Николаевна",
+        "energy_district": "Второй энергорайон",
+        "position": "Оператор теплового пункта",
+        "rank": 2,
+        "tab_number": 1553,
+        "foreman": false
+    },
+    {
+        "first_name": "Логиновская",
+        "last_name": "Надежда",
+        "middle_name": "Григорьевна",
+        "energy_district": "Второй энергорайон",
+        "position": "Оператор теплового пункта",
+        "rank": 3,
+        "tab_number": 935,
+        "foreman": false
+    },
+    {
+        "first_name": "Большекова",
+        "last_name": "Марина",
+        "middle_name": "Алексеевна",
+        "energy_district": "Первый энергорайон",
+        "position": "Оператор теплового пункта",
+        "rank": 3,
+        "tab_number": 929,
+        "foreman": false
+    },
+    {
+        "first_name": "Коленко",
+        "last_name": "Евгений",
+        "middle_name": "Олегович",
+        "energy_district": "Первый энергорайон",
+        "position": "Оператор теплового пункта",
+        "rank": 2,
+        "tab_number": 891,
+        "foreman": false
+    },
+    {
+        "first_name": "Белый",
+        "last_name": "Александр",
+        "middle_name": "Владимирович",
+        "energy_district": "Сетевой район",
+        "position": "Оператор теплового пункта",
+        "rank": 2,
+        "tab_number": 340,
+        "foreman": false
+    },
+    {
+        "first_name": "Старковская",
+        "last_name": "Евгения",
+        "middle_name": "Геннадьевна",
+        "energy_district": "Первый энергорайон",
+        "position": "Оператор теплового пункта",
+        "rank": 3,
+        "tab_number": 1760,
+        "foreman": false
+    },
+    {
+        "first_name": "Тарасенков",
+        "last_name": "Олег",
+        "middle_name": "Николаевич",
+        "energy_district": "Второй энергорайон",
+        "position": "Оператор теплового пункта",
+        "rank": 3,
+        "tab_number": 927,
+        "foreman": false
+    },
+    {
+        "first_name": "Щукинов",
+        "last_name": "Виктор",
+        "middle_name": "Георгиевич",
+        "energy_district": "Первый энергорайон",
+        "position": "Оператор теплового пункта",
+        "rank": 2,
+        "tab_number": 995,
+        "foreman": false
+    },
+    {
+        "first_name": "Ивлеева",
+        "last_name": "Елена",
+        "middle_name": "Владимировна",
+        "energy_district": "Сетевой район",
+        "position": "Оператор теплового пункта",
+        "rank": 2,
+        "tab_number": 1011,
+        "foreman": false
+    },
+    {
+        "first_name": "Французский",
+        "last_name": "Андрей",
+        "middle_name": "Андреевич",
+        "energy_district": "Сетевой район",
+        "position": "Оператор теплового пункта",
+        "rank": 3,
+        "tab_number": 1461,
+        "foreman": false
+    },
+    {
+        "first_name": "Кузютин",
+        "last_name": "Александр",
+        "middle_name": "Иванович",
+        "energy_district": "Второй энергорайон",
+        "position": "Оператор теплового пункта",
+        "rank": 3,
+        "tab_number": 1195,
+        "foreman": false
+    },
+    {
+        "first_name": "Петров",
+        "last_name": "Георгий",
+        "middle_name": "Геннадьевич",
+        "energy_district": "Второй энергорайон",
+        "position": "Оператор теплового пункта",
+        "rank": 2,
+        "tab_number": 2265,
+        "foreman": false
+    },
+    {
+        "first_name": "Попов",
+        "last_name": "Виктор",
+        "middle_name": "Николаевич",
+        "energy_district": "Сетевой район",
+        "position": "Оператор теплового пункта",
+        "rank": 3,
+        "tab_number": 955,
+        "foreman": false
+    },
+    {
+        "first_name": "Боровкин",
+        "last_name": "Дмитрий",
+        "middle_name": "Иванович",
+        "energy_district": "Сетевой район",
+        "position": "Оператор теплового пункта",
+        "rank": 3,
+        "tab_number": 2459,
+        "foreman": false
+    },
+    {
+        "first_name": "Поляковский",
+        "last_name": "Дмитрий",
+        "middle_name": "Анатольевич",
+        "energy_district": "Первый энергорайон",
+        "position": "Оператор теплового пункта",
+        "rank": 3,
+        "tab_number": 2569,
+        "foreman": false
+    },
+    {
+        "first_name": "Дреминский",
+        "last_name": "Игорь",
+        "middle_name": "Иванович",
+        "energy_district": "Первый энергорайон",
+        "position": "Оператор теплового пункта",
+        "rank": 3,
+        "tab_number": 2574,
+        "foreman": false
+    },
+    {
+        "first_name": "Маслеников",
+        "last_name": "Сергей",
+        "middle_name": "Васильевич",
+        "energy_district": "Первый энергорайон",
+        "position": "Оператор теплового пункта",
+        "rank": 2,
+        "tab_number": 2580,
+        "foreman": false
+    },
+    {
+        "first_name": "Старковский",
+        "last_name": "Максим",
+        "middle_name": "Витальевич",
+        "energy_district": "Первый энергорайон",
+        "position": "Оператор теплового пункта",
+        "rank": 2,
+        "tab_number": 2582,
+        "foreman": false
+    }
+]

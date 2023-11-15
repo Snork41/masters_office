@@ -11,7 +11,8 @@ positions = {
     'Слесарь-ремонтник': True,
     'Электрогазосварщик': False,
     'Уборщик производственных помещений': False,
-    'Сторож': False
+    'Сторож': False,
+    'Оператор теплового пункта': False
 }
 
 def add_position(apps, schema_editor):
