@@ -5,15 +5,8 @@
 
 {% block content %}
 
-{% for message in messages %}
-  {% if message.tags == 'success' %}
-    <div class="alert alert-success alert-dismissible fade show" role="alert">
-      {{ message }}
-      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Закрыть"></button>
-    </div>
-  {% endif %}
-{% endfor %}
-<br>
+{% include 'office/includes/messages.html' %}
+
 <h1 class="text-center fw-light">Журнал обходов тепловых сетей</h1>
 <h1 class="text-center fw-medium">{{ district }}</h1>
 <br>

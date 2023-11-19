@@ -1,5 +1,6 @@
 {% load breadcrumb %}
 {% get_breadcrumb as crumb %}
+<div class="container">
 {% if crumb.path %}
 <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
     <ol class="breadcrumb">
@@ -27,3 +28,4 @@
     </ol>
 </nav>
 {% endif %}
+</div>

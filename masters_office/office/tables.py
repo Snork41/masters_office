@@ -7,7 +7,9 @@ from django.urls import reverse
 
 from .models import Personal, PostOrder
 from masters_office.settings import (
-    EMPLOYEES_TABLE_TEMPLATE, POSTS_ORDER_TABLE_TEMPLATE, TIME_ZONE)
+    EMPLOYEES_TABLE_TEMPLATE,
+    POSTS_ORDER_TABLE_TEMPLATE,
+    TIME_ZONE)
 
 
 class PersonalTable(tables.Table):

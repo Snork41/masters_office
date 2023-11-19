@@ -1,7 +1,7 @@
-from django_filters import FilterSet, DateRangeFilter, ModelChoiceFilter
+from django_filters import FilterSet, DateRangeFilter, ModelChoiceFilter, BooleanFilter
 
 from .models import Personal, PostWalking, PostRepairWork, PostOrder
-from .utils import filter_district, filter_foreman, filter_author
+from .utils import ResolutionBooleanWidget, filter_district, filter_foreman, filter_author
 
 
 class PersonalFilter(FilterSet):
@@ -21,6 +21,12 @@ class PersonalFilter(FilterSet):
 class PostWalkingFilter(FilterSet):
     date_range = DateRangeFilter(field_name='walk_date')
     author = ModelChoiceFilter(field_name='author', queryset=filter_author)
+    resolution = BooleanFilter(
+        field_name='resolution',
+        lookup_expr='isnull',
+        label='С резолюцией',
+        widget=ResolutionBooleanWidget
+    )
 
     class Meta:
         model = PostWalking
@@ -30,6 +36,7 @@ class PostWalkingFilter(FilterSet):
             'not_planned',
             'date_range',
             'author',
+            'resolution',
             'is_deleted',
         ]
 

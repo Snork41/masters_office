@@ -3,7 +3,7 @@
 {% block content %}
 
 {% if not user.is_authenticated %}
-<div class="d-grid gap-2 col-2 mx-auto" style="width: 200px;">
+<div class="container d-grid gap-2 col-2 mx-auto">
   <br>
   <a class="btn btn-outline-dark btn-lg" href="{% url 'login' %}" role="button">Войти</a>
   <a class="btn btn-outline-dark btn-lg" href="{% url 'users:signup' %}" role="button">Регистрация</a>

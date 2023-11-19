@@ -1,5 +1,7 @@
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.contrib.auth import get_user_model
+from django.utils.translation import gettext as _
+from django_filters.widgets import BooleanWidget
 
 from .models import PostWalking, PostRepairWork, PostOrder, District, Personal
 
@@ -64,3 +66,10 @@ def filter_foreman(request):
 def filter_author(request):
     """Фильтрует выбор автора записи в зависимости от энергорайона пользователя."""
     return User.objects.filter(energy_district=request.user.energy_district)
+
+
+class ResolutionBooleanWidget(BooleanWidget):
+    """Виджет для фильтрации резолюций записей обходов тепловых сетей."""
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.choices = (("", _("All")), ("false", _("Yes")), ("true", _("No")))
