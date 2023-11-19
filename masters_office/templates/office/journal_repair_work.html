@@ -71,36 +71,36 @@
               </thead>
               <tbody>
                 <tr>
-                  <td class="fs-5" style="width: 40%">Номер записи:</td>
+                  <td class="fs-4" style="width: 40%;">Номер записи:</td>
                   <td class="fs-4">{{ post.number_post }}</td>
                 </tr>
                 <tr>
                   <td class="fs-5">Район:</td>
-                  <td class="fs-4">{{ post.district }}</td>
+                  <td class="fs-5">{{ post.district }}</td>
                 </tr>
                 <tr>
                   <td class="fs-5">Адрес (объект):</td>
-                  <td class="fs-4">{{ post.adress }}</td>
+                  <td class="fs-5">{{ post.adress }}</td>
                 </tr>
                 <tr>
                   <td class="fs-5">Работы по:</td>
-                  <td class="fs-4">
+                  <td class="fs-5">
                     {{ post.order }} № {{ post.number_order }}
                   </td>
                 </tr>
                 <tr>
                   <td class="fs-5">Выполненные работы:</td>
-                  <td class="fs-4">{{ post.description }}</td>
+                  <td class="fs-5">{{ post.description }}</td>
                 </tr>
                 <tr>
                   <td class="fs-5">Дата начала работ:</td>
-                  <td class="fs-4">
+                  <td class="fs-5">
                     {{ post.date_start_working|date:"d.m.Y - H:i" }}
                   </td>
                 </tr>
                 <tr>
                   <td class="fs-5">Дата окончания работ:</td>
-                  <td class="fs-4">
+                  <td class="fs-5">
                     {{ post.date_end_working|date:"d.m.Y - H:i" }}
                   </td>
                 </tr>

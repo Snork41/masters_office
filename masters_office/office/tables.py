@@ -44,8 +44,8 @@ class PostOrderTable(tables.Table):
     number_order = tables.Column(verbose_name='Номер', attrs={'td': {'class': 'text-center', 'style': 'width: 5%'}})
     description = tables.Column(attrs={'td': {'style': 'width: 100%'}})
     date_start_working = tables.Column(verbose_name='Работа начата', attrs={'td': {'style': 'width: 10%'}})
+    redact = tables.Column(verbose_name='Автор (изменить)', empty_values=(), orderable=False, attrs={'td': {'class': 'text-center', 'style': 'width: 10%'}})
     is_deleted = tables.Column(attrs={'td': {'class': 'text-center', 'style': 'width: 10%'}})
-    redact = tables.Column(verbose_name='Изменить', empty_values=(), orderable=False)
 
     class Meta:
         model = PostOrder
@@ -59,8 +59,8 @@ class PostOrderTable(tables.Table):
             'foreman',
             'date_start_working',
             'date_end_working',
+            'redact',
             'is_deleted',
-            'redact'
         )
         attrs = {
             'class': 'table table-bordered table-hover',
@@ -69,8 +69,10 @@ class PostOrderTable(tables.Table):
 
     def render_redact(self, value, *args, **kwargs):
         url = reverse('office:edit_post_order', kwargs={'post_id': kwargs.get('record').id})
-        link = f'<a href="{url}" class="text-reset"><i class="bi bi-pencil-square"></i></a>'
-        return mark_safe(link)
+        if self.request.user == kwargs['record'].author:
+            link = f'<a href="{url}" class="text-reset"><i class="bi bi-pencil-square"></i></a>'
+            return mark_safe(link)
+        return mark_safe(kwargs["record"].author)
 
     def render_is_deleted(self, value):
         if value:

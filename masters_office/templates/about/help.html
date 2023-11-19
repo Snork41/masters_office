@@ -5,58 +5,51 @@
 
 {% block content %}
 <img src="{% static '/gif/HELP.gif' %}" alt="HELP.GIF" class="mx-auto d-block">
-<div class="container mx-auto p-2">
+<div class="container mx-auto p-5">
   <div class="card shadow">
-    <h5 class="card-header">Раздел "Помощь"</h5>
-    <div class="card-body" style="font-size: 1.5em;">
-      <p class="fs-3"> Описание:</p>
-      <p>
-      Кабинет мастера позволяет вести инженерно-техническим работникам теплоснабжающих организаций рабочую документацию в электронном виде.
-      </p>
-      <p class="fs-3">
-        Планирумый функционал приложения:
+    <div class="card-body p-5" style="font-size: 1.5em;">
+      <p class="fs-3 text-center"> Описание проекта:</p>
+      <p>Кабинет мастера позволяет вести инженерно-техническим работникам теплоснабжающих организаций рабочую документацию в электронном виде.</p>
+      <p class="fs-3 text-center"> Доступный функционал на данный момент:</p>
+        <ul>
+          <li style="list-style-type: square;">регистрация пользователя, авторизация по имени и паролю, восстановление пароля по почте;</li>
+          <li style="list-style-type: square;">раздел с таблицей всех сотрудников района (с фильтрацией и сортировкой)</li>
+          <li style="list-style-type: square;">раздел Бригады района</li>
+          <li style="list-style-type: square;">ЖУРНАЛЫ:</li>
+          <ul>
+            <li style="list-style-type: square;">журнал обходов тепловых сетей;</li>
+            <li style="list-style-type: square;">журнал нарядов и распоряжений;</li>
+            <li style="list-style-type: square;">журнал ремонтных работ;</li>
+            в которых можно:
+          </ul>
+            <ul>
+              <li style="list-style-type: circle;">просматривать, создавать, редактировать записи (только автор). Реализована фильтрация.</li>
+              <li style="list-style-type: circle;">начальник района (пользователь с необходимыми правами) может оставлять свои резолюции к записям в журнале обходов.</li>            
+              <li style="list-style-type: circle;">записи НЕЛЬЗЯ удалить, но можно отмечать как "удаленные".</li>
+            </ul>
+        </ul>
+        <p class="fs-3 text-center">Права:</p>
+        <ul>
+          <li style="list-style-type: square;">Администратор может создавать/удалять/редактировать всё что находится в приложении.</li>
+          <li style="list-style-type: square;">Пользователей с правами (например, начальник) имеет доступ к панели администратора в режиме просмотра. Имеет права на создание резолюций к записям, формирование бригад, редактирование персонала и т.д.</li>
+          <li style="list-style-type: square;">Зарегистрированные пользователи (ИТР) могут создавать записи и редактировать их. Доступа к панели администратора не имеют.</li>
+        </ul>
+          <hr>
+      <p class="fs-3 text-center">Следующий планирумый функционал приложения:</p>    
         <ul>
         <li style="list-style-type: square;">Раздел для ведения электроных журналов таких как:</li>
         <ol class="list-group list-group-numbered">
-          <li class="list-group-item">журнал обхода и осмотра тепловых сетей;</li>
-          <li class="list-group-item">журнал ремонтных работ;</li>
-          <li class="list-group-item">журнал дефектов оборудования;</li>
-          <li class="list-group-item">журнал проработки директивных материалов;</li>
-          <li class="list-group-item">журнал регистрации инструктажей;</li>
-          <li class="list-group-item">журнал противоаварийных и противопожарных тренировок;</li>
-          <li class="list-group-item">журнал учета проверки знаний норм и правил;</li>
-          <li class="list-group-item">журнал проверки средств пожаротушения;</li>          
+          <li class="list-group-item fs-5">журнал дефектов оборудования;</li>
+          <li class="list-group-item fs-5">журнал проработки директивных материалов;</li>
+          <li class="list-group-item fs-5">журнал регистрации инструктажей;</li>
+          <li class="list-group-item fs-5">журнал противоаварийных и противопожарных тренировок;</li>
+          <li class="list-group-item fs-5">журнал учета проверки знаний норм и правил;</li>
+          <li class="list-group-item fs-5">и остальные...;</li>          
         </ol>
         <li style="list-style-type: square;">Ведение паспортов тепловых сетей и ЦТП</li>
-        <li style="list-style-type: square;">Раздел с отображением существующих бригад</li>
         <li style="list-style-type: square;">Ведение учета выдачи спецодежды и средств индивидуальной защиты (СиЗ) персоналу</li>
-        <li style="list-style-type: square;">Раздел с таблицей всех сотрудников района (с фильтрацией и сортировкой)</li>
         <li style="list-style-type: square;">Хранение справочной информации</li>
         </ul>
-      </p>
-      <p>
-        <p class="fs-3"> Доступный функционал на данный момент:</p>
-        <ul>
-          <li style="list-style-type: square;">регистрация пользователя;</li>
-          <li style="list-style-type: square;">восстановление пароля (эмуляция работы почтового сервиса);</li>
-          <li style="list-style-type: square;">авторизация по имени и паролю;</li>
-          <li style="list-style-type: square;">Раздел с таблицей всех сотрудников района (с фильтрацией и сортировкой)</li>
-          <li style="list-style-type: square;">журнал обходов тепловых сетей, в котором можно:</li>
-            <ul>
-              <li style="list-style-type: circle;">создать запись;</li>
-              <li style="list-style-type: circle;">отредактировать запись;</li>
-              <li style="list-style-type: circle;">просмотреть все существующие записи (реализована фильтрация);</li>
-              <li style="list-style-type: circle;">начальник района (пользователь с необходимыми правами) может оставлять свои резолюции к этим записям;</li>            
-              <li style="list-style-type: circle;">запись можно отмечать как "удаленную";</li>
-            </ul>
-        </ul>
-        <p class="fs-3">Права:</p>
-        <ul>
-          <li style="list-style-type: square;">Администратор может создавать/удалять/редактировать пользователей, журналы, записи, персонал, районы, источники тепла, резолюции, должности, бригады, таблицу сотрудников.</li>
-          <li style="list-style-type: square;">Пользователей с правами (например, начальник) имеет доступ к панели администратора в режиме просмотра. В ней же может создавать резолюции к записям, формировать бригады.</li>
-          <li style="list-style-type: square;">Зарегистрированные пользователи могут создавать записи и редактировать их. Доступа к панели администратора не имеют.</li>
-        <ul>
-      </p>
     </div>
   </div>
 </div>

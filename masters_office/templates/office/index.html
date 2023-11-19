@@ -13,7 +13,7 @@
 <div class="d-grid gap-2 col-4 mx-auto" style="padding-top: 15%;">
   <a class="btn btn-outline-dark fs-1" href="{% url 'office:cabinet' %}">В КАБИНЕТ</a>
   {% if user.is_staff or user.is_superuser %}
-  <a class="btn btn-outline-dark fs-1" style="margin-bottom: 30%;" href="/admin">Администрирование</a>
+  <a class="btn btn-outline-dark fs-1" style="margin-bottom: 30%;" href="{% url 'admin:index' %}">Администрирование</a>
 {% endif %}
 </div>
 </p>
