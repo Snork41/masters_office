@@ -1,4 +1,3 @@
-from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.contrib.auth import get_user_model
 from django.utils.translation import gettext as _
 from django_filters.widgets import BooleanWidget
@@ -6,19 +5,6 @@ from django_filters.widgets import BooleanWidget
 from .models import PostWalking, PostRepairWork, PostOrder, District, Personal
 
 User = get_user_model()
-
-
-def get_paginator(request, queryset, amount_posts):
-    """Пагинация в журналах."""
-    paginator = Paginator(queryset, amount_posts)
-    page = request.GET.get('page')
-    try:
-        response = paginator.page(page)
-    except PageNotAnInteger:
-        response = paginator.page(1)
-    except EmptyPage:
-        response = paginator.page(paginator.num_pages)
-    return response
 
 
 def add_number_post(self, obj, model, username, commit, *args, **kwargs):

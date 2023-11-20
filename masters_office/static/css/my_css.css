@@ -1,6 +1,10 @@
+@font-face {
+    font-family: 'Montserrat';
+    src: url('/static/fonts/Montserrat/Montserrat-Regular.ttf') format('truetype');
+}
+
 body {
     background-color: rgb(255, 255, 255);
-    font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
     padding-top: 4%;
 }
 
@@ -8,20 +12,54 @@ body {
     color: #afafaf;
 }
 
-.navbar-brand:hover {
-    color: #afafaf;
+.navbar-username {
+    color: #c93e3e;
+    font-size: 20px;
+    margin-right: 20px;
 }
 
-.navbar-nav .navbar-text .navbar-username {
-    color: #c93e3e;
+.nav-item {
+    display: flex;
+    align-items: center; 
 }
-.nav-link, .navbar-brand, .navbar-text {
+
+.nav-link, .navbar-brand {
     color: rgb(233, 221, 221);
-    font-size: 1.5em;
+    font-size: 20px;
 }
 
 .navbar-brand img {
-    max-width: 15%;
+    width: 123px;
+    height: 43px;
+}
+
+.img-logout {
+    width: 30px;
+    height: 30px;
+}
+.img-logout:hover {
+    filter: contrast(50%);
+}
+
+/* Колокольчик уведомлений */
+.img-bell img {
+    width: 30px;
+    height: 30px;
+    margin-right: 20px;
+}
+
+.peending {
+    position: absolute;
+    border-radius: 50%;
+    font-size: 13px;
+    color: #ffffff;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    justify-content: center;
+    margin-top: -32px;
+    margin-left: 10px;
+    background-color: red;
 }
 
 /* Бургер кнопка */
@@ -38,10 +76,6 @@ body {
 .navbar-toggler:hover {
     background-color: none;
     border-color: transparent;
-}
-
-.navbar-nav .nav-link.active {
-    color: brown;
 }
 
 .post-detail {
@@ -167,8 +201,9 @@ i {
     padding-right: 1em;
 }
 
-/* cabinet.html */
-.card.card-in-cabinet:hover {
+/* Карточки в index.html и cabinet.html */
+.card.card-in-cabinet:hover,
+.card.card-in-index:hover {
     scale: 1.05;
     background-color: black;
 }
@@ -179,15 +214,23 @@ i {
     border-color: #000000;
 }
 
-.card-in-cabinet:hover img {
+.card.card-in-index,
+.card.card-in-index-disabled {
+    border-color: #000000;
+}
+
+.card-in-cabinet:hover img,
+.card-in-index:hover img {
     filter: invert(100%);
 }
 
-.card-in-cabinet:hover h3 {
+.card-in-cabinet:hover h4,
+.card-in-index:hover h4 {
     color: #ffffff;;
 }
 
-.card.card-in-cabinet-disabled:hover {
+.card.card-in-cabinet-disabled:hover,
+.card.card-in-index-disabled:hover {
     scale: 1.05;
     background-color: rgb(207, 207, 207);
 }

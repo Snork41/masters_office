@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-
+{% load static %}
 {% block content %}
 
 {% if not user.is_authenticated %}
@@ -9,13 +9,39 @@
   <a class="btn btn-outline-dark btn-lg" href="{% url 'users:signup' %}" role="button">Регистрация</a>
 </div>
 {% else %}
-<p>
-<div class="d-grid gap-2 col-4 mx-auto" style="padding-top: 15%;">
-  <a class="btn btn-outline-dark fs-1" href="{% url 'office:cabinet' %}">В КАБИНЕТ</a>
-  {% if user.is_staff or user.is_superuser %}
-  <a class="btn btn-outline-dark fs-1" style="margin-bottom: 30%;" href="{% url 'admin:index' %}">Администрирование</a>
-{% endif %}
+<div class="col-4 mx-auto py-5">
+  <div class="row row-cols-1 row-cols-md-2 g-4 text-center">
+    <div class="col">
+      <a href="{% url 'office:cabinet' %}" class="text-decoration-none text-reset">
+        <div class="card card-in-index">
+          <img src="{% static 'img/door.png' %}" class="card-img-top" alt="door">
+          <div class="card-body">
+            <h4 class="card-title">В КАБИНЕТ</h4>
+          </div>
+        </div>
+      </a>
+    </div>
+    {% if user.is_staff or user.is_superuser %}
+  <div class="col">
+      <a href="{% url 'admin:index' %}" class="text-decoration-none text-reset" target="_blank">
+        <div class="card card-in-index">
+          <img src="{% static 'img/admin.png' %}" class="card-img-top" alt="admin">
+            <div class="card-body">
+              <h4 class="card-title">Администрирование</h4></div>
+        </div>
+      </a>
+    </div>
+    {% else %}
+  <div class="col">
+    <div class="card-in-cabinet-disabled" tabindex="0" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-title="Недостаточно прав">
+      <div class="card card-in-index-disabled">
+        <img src="{% static 'img/admin.png' %}" class="card-img-top" alt="admin">
+          <div class="card-body"><h4 class="card-title">Администрирование</h4></div>
+      </div>
+    </div>
+  </div>
+    {% endif %}
 </div>
-</p>
+</div>   
 {% endif %}
 {% endblock content %}

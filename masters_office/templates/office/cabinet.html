@@ -9,13 +9,13 @@
 <h1 class="text-center fw-light">{{ user.get_full_name }}</h1>
 <br>
 <div class="d-grid gap-2 col-4 mx-auto">
-  <div class="row row-cols-1 row-cols-md-3 g-4 text-center">
+  <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 text-center">
     <div class="col">
       <a href="{% url 'office:journals' %}" class="text-decoration-none text-reset">
         <div class="card card-in-cabinet">
           <img src="{% static 'img/journal.png' %}" class="card-img-top" alt="journals">
           <div class="card-body">
-            <h3 class="card-title">Журналы</h3>
+            <h4 class="card-title">Журналы</h4>
           </div>
         </div>
       </a>
@@ -25,7 +25,7 @@
         <div class="card card-in-cabinet">
           <img src="{% static 'img/brigade.png' %}" class="card-img-top" alt="brigade">
           <div class="card-body">
-            <h3 class="card-title">Бригады</h3>
+            <h4 class="card-title">Бригады</h4>
           </div>
         </div>
       </a>
@@ -35,7 +35,7 @@
         <div class="card card-in-cabinet">
           <img src="{% static 'img/employees.png' %}" class="card-img-top" alt="employees">
           <div class="card-body">
-            <h3 class="card-title" >Сотрудники</h3>
+            <h4 class="card-title" >Сотрудники</h4>
           </div>
         </div>
       </a>
@@ -44,7 +44,7 @@
       <div class="card card-in-cabinet-disabled" tabindex="0" data-bs-toggle="tooltip" data-bs-placement="left" data-bs-title="Упс! Раздел в разработке">
         <img src="{% static 'img/power_station.png' %}" class="card-img-top" alt="power_station">
         <div class="card-body">
-          <h3 class="card-title">Паспорта объектов</h3>
+          <h4 class="card-title">Паспорта объектов</h4>
         </div>
       </div>
     </div>
@@ -52,7 +52,7 @@
       <div class="card card-in-cabinet-disabled" tabindex="0" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Упс! Раздел в разработке">
         <img src="{% static 'img/workwear.png' %}" class="card-img-top" alt="workwear">
         <div class="card-body">
-          <h3 class="card-title">СИЗ</h3>
+          <h4 class="card-title">СИЗ</h4>
         </div>
       </div>
     </div>
@@ -60,7 +60,7 @@
       <div class="card card-in-cabinet-disabled" tabindex="0" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-title="Упс! Раздел в разработке">
         <img src="{% static 'img/catalog.png' %}" class="card-img-top" alt="catalog">
         <div class="card-body">
-          <h3 class="card-title">Справочники</h3>
+          <h4 class="card-title">Справочники</h4>
         </div>
       </div>
     </div>

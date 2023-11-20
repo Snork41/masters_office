@@ -1,12 +1,12 @@
 import datetime as dt
 from django import forms
+from django.conf import settings
 from django.contrib.admin.widgets import FilteredSelectMultiple
 from django.core.validators import MaxValueValidator
 import os
 
 from .models import PostWalking, Personal, Resolution, PostRepairWork, PostOrder
 from .utils import add_number_post, add_number_order
-from masters_office.settings import BASE_DIR
 
 
 class PostWalkingForm(forms.ModelForm):
@@ -66,7 +66,7 @@ class PostWalkingForm(forms.ModelForm):
 
     class Media:
         css = {
-            'all': [os.path.join(BASE_DIR, 'static/css/select_multiple.css')],
+            'all': [os.path.join(settings.BASE_DIR, 'static/css/select_multiple.css')],
         }
         js = ('/admin/jsi18n',)
 
@@ -183,7 +183,7 @@ class PostOrderForm(forms.ModelForm):
 
     class Media:
         css = {
-            'all': [os.path.join(BASE_DIR, 'static/css/select_multiple.css')],
+            'all': [os.path.join(settings.BASE_DIR, 'static/css/select_multiple.css')],
         }
         js = ('/admin/jsi18n',)
 

@@ -2,20 +2,28 @@ import django_tables2 as tables
 import itertools
 import pytz
 
+from django.conf import settings
 from django.utils.safestring import mark_safe
 from django.urls import reverse
 
 from .models import Personal, PostOrder
-from masters_office.settings import (
-    EMPLOYEES_TABLE_TEMPLATE,
-    POSTS_ORDER_TABLE_TEMPLATE,
-    TIME_ZONE)
 
 
 class PersonalTable(tables.Table):
     number_row = tables.Column(
-        empty_values=(), orderable=False, verbose_name='№')
-
+        empty_values=(),
+        orderable=False,
+        verbose_name='№',
+        attrs={'td': {'class': 'text-center'}}
+    )
+    tab_number = tables.Column(
+        verbose_name='Таб. №',
+        attrs={'td': {'class': 'text-center', 'style': 'width: 10%'}}
+    )
+    rank = tables.Column(
+        attrs={'td': {'class': 'text-center', 'style': 'width: 10%'}}
+    )
+    
     def render_number_row(self):
         """Счетает и отображает номер строки таблицы"""
         self.number_row = getattr(
@@ -25,7 +33,7 @@ class PersonalTable(tables.Table):
 
     class Meta:
         model = Personal
-        template_name = EMPLOYEES_TABLE_TEMPLATE
+        template_name = settings.EMPLOYEES_TABLE_TEMPLATE
         fields = (
             'number_row',
             'tab_number',
@@ -38,18 +46,41 @@ class PersonalTable(tables.Table):
 
 
 class PostOrderTable(tables.Table):
-    number_post = tables.Column(verbose_name='№', attrs={'td': {'class': 'text-center', 'style': 'width: 10%'}})
-    district = tables.Column(attrs={'td': {'class': 'text-center', 'style': 'width: 10%'}})
-    order = tables.Column(verbose_name='Оформление работ', attrs={'td': {'class': 'text-center', 'style': 'width: 10%'}})
-    number_order = tables.Column(verbose_name='Номер', attrs={'td': {'class': 'text-center', 'style': 'width: 5%'}})
-    description = tables.Column(attrs={'td': {'style': 'width: 100%'}})
-    date_start_working = tables.Column(verbose_name='Работа начата', attrs={'td': {'style': 'width: 10%'}})
-    redact = tables.Column(verbose_name='Автор (изменить)', empty_values=(), orderable=False, attrs={'td': {'class': 'text-center', 'style': 'width: 10%'}})
-    is_deleted = tables.Column(attrs={'td': {'class': 'text-center', 'style': 'width: 10%'}})
+    number_post = tables.Column(
+        verbose_name='№',
+        attrs={'td': {'class': 'text-center', 'style': 'width: 10%'}}
+    )
+    district = tables.Column(
+        attrs={'td': {'class': 'text-center', 'style': 'width: 10%'}}
+    )
+    order = tables.Column(
+        verbose_name='Оформление работ',
+        attrs={'td': {'class': 'text-center', 'style': 'width: 10%'}}
+    )
+    number_order = tables.Column(
+        verbose_name='Номер',
+        attrs={'td': {'class': 'text-center', 'style': 'width: 5%'}}
+    )
+    description = tables.Column(
+        attrs={'td': {'style': 'width: 100%'}}
+    )
+    date_start_working = tables.Column(
+        verbose_name='Работа начата',
+        attrs={'td': {'style': 'width: 10%'}}
+    )
+    redact = tables.Column(
+        verbose_name='Автор (изменить)',
+        empty_values=(),
+        orderable=False,
+        attrs={'td': {'class': 'text-center', 'style': 'width: 10%'}}
+    )
+    is_deleted = tables.Column(
+        attrs={'td': {'class': 'text-center', 'style': 'width: 10%'}}
+    )
 
     class Meta:
         model = PostOrder
-        template_name = POSTS_ORDER_TABLE_TEMPLATE
+        template_name = settings.POSTS_ORDER_TABLE_TEMPLATE
         fields = (
             'number_post',
             'district',
@@ -80,13 +111,13 @@ class PostOrderTable(tables.Table):
         return 'Нет'
 
     def render_date_start_working(self, value):
-        target_timezone = pytz.timezone(TIME_ZONE)
+        target_timezone = pytz.timezone(settings.TIME_ZONE)
         value = value.astimezone(target_timezone)
         return value.strftime('%d.%m.%Y %H:%M')
 
     def render_date_end_working(self, value):
         if not value:
             return 'В работе'
-        target_timezone = pytz.timezone(TIME_ZONE)
+        target_timezone = pytz.timezone(settings.TIME_ZONE)
         value = value.astimezone(target_timezone)
         return mark_safe(f'<span style="color: rgb(0, 240, 70);">{value.strftime("%d.%m.%Y %H:%M")}</span>')

@@ -1,5 +1,6 @@
 import logging
 
+from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import get_object_or_404, redirect
@@ -10,16 +11,12 @@ from django.views.generic import (CreateView, DetailView, FormView, ListView,
 from django_filters.views import FilterView
 from django_tables2 import SingleTableMixin
 
-from masters_office.settings import (
-                                     AMOUNT_POSTS_REPAIR_WORK,
-                                     AMOUNT_POSTS_WALK)
 from .filters import PersonalFilter, PostRepairWorkFilter, PostWalkingFilter, PostOrderFilter
 from .forms import (PostOrderForm, PostRepairWorkForm, PostWalkingForm,
                     ResolutionForm)
 from .models import (Brigade, District, Personal, PostOrder, PostRepairWork,
                      PostWalking, Resolution)
 from .tables import PersonalTable, PostOrderTable
-from .utils import get_paginator
 from .validators import (CheckEnergyDistrictMixin,
                          get_filtered_energy_district,
                          validate_date_fields_post,
@@ -54,6 +51,7 @@ class JournalWalkView(LoginRequiredMixin, CheckEnergyDistrictMixin, FilterView):
     template_name = 'office/journal_walk.html'
     context_object_name = 'posts'
     filterset_class = PostWalkingFilter
+    paginate_by = settings.AMOUNT_POSTS_WALK
 
     def get_queryset(self):
         district = get_object_or_404(District, slug=self.kwargs.get('slug_district'))
@@ -63,11 +61,6 @@ class JournalWalkView(LoginRequiredMixin, CheckEnergyDistrictMixin, FilterView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['district'] = get_object_or_404(District, slug=self.kwargs.get('slug_district'))
-        context['page_obj'] = get_paginator(
-            self.request,
-            context['posts'],
-            AMOUNT_POSTS_WALK
-        )
         return context
 
 
@@ -271,6 +264,7 @@ class JournalRepairWorkView(LoginRequiredMixin, FilterView):
     context_object_name = 'posts'
     filterset_class = PostRepairWorkFilter
     form_class = PostRepairWorkForm
+    paginate_by = settings.AMOUNT_POSTS_REPAIR_WORK
 
     def get_queryset(self):
         return PostRepairWork.objects.filter(
@@ -280,11 +274,6 @@ class JournalRepairWorkView(LoginRequiredMixin, FilterView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['energy_district'] = self.request.user.energy_district
-        context['page_obj'] = get_paginator(
-            self.request,
-            context['posts'],
-            AMOUNT_POSTS_REPAIR_WORK
-        )
         return context
 
 
@@ -366,7 +355,7 @@ class JournalOrderView(LoginRequiredMixin, SingleTableMixin, FilterView):
     context_object_name = 'posts'
     filterset_class = PostOrderFilter
     table_class = PostOrderTable
-    paginate_by = 50
+    paginate_by = settings.AMOUNT_POSTS_ORDER
 
     def get_queryset(self):
         return PostOrder.objects.filter(

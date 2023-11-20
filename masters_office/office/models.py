@@ -1,10 +1,8 @@
+from django.conf import settings
 from django.contrib import admin
 from django.contrib.auth import get_user_model
 from django.db import models
 from django.urls import reverse
-
-from masters_office.settings import RANK, ORDER
-
 
 User = get_user_model()
 
@@ -105,7 +103,7 @@ class Personal(models.Model):
         verbose_name='Должность'
     )
     rank = models.IntegerField(
-        choices=RANK,
+        choices=settings.RANK,
         null=True,
         blank=True,
         verbose_name='Разряд'
@@ -348,7 +346,7 @@ class PostRepairWork(models.Model):
         verbose_name='источник (район)'
     )
     order = models.CharField(
-        choices=ORDER,
+        choices=settings.ORDER,
         verbose_name='Работы по',
         help_text='наряду или распоряжению',
         null=False,
@@ -432,7 +430,7 @@ class PostOrder(models.Model):
         verbose_name='источник (район)'
     )
     order = models.CharField(
-        choices=ORDER,
+        choices=settings.ORDER,
         verbose_name='Наряд/распоряжение',
         help_text='Номер присваивается автоматически',
         null=False,

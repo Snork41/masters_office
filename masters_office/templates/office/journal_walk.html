@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load django_bootstrap5 %}
+{% load static %}
 
 {% block title %} Журнал обходов тепловых сетей {% endblock title %}
 
@@ -8,7 +9,7 @@
 {% include 'office/includes/messages.html' %}
 
 <h1 class="text-center fw-light">Журнал обходов тепловых сетей</h1>
-<h1 class="text-center fw-medium">{{ district }}</h1>
+<h1 class="text-center fw-light">{{ district }}</h1>
 <br>
 {% if page_obj %}
 <div class="d-grid gap-2 col-2 mx-auto">
@@ -100,13 +101,9 @@
           {% else %}
           <p class="text-center fs-1">Записей нет.</p>
 {% endif %}
-      {% include 'includes/paginator.html' %}
     </div>
   </div>
-  <div class="d-grid gap-2 col-2 mx-auto">
-    <a class="btn btn-outline-dark btn-lg fs-3" href="{% url 'office:create_post_walking' district.slug %}">Новая запись</a>
-    {% if not request.GET %}
-    <a class="btn btn-outline-dark btn-back fs-5" href="{% url 'office:districts' %}">Назад к районам</a>
-    {% endif %}
-  </div>
+
+  <!-- Стрелка возврата вверх -->
+<a href="#" class="scroll-to-top"><img src="{% static 'img/row_up.png' %}" alt="Scroll To Top"></a>
 {% endblock content %}

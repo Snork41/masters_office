@@ -1,9 +1,9 @@
 from django import forms
+from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.test import Client, TestCase
 from django.urls import reverse
 
-from masters_office.settings import AMOUNT_POSTS_WALK
 from office.models import (Brigade, District, EnergyDistrict, Personal,
                            Position, PostOrder, PostRepairWork, PostWalking,
                            Resolution)
@@ -373,7 +373,7 @@ class OfficeViewsTest(TestCase):
         """Пагинация в журнале обходов."""
         PostWalking.objects.all().delete()
         posts = []
-        for number in range(AMOUNT_POSTS_WALK * 2):
+        for number in range(settings.AMOUNT_POSTS_WALK * 2):
             posts.append(PostWalking(
                 number_post=POST_WLK_NUMBER + number,
                 walk_date=WALK_DATE,
@@ -390,7 +390,7 @@ class OfficeViewsTest(TestCase):
         response = self.authorized_client.get(JRNL_WLK_URL)
         self.assertEqual(
             len(response.context.get('page_obj').object_list),
-            AMOUNT_POSTS_WALK
+            settings.AMOUNT_POSTS_WALK
         )
         self.assertTrue(response.context.get('page_obj').has_other_pages())
 

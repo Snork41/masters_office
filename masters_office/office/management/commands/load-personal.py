@@ -1,9 +1,9 @@
 import json
 
+from django.conf import settings
 from django.core.management.base import BaseCommand
 
 from office.models import Personal, EnergyDistrict, Position
-from masters_office.settings import BASE_DIR
 
 
 class Command(BaseCommand):
@@ -14,7 +14,7 @@ class Command(BaseCommand):
 
     def personal(self, *args):
         with open(
-            BASE_DIR / 'data/personal.json', 'r', encoding='utf-8'
+            settings.BASE_DIR / 'data/personal.json', 'r', encoding='utf-8'
         ) as file:
             records = []
             try:

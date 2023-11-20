@@ -2,9 +2,8 @@
   <header>
     <nav class="navbar navbar-expand-lg bg-dark fixed-top pb-3">
       <div class="container">
-        <a class="navbar-brand" href="{% url 'office:index' %}">
-          <img src="{% static 'img/logo_face_2.png' %}" alt="logo" class="d-inline-block align-text-center">
-          КАБИНЕТ МАСТЕРА
+        <a class="navbar-brand me-auto img-logo" href="{% url 'office:index' %}">
+          <img src="{% static 'img/logo.png' %}" alt="logo">          
         </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarToggler" aria-controls="navbarToggler" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
@@ -12,12 +11,18 @@
         <div class="collapse navbar-collapse justify-content-end" id="navbarToggler">
         <ul class="navbar-nav">
           {% if user.is_active %}
-            <div class="navbar-text">Пользователь: 
-              <span class="navbar-username">{{ user.username }} ({{ user.energy_district }})</span>
-            </div>
-            <li class="nav-item">
-              <a class="nav-link" href="{% url 'logout' %}">Выйти</a>
-            </li>
+          <li class="nav-item">
+            <div class="navbar-username">{{ user.username }} ({{ user.energy_district }})</div>
+          </li>
+
+          <li class="nav-item">
+            <a class="img-bell text-reset" href="#" >
+              <img src="{% static 'img/bell.png' %}" alt="bell">
+              <span class="peending">5</span>         
+            </a>
+          </li>
+
+
           {% endif %}
           <li class="nav-item">
             <a class="nav-link" href="{% url 'about:help' %}">Помощь</a>
@@ -25,6 +30,13 @@
           <li class="nav-item">
             <a class="nav-link" href="{% url 'about:contacts' %}">Контакты</a>
           </li>
+          {% if user.is_active %}
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'logout' %}"  data-bs-toggle="tooltip" data-bs-title="Выйти из кабинета" data-bs-placement="bottom">
+                <img class="img-logout" src="{% static 'img/logout.png' %}" alt="logout">
+              </a>
+            </li>
+          {% endif %}
         </ul>
       </div>
       </div>
