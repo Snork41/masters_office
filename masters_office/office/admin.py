@@ -1,5 +1,6 @@
 from django.contrib import admin
 from django.contrib import messages
+from django.shortcuts import get_object_or_404
 
 from .forms import PostWalkingForm, PostRepairWorkForm, PostOrderForm
 from .models import (PostWalking,
@@ -11,20 +12,41 @@ admin.site.site_header = '"Кабинет мастера" | Администри
 admin.site.index_title = 'Управление кабинетом'
 
 
+class HasResolutionFilter(admin.SimpleListFilter):
+    """Фильтр записей обходов по наличию резолюции."""
+
+    title = 'Есть резолюция'
+    parameter_name = 'has_resolution'
+
+    def lookups(self, request, model_admin):
+        return (
+            ('yes', 'Да'),
+            ('no', 'Нет'),
+        )
+
+    def queryset(self, request, queryset):
+        if self.value() == 'yes':
+            return queryset.filter(resolution__isnull=False)
+        elif self.value() == 'no':
+            return queryset.filter(resolution__isnull=True)
+
+
+class ResolutionInline(admin.TabularInline):
+    """Отображение резолюции при создании/изменении записи обхода."""
+
+    model = Resolution
+
+    def get_max_num(self, request, obj=None, **kwargs):
+        max_num = 1
+        return max_num
+
+
 @admin.register(EnergyDistrict)
 class EnergyDistrictAdmin(admin.ModelAdmin):
     list_display = (
         'id',
         'title',
     )
-
-
-class ResolutionInline(admin.TabularInline):
-    model = Resolution
-
-    def get_max_num(self, request, obj=None, **kwargs):
-        max_num = 1
-        return max_num
 
 
 @admin.register(PostOrder)
@@ -108,6 +130,7 @@ class PostWalkingAdmin(admin.ModelAdmin):
         'task',
         'text_for_display',
         'author',
+        'has_resolution',
         'is_deleted',
     )
     fields = (
@@ -127,12 +150,22 @@ class PostWalkingAdmin(admin.ModelAdmin):
     list_editable = ('is_deleted',)
     list_display_links = ('number_post', 'task')
     search_fields = ('text', 'walk_date')
-    list_filter = ('walk_date', 'is_deleted', 'district')
+    list_filter = ('walk_date', 'is_deleted', 'district', HasResolutionFilter)
     empty_value_display = '-пусто-'
     save_on_top = True
     readonly_fields = ('time_create', 'time_update', 'number_post')
     filter_horizontal = ('members',)
     list_per_page = 20
+
+    @admin.display(description='Замечания, выявленные при обходе')
+    def text_for_display(self, post):
+        if len(post.text) > 15:
+            return f'{post.text[:20]}...'
+        return post.text
+
+    @admin.display(description='Есть резолюция', boolean=True)
+    def has_resolution(self, post):
+        return post.resolution.exists()
 
 
 @admin.register(Brigade)
@@ -196,17 +229,33 @@ class PositionAdmin(admin.ModelAdmin):
 @admin.register(Resolution)
 class ResolutionAdmin(admin.ModelAdmin):
     list_display = (
-        'pk',
         'id',
         'author',
         'post_walking',
+        'district',
         'text',
+        'viewed'
     )
     list_display_links = ('author', 'post_walking', 'text')
     empty_value_display = '-пусто-'
+    actions = ('view_resolution', 'unread_resolution')
+
+    @admin.display(description='Источник (район)')
+    def district(self, resolution):
+        return resolution.post_walking.district
+
+    @admin.action(description='Отметить резолюцию прочитанной')
+    def view_resolution(self, request, queryset):
+        count = queryset.update(viewed=True)
+        self.message_user(request, f'Количество прочитанных резолюций: {count}')
+
+    @admin.action(description='Отметить резолюцию непрочитанной')
+    def unread_resolution(self, request, queryset):
+        count = queryset.update(viewed=False)
+        self.message_user(request, f'Количество непрочитанных резолюций: {count}')
 
     def save_model(self, request, obj, form, change):
-        if PostWalking.objects.get(id=request.POST['post_walking']).resolution.all() and not change:
+        if get_object_or_404(PostWalking, id=request.POST.get('post_walking')).resolution.all() and not change:
             messages.set_level(request, messages.ERROR)
             messages.error(
                 request, 'Резолюция не добавлена, у записи уже есть резолюция!'

@@ -1,21 +1,24 @@
 {% if user.is_staff %}
-<p>
-<p>
-  <button class="btn btn-outline-dark" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
-    Редактировать резолюцию:
-  </button>
-</p>
-<div class="collapse" id="collapseExample">
-  <div class="card my-4">
-    <h5 class="card-header">Редактирование резолюции:</h5>
-    <div class="card-body">
-      <form method="post" action="{% url 'office:resolution_update_form' district.slug post.id resolution.id %}">
+<button type="button" class="btn btn-outline-dark my-3" data-bs-toggle="modal" data-bs-target="#resolutionModal" >Редактировать резолюцию</button>
+<div class="modal fade" id="resolutionModal" tabindex="-1" aria-labelledby="resolutionModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-6" id="resolutionModalLabel">Редактировать резолюцию</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
+      </div>
+      <div class="modal-body">
+        <form id="resolution-text" method="post" action="{% url 'office:resolution_update_form' district.slug post.id resolution.id %}">
         {% csrf_token %}      
-        <div class="form-group mb-2">
-          {{ form.text }}          
-        </div>
-        <button type="submit" class="btn btn-outline-dark">Сохранить</button>
-      </form>
+          <div class="mb-3">
+            {{ form.text }}
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-dark" data-bs-dismiss="modal">Закрыть</button>
+        <button type="submit" form="resolution-text" class="btn btn-outline-dark">Сохранить</button>
+      </div>
     </div>
   </div>
 </div>

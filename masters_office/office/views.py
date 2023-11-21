@@ -168,6 +168,9 @@ class PostWalkingDetailView(LoginRequiredMixin, CheckEnergyDistrictMixin, Detail
         context = super().get_context_data(**kwargs)
         context['district'] = context['post'].district
         context['resolution'] = context['post'].resolution.first()
+        if context['resolution'] and not context['resolution'].viewed and context['post'].district.master == self.request.user:
+            Resolution.objects.filter(id=context['resolution'].id).update(viewed=True)
+            context['resolution'].viewed = True
         return context
 
 
@@ -217,6 +220,7 @@ class ResolutionEditView(LoginRequiredMixin, CheckEnergyDistrictMixin, UpdateVie
             f'New text: {self.object.text}. '
             f'User: {(self.request.user.username).upper()}'
         )
+        self.object.viewed = False
         return super().form_valid(form)
 
     def form_invalid(self, form):

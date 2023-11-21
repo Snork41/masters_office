@@ -266,13 +266,7 @@ class PostWalking(models.Model):
         )
 
     def __str__(self):
-        return f'{self.district.title}, Запись № {self.number_post} от {self.time_create.date()}'
-
-    @admin.display(description='Замечания, выявленные при обходе')
-    def text_for_display(self):
-        if len(self.text) > 15:
-            return f'{self.text[:20]}...'
-        return self.text
+        return f'Запись в журнале обходов теловых сетей № {self.number_post}'
 
 
 class Resolution(models.Model):
@@ -281,7 +275,7 @@ class Resolution(models.Model):
     post_walking = models.ForeignKey(
         'PostWalking',
         verbose_name='Резолюция для записи',
-        on_delete=models.CASCADE,
+        on_delete=models.SET_NULL,
         related_name='resolution',
         blank=True,
         null=True
@@ -293,11 +287,15 @@ class Resolution(models.Model):
         related_name='resolution'
     )
     text = models.TextField(
-        verbose_name='Резолюция начальника энергорайона'
+        verbose_name='Текст резолюции'
     )
     created = models.DateTimeField(
         verbose_name='Дата создания резолюции',
         auto_now_add=True
+    )
+    viewed = models.BooleanField(
+        verbose_name='Резолюция просмотрена',
+        default=False
     )
 
     class Meta:

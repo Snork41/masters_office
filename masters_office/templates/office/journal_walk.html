@@ -9,16 +9,18 @@
 {% include 'office/includes/messages.html' %}
 
 <h1 class="text-center fw-light">Журнал обходов тепловых сетей</h1>
-<h1 class="text-center fw-light">{{ district }}</h1>
+<h2 class="text-center fw-light">{{ district }}</h2>
 <br>
 {% if page_obj %}
 <div class="d-grid gap-2 col-2 mx-auto">
   <a class="btn btn-outline-dark btn-lg fs-3" href="{% url 'office:create_post_walking' district.slug %}">Новая запись</a>
   <a class="btn btn-outline-dark fs-5 btn-back" href="{% url 'office:districts' %}">Назад к районам</a>
 </div>
-<div class="row justify-content-center">
+
+<div class="row row-cols-md-2">
+  <!-- Окно фильтрации -->
   {% if filter %}
-    <div class="col-3" style="padding-top: 7.5em; padding-left: 4em;">
+    <div class="col-lg-2 col-md-8 pt-3" style="padding-left: 2em;">
       <div class="card shadow sticky-top sticky-offset">
         <div class="card-header" style="text-align: center;">
           <span class="btn" style="font-size: larger;">ФИЛЬТРАЦИЯ</span>
@@ -27,15 +29,17 @@
         <form action="" method="get" class="form form-floating ">
           {% bootstrap_form filter.form layout="floating" %}
           <div class="text-center">
-          {% bootstrap_button button_type="submit" button_class="btn-outline-dark col-4" content="Применить" %}
-          <a href="{% url 'office:journal_walk' district.slug %}" class="btn btn-outline-dark col-4" role="button">Сбросить</a>
+          {% bootstrap_button button_type="submit" button_class="btn-outline-dark col-6 m-2" style="font-size: 15px;" content="Применить" %}
+          <a href="{% url 'office:journal_walk' district.slug %}" class="btn btn-outline-dark col-6" style="font-size: 15px;" role="button">Сбросить</a>
           </div>
         </form>
       </div>
     </div>
   </div>
   {% endif %}
-    <div class="col-9 p-5">
+
+  <!-- Список записей -->
+    <div class="col-lg-8 col-md-12">
         {% include 'includes/paginator.html' %}
           {% for post in page_obj %}
           <div class="card card-post-in-list shadow border-0">

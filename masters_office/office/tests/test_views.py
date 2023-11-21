@@ -47,7 +47,7 @@ from .consts import (ADD_RESOLUTION_URL, ADRESS_REPAIR, ADRESS_REPAIR_2,
                      TRANSFER_WLK, TRANSFER_WLK_SED, UPDATE_RESOLUTION_URL,
                      USERNAME, USERNAME_AUTHOR,
                      USERNAME_SECOND_ENERGY_DISCRICT, WALK_DATE, WALK_DATE_SED,
-                     EDIT_POST_ORDER_URL)
+                     EDIT_POST_ORDER_URL, CABINET_URL)
 
 User = get_user_model()
 
@@ -183,7 +183,7 @@ class OfficeViewsTest(TestCase):
         cls.post_walking_SED.members.set([cls.workman_3_SED])
         cls.resolution = Resolution.objects.create(
             post_walking=cls.post_walking,
-            author=cls.user,
+            author=cls.user_author,
             text=RESOLUTION_WALK,
         )
         cls.post_repair = PostRepairWork.objects.create(
@@ -519,3 +519,27 @@ class OfficeViewsTest(TestCase):
             with self.subTest(value=value):
                 form_field = response.context.get('form').fields.get(value)
                 self.assertIsInstance(form_field, expected)
+
+    def test_notification_from_new_resolution(self):
+        """При создании резолюции к записи обхода, у автора записи появляется новое уведомление."""
+        response = self.authorized_client.get(CABINET_URL)
+        self.assertEqual(Resolution.objects.all().count(), response.context.get('notifications_count'))
+
+    def test_deleting_notification_of_resolution(self):
+        """При открытии записи обхода, у автора записи пропадает уведомление о новой резолюции."""
+        response = self.authorized_client.get(self.POST_WLK_DETAIL_URL)
+        self.assertEqual(Resolution.objects.all().count() - 1, response.context.get('notifications_count'))
+
+    def test_notification_from_edit_resolution(self):
+        """При редактировании резолюции у записи обхода, у автора записи появляется новое уведомление."""
+        resolution_count = Resolution.objects.all().count()
+        response = self.authorized_client.get(CABINET_URL)
+        befor_watching = response.context.get('notifications_count')
+        response = self.authorized_client.get(self.POST_WLK_DETAIL_URL)
+        after_watching = response.context.get('notifications_count')
+        self.author_client.post(UPDATE_RESOLUTION_URL, data={'text': RESOLUTION_WALK_2})
+        response = self.authorized_client.get(CABINET_URL)
+        after_edit_resolution = response.context.get('notifications_count')
+        self.assertEqual(resolution_count, befor_watching)
+        self.assertEqual(resolution_count - 1, after_watching)
+        self.assertEqual(resolution_count, after_edit_resolution)

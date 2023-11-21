@@ -21,16 +21,15 @@
     {% endif %}
   {% endif %}
   <a class="btn btn-outline-dark btn-lg fs-3" href="{% url 'office:create_post_repair' %}">Новая запись</a>
-  {% if not request.GET %}
   <a class="btn btn-outline-dark fs-5 btn-back" href="{% url 'office:journals' %}">Назад к журналам</a>
-  {% endif %}
 </div>
 
 {% if page_obj %}
-<div class="row justify-content-center">
+
+<div class="row row-cols-md-2">
   <!-- Окно фильтрации -->
   {% if filter %}
-    <div class="col-3" style="padding-top: 7.5em; padding-left: 4em; padding-bottom: 2em;">
+    <div class="col-lg-2 col-md-8 pt-3" style="padding-left: 2em;">
       <div class="card shadow sticky-top sticky-offset">
         <div class="card-header" style="text-align: center">
           <span class="btn" style="font-size: larger">ФИЛЬТРАЦИЯ</span>
@@ -39,8 +38,8 @@
           <form action="" method="get" class="form form-floating">
             {% bootstrap_form filter.form layout="floating" %}
             <div class="text-center">
-            {% bootstrap_button button_type="submit" button_class="btn-outline-dark col-4" content="Применить" %}
-            <a href="{% url 'office:journal_repair_work' %}" class="btn btn-outline-dark col-4" role="button">Сбросить</a >
+            {% bootstrap_button button_type="submit" button_class="btn-outline-dark col-6 m-2" style="font-size: 15px;" content="Применить" %}
+            <a href="{% url 'office:journal_repair_work' %}" class="btn btn-outline-dark col-6" style="font-size: 15px;" role="button">Сбросить</a >
             </div>
           </form>
         </div>
@@ -49,7 +48,7 @@
   {% endif %}
 
   <!-- Список записей -->
-  <div class="col-8 p-5">
+  <div class="col-lg-8 col-md-12">
     {% include 'includes/paginator.html' %}
     <div data-bs-spy="scroll" data-bs-target="#list-journal" data-bs-smooth-scroll="true" class="scrollspy-journal" tabindex="0">
       {% for post in page_obj %}
@@ -126,15 +125,7 @@
     <!-- Стрелка возврата вверх -->
     <a href="#" class="scroll-to-top"><img src="{% static 'img/row_up.png' %}" alt="Scroll To Top"></a>
   </div>
+</div>
 
-  <!-- Колонка справа от списка записей -->
-  {% if page_obj|length > 1%}
-  <div class="col-1" style="padding-top: 7.5em; padding-right: 3em">
-    <div id="list-journal" class="list-group sticky-top sticky-offset">
-      {% for post in page_obj %}
-      <a class="list-group-item list-group-item-action" href="#list-item-{{ forloop.counter }}" style="--bs-list-group-active-bg: black; --bs-list-group-active-border-color: black;">Запись {{ post.number_post }}</a>
-      {% endfor %}
-    </div>
-  </div>
-  {% endif %} {% endblock content %}
+  {% endblock content %}
 </div>

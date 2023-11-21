@@ -157,7 +157,7 @@ class OfficeModelTest(TestCase):
             position: position.name_position,
             workman: f'{workman.last_name} {workman.first_name} {workman.middle_name}',
             brigade: f'Бригада № {brigade.number}. Мастера {brigade.master}',
-            post_walking: f'{district.title}, Запись № {post_walking.pk} от {post_walking.time_create.date()}',
+            post_walking: f'Запись в журнале обходов теловых сетей № {post_walking.number_post}',
             personal: f'{personal.last_name} {personal.first_name} {personal.middle_name}',
             resolution: resolution.text,
             post_repair: f'Запись в журнале ремонтных работ № {post_repair.number_post} от {post_repair.time_create.date()}',
