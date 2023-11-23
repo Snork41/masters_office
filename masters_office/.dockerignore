@@ -1,0 +1,10 @@
+venv
+sent_emails
+htmlcov
+.git
+db.sqlite3
+.env
+.vscode
+.idea
+.flake8
+backlog.txt

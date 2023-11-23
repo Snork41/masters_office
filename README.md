@@ -1,7 +1,7 @@
 # Кабинет мастера (Masters Office)
 
 ### Технологии:
-Python 3.10
+Python 3.11
 Django 4.2.6
 
 ### Описание:

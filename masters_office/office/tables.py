@@ -23,7 +23,7 @@ class PersonalTable(tables.Table):
     rank = tables.Column(
         attrs={'td': {'class': 'text-center', 'style': 'width: 10%'}}
     )
-    
+
     def render_number_row(self):
         """Счетает и отображает номер строки таблицы"""
         self.number_row = getattr(
