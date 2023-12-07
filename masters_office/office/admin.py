@@ -5,11 +5,16 @@ from django.shortcuts import get_object_or_404
 from .forms import PostWalkingForm, PostRepairWorkForm, PostOrderForm
 from .models import (PostWalking,
                      Personal, District, Position,
-                     EnergyDistrict, Brigade, Resolution, PostRepairWork, PostOrder)
+                     EnergyDistrict, Brigade, Resolution, PostRepairWork, PostOrder, StaticBlock)
 
 
 admin.site.site_header = '"Кабинет мастера" | Администрирование'
 admin.site.index_title = 'Управление кабинетом'
+
+
+@admin.register(StaticBlock)
+class StaticBlockAdmin(admin.ModelAdmin):
+    pass
 
 
 class HasResolutionFilter(admin.SimpleListFilter):
@@ -29,16 +34,6 @@ class HasResolutionFilter(admin.SimpleListFilter):
             return queryset.filter(resolution__isnull=False)
         elif self.value() == 'no':
             return queryset.filter(resolution__isnull=True)
-
-
-class ResolutionInline(admin.TabularInline):
-    """Отображение резолюции при создании/изменении записи обхода."""
-
-    model = Resolution
-
-    def get_max_num(self, request, obj=None, **kwargs):
-        max_num = 1
-        return max_num
 
 
 @admin.register(EnergyDistrict)
@@ -115,6 +110,16 @@ class PostRepairWorkAdmin(admin.ModelAdmin):
     list_per_page = 20
     save_on_top = True
     readonly_fields = ('time_create', 'time_update', 'number_post')
+
+
+class ResolutionInline(admin.TabularInline):
+    """Отображение резолюции при создании/изменении записи обхода."""
+
+    model = Resolution
+
+    def get_max_num(self, request, obj=None, **kwargs):
+        max_num = 1
+        return max_num
 
 
 @admin.register(PostWalking)

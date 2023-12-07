@@ -8,3 +8,8 @@ db.sqlite3
 .idea
 .flake8
 backlog.txt
+.vscode/
+masters_office/sent_emails/
+*.log.*
+*.log
+htmlcov/

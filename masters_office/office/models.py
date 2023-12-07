@@ -3,8 +3,21 @@ from django.contrib import admin
 from django.contrib.auth import get_user_model
 from django.db import models
 from django.urls import reverse
+from django_ckeditor_5.fields import CKEditor5Field
 
 User = get_user_model()
+
+
+class StaticBlock(models.Model):
+    title = models.CharField('Название', max_length=32)
+    content = CKEditor5Field(verbose_name='Контент', config_name='extends')
+
+    class Meta:
+        verbose_name = 'блок контента'
+        verbose_name_plural = 'Блоки контента'
+
+    def __str__(self):
+        return self.title
 
 
 class EnergyDistrict(models.Model):
@@ -12,7 +25,7 @@ class EnergyDistrict(models.Model):
 
     title = models.CharField(
         verbose_name='Энергорайон',
-        max_length=20,
+        max_length=35,
         unique=True
     )
 
@@ -108,7 +121,7 @@ class Personal(models.Model):
         blank=True,
         verbose_name='Разряд'
     )
-    tab_number = models.SmallIntegerField(
+    tab_number = models.IntegerField(
         null=False,
         blank=False,
         unique=True,
