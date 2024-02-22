@@ -8,47 +8,62 @@
 
 {% include 'office/includes/messages.html' %}
 
-<h1 class="text-center fw-light">Журнал учета работ по нарядам и распоряжениям</h1>
-<h2 class="text-center fw-light">{{ energy_district }}</h2>
-<br>
-<div class="d-grid gap-2 col-2 mx-auto">
+<section class="section-journal_order">
+  <h1 class="text-center fw-light">Журнал учета работ по нарядам и распоряжениям</h1>
+  <h2 class="text-center fw-light">{{ energy_district }}</h2>
+  <br>
+  <div class="d-grid gap-2 col-2 mx-auto">
 
-  {% if not posts %}
-    {% if request.GET %}
-    <p class="text-center fs-2" style="color: red">Совпадений не найдено.</p>
-    {% else %}
-    <p class="text-center fs-1">Записей нет.</p>
+    {% if not posts %}
+      {% if request.GET %}
+      <p class="text-center fs-2 no-match">Совпадений не найдено.</p>
+      {% else %}
+      <p class="text-center fs-1">Записей нет.</p>
+      {% endif %}
     {% endif %}
-  {% endif %}
-  <a class="btn btn-outline-dark btn-lg fs-3" href="{% url 'office:create_post_order' %}">Новая запись</a>
-  <a class="btn btn-outline-dark fs-5 btn-back" href="{% url 'office:journals' %}">Назад к журналам</a>
-</div>
-<div class="row row-table-posts-order" style="padding-top: 3em;">
-  <div class="col-4 col-md-2">
-    <div class="card shadow sticky-top sticky-offset">
-      <div class="card-header" style="text-align: center;">
-        <span class="btn" style="font-size: larger;">ФИЛЬТРАЦИЯ</button>
-      </div>      
-      <div class="card-body">
-        {% if filter %}
-          <form action="" method="get" class="form form-floating ">
-            {% bootstrap_form filter.form layout="floating" %}
-            <div class="text-center">
-            {% bootstrap_button button_type="submit" button_class="btn-outline-dark col-6" content="Применить" %}
-            <a href="{% url 'office:journal_order' %}" class="btn btn-outline-dark col-6 mt-2" role="button">Сбросить</a>
-            </div>
-          </form>
-        {% endif %}
+    <a class="btn btn-outline-dark btn-lg fs-3" href="{% url 'office:create_post_order' %}">Новая запись</a>
+    <a class="btn btn-outline-dark fs-5 btn-back" href="{% url 'office:journals' %}">Назад к журналам</a>
+  </div>
+  <div class="row row-table-posts-order">
+    <div class="col-4 col-md-2">
+      <div class="card shadow sticky-top sticky-offset">
+        <div class="card-header">
+          <button class="btn" id="filter_btn">ФИЛЬТРАЦИЯ</button>
+        </div>      
+        <div class="card-body"  id="filter_body">
+          {% if filter %}
+            <form action="" method="get" class="form form-floating">
+              {% bootstrap_form filter.form layout="floating" %}
+              <div class="text-center">
+              {% bootstrap_button button_type="submit" button_class="btn-outline-dark col-6" content="Применить" %}
+              <a href="{% url 'office:journal_order' %}" class="btn btn-outline-dark col-6 mt-2" role="button">Сбросить</a>
+              </div>
+            </form>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+    <div class="col-md-10">
+      <div class="card shadow">
+        {% render_table table %}
       </div>
     </div>
   </div>
-  <div class="col-md-10">
-    <div class="card shadow">
-      {% render_table table %}
-    </div>
-  </div>
-</div>
 
-<!-- Стрелка возврата вверх -->
-<a href="#" class="scroll-to-top"><img src="{% static 'img/row_up.png' %}" alt="Scroll To Top"></a>
+  <!-- Стрелка возврата вверх -->
+  <a href="#" class="scroll-to-top"><img src="{% static 'img/row_up.png' %}" alt="Scroll To Top"></a>
+</section>
+
+<!-- Сокрытие фильтра-->
+<script>
+  document.addEventListener("DOMContentLoaded", hiddenCloseclick());
+  document.getElementById('filter_btn').addEventListener("click", hiddenCloseclick);
+	function hiddenCloseclick() {
+	let x = document.getElementById('filter_body');
+      if (x.style.display == "none"){
+	  x.style.display = "block";
+      } else {
+	 x.style.display = "none"}
+    };	
+</script>
 {% endblock content %}

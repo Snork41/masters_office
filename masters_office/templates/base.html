@@ -18,9 +18,11 @@
 {% include 'includes/header.html' %}    
 
 {% include 'includes/breadcrumb.html' %}
-<div class="py-3">
-{% block content %}{% endblock content %}
-</div>
+
+  <main>
+    {% block content %}{% endblock content %}
+  </main>
+
 {% include 'includes/footer.html' %}
 {% block scripts %}
 <script src="{% static 'js/jquery-3.7.1.js' %}"></script>

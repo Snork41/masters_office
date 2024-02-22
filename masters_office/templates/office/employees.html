@@ -5,49 +5,51 @@
   Сотрудники
 {% endblock %}
 {% block content %}
-<br>
-<h1 class="text-center fw-light">Сотрудники</h1>
-<h2 class="text-center fw-light">{{ energy_district }}</h1>
+<section class="section-employees">
   <br>
-  <div class="container">
-    <div class="row justify-content-center">
-      <div class="col-2 text-end">
-        <a class="btn btn-outline-dark fs-5 btn-back" style="width: 200px;" href="{% url 'office:cabinet' %}">В кабинет</a>
+  <h1 class="text-center fw-light">Сотрудники</h1>
+  <h2 class="text-center fw-light">{{ energy_district }}</h1>
+    <br>
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-2">
+          <a class="btn btn-outline-dark fs-5 btn-back" style="width: 200px;" href="{% url 'office:cabinet' %}">В кабинет</a>
+        </div>
+        <div class="col-2">
+        {% if user.is_staff or user.is_superuser %}
+          <a class="btn btn-outline-dark fs-5 btn-back" style="width: 200px;" href="/admin/office/personal/" target="_blank">Редактировать</a> 
+          {% else %}
+          <span class="d-inline-block d-grid" tabindex="0" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-title="Недостаточно прав">
+            <a class="btn btn-outline-dark fs-5 btn-back disabled" style="width: 200px;" href="">Редактировать</a> 
+            {% endif %}    
+          </span>      
+        </div>
+    </div>
+  </div>  
+  <div class="row row-table-employees" style="padding-top: 3em;">
+    <div class="col-6 col-md-3">
+      <div class="card shadow sticky-top sticky-offset">
+        <div class="card-header" style="text-align: center;">
+          <span class="btn" style="font-size: larger;">ФИЛЬТРАЦИЯ</button>
+        </div>      
+        <div class="card-body">
+          {% if filter %}
+            <form action="" method="get" class="form form-floating ">
+              {% bootstrap_form filter.form layout="floating" %}
+              <div class="text-center">
+              {% bootstrap_button button_type="submit" button_class="btn-outline-dark col-4" content="Применить" %}
+              <a href="{% url 'office:employees' %}" class="btn btn-outline-dark col-4" role="button">Сбросить</a>
+              </div>
+            </form>
+          {% endif %}
+        </div>
       </div>
-      <div class="col-2">
-      {% if user.is_staff or user.is_superuser %}
-        <a class="btn btn-outline-dark fs-5 btn-back" style="width: 200px;" href="/admin/office/personal/" target="_blank">Редактировать</a> 
-        {% else %}
-        <span class="d-inline-block d-grid" tabindex="0" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-title="Недостаточно прав">
-          <a class="btn btn-outline-dark fs-5 btn-back disabled" style="width: 200px;" href="">Редактировать</a> 
-          {% endif %}    
-        </span>      
-      </div>
-  </div>
-</div>  
-<div class="row row-table-employees" style="padding-top: 3em;">
-  <div class="col-6 col-md-3">
-    <div class="card shadow sticky-top sticky-offset">
-      <div class="card-header" style="text-align: center;">
-        <span class="btn" style="font-size: larger;">ФИЛЬТРАЦИЯ</button>
-      </div>      
-      <div class="card-body">
-        {% if filter %}
-          <form action="" method="get" class="form form-floating ">
-            {% bootstrap_form filter.form layout="floating" %}
-            <div class="text-center">
-            {% bootstrap_button button_type="submit" button_class="btn-outline-dark col-4" content="Применить" %}
-            <a href="{% url 'office:employees' %}" class="btn btn-outline-dark col-4" role="button">Сбросить</a>
-            </div>
-          </form>
-        {% endif %}
+    </div>
+    <div class="col-md-9">
+      <div class="card shadow">
+        {% render_table table %}
       </div>
     </div>
   </div>
-  <div class="col-md-9">
-    <div class="card shadow">
-      {% render_table table %}
-    </div>
-  </div>
-</div>
+</section>
 {% endblock %}

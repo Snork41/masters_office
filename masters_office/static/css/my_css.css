@@ -8,6 +8,11 @@ body {
     padding-top: 4%;
 }
 
+/* tooltip */
+[data-popper-placement="bottom"] {
+    top: 20px !important;
+}
+
 .navbar-nav li a:hover {    
     color: #afafaf;
 }
@@ -157,10 +162,6 @@ a.table-head-employees, span.table-head-employees {
     text-transform: uppercase;
 }
 
-/* Таблица записей журнала нарядов и распоряжений */
-.row-table-posts-order {
-    padding: 3%;;
-}
 
 a.table-head-posts-order, span.table-head-posts-order {
     font-size: larger;
@@ -186,14 +187,6 @@ a.btn.btn-back:hover {
     display: block;
 }
 
-.card-post-in-list {
-    margin-bottom: 2%;
-}
-
-/* Прилипание окна фильтрации в журнале обходов */
-.sticky-offset {
-    top: 100px;
-}
 
 /* Стрелка для возврата к верху страницы в журналах */
 .scroll-to-top {
@@ -202,13 +195,12 @@ a.btn.btn-back:hover {
     right: 40px;
     z-index: 99;
 }
-
 .scroll-to-top img {
     width: 50px;
     height: 50px;
 }
 
-/* Икноки контактов */
+/* Иконки контактов */
 i {
     font-size: 2em;
     padding-left: 1em;
@@ -248,3 +240,127 @@ i {
     scale: 1.05;
     background-color: rgb(207, 207, 207);
 }
+
+
+/*<-------- brigades.html -------->*/
+.section-brigades a {
+    width: 200px;
+}
+/*<----- END brigades.html ----->*/
+
+
+/*<-------- journal_walk.html -------->*/
+/* Прилипание окна фильтрации в журнале обходов */
+.sticky-offset {
+    top: 100px;
+}
+
+.filter-journal-walk {
+    padding-left: 2em;
+}
+.filter-journal-walk .card-header {
+    text-align: center;
+}
+.filter-journal-walk .card-header .btn {
+    font-size: larger;
+}
+
+.filter-journal-walk form .btn-outline-dark {
+    font-size: 15px;
+}
+
+.card-post-walk-in-list {
+    margin-bottom: 2%;
+}
+.card-post-walk-in-list caption,
+.card-post-walk-in-list thead {
+    text-align: end;
+}
+.card-post-walk-in-list .border-danger {
+    color: red;
+    padding: 5px;
+}
+.card-post-walk-in-list .fs-5 {
+    width: 50%;
+}
+
+.section-journal_walk p {
+    color: red;
+}
+/*<----- END journal_walk.html ----->*/
+
+
+/*<-------- journal_order.html -------->*/
+.section-journal_order .no-match {
+    color: red;
+}
+
+.row-table-posts-order {
+    padding: 3%;;
+}
+.row-table-posts-order .card-header {
+    text-align: center;
+}
+.row-table-posts-order .card-header .btn {
+    font-size: larger;
+}
+/*<----- END journal_order.html ----->*/
+
+
+/*<-------- journal_repair_work.html -------->*/
+.section-journal_repair_work .no-match {
+    color: red;
+}
+
+.filter-journal-repair-work {
+    padding-left: 2em;
+}
+.filter-journal-repair-work .card-header {
+    text-align: center;
+}
+.filter-journal-repair-work .card-header .btn {
+    font-size: larger;
+}
+.filter-journal-repair-work form .btn-outline-dark {
+    font-size: 15px;
+}
+
+.card-post-repair-in-list {
+    margin-bottom: 3em;
+}
+.card-post-repair-in-list .border-danger {
+    color: red;
+    padding: 5px;
+}
+.card-post-repair-in-list caption,
+.card-post-repair-in-list thead {
+    text-align: end;
+}
+.card-post-repair-in-list .first-row {
+    width: 40%;
+}
+/*<----- END journal_repair_work.html ----->*/
+
+
+/*<-------- post_walking_detail.html -------->*/
+.post-detail .btn-back {
+    margin-bottom: 10%;
+}
+.post-detail .prev-next-block {
+    padding-bottom: 20px;
+}
+.post-detail caption {
+    color: red;
+    padding: 5px;
+}
+.post-detail .first-row {
+    width: 40%;
+}
+.post-detail .next-button {
+    text-align: end;
+}
+/*<----- END post_walking_detail.html ----->*/
+
+
+/*<-------- header.html -------->*/
+/*<----- END header.html ----->*/
