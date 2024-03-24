@@ -7,7 +7,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = config("SECRET_KEY", default="from_.env")
 
-DEBUG = config("DEBUG", default=False, cast=bool)
+DEBUG = False
 
 ALLOWED_HOSTS = config("ALLOWED_HOSTS", default="*", cast=Csv())
 
@@ -35,6 +35,7 @@ INSTALLED_APPS = [
     'crispy_forms',
     'crispy_bootstrap5',
     'django_ckeditor_5',
+    'mailer',
 ]
 
 MIDDLEWARE = [
@@ -153,18 +154,20 @@ LOGIN_REDIRECT_URL = 'office:index'
 
 # Восстановление паролей
 if DEBUG:
-    # Эмуляция почты
-    EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
-    EMAIL_FILE_PATH = os.path.join(BASE_DIR, 'sent_emails')
+    # Эмуляция почты (отправка в консоль)
+    EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 else:
-    EMAIL_HOST = config("EMAIL_HOST", cast=str)
-    EMAIL_PORT = config("EMAIL_PORT", cast=int)
-    EMAIL_USE_TSL = config("EMAIL_USE_TSL", cast=bool)
-    EMAIL_USE_SSL = config("EMAIL_USE_SSL", cast=bool)
+    EMAIL_BACKEND = "mailer.backend.DbBackend"
 
-    EMAIL_HOST_USER = config("EMAIL_HOST_USER", cast=str)
-    EMAIL_HOST_PASSWORD = config("EMAIL_HOST_PASSWORD", cast=str)
-    DEFAULT_FROM_EMAIL = config("DEFAULT_FROM_EMAIL", cast=str)
+EMAIL_HOST = config("EMAIL_HOST", cast=str)
+EMAIL_PORT = config("EMAIL_PORT", cast=int)
+EMAIL_USE_TSL = config("EMAIL_USE_TSL", cast=bool)
+EMAIL_USE_SSL = config("EMAIL_USE_SSL", cast=bool)
+
+EMAIL_HOST_USER = config("EMAIL_HOST_USER", cast=str)
+EMAIL_HOST_PASSWORD = config("EMAIL_HOST_PASSWORD", cast=str)
+DEFAULT_FROM_EMAIL = config("DEFAULT_FROM_EMAIL", cast=str)
+# /Восстановление паролей
 
 
 CSRF_FAILURE_VIEW = 'core.views.csrf_failure'
