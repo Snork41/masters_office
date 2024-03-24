@@ -4,6 +4,8 @@
 {% endblock %}
 {% block content %}
 
+{% include '../includes/breadcrumb.html' with second_level=breadcrumbs.title_second %}
+
 <section class="section-brigades">
   <br>
   <h1 class="text-center fw-light">Бригады</h1>
@@ -16,7 +18,7 @@
       </div>
       <div class="col-2">
         {% if user.is_staff or user.is_superuser %}
-        <a class="btn btn-outline-dark fs-5 btn-back" href="/admin/office/brigade" target="_blank">Изменить бригады</a> 
+        <a class="btn btn-outline-dark fs-5 btn-back" href="/admin-mo/office/brigade" target="_blank">Изменить бригады</a> 
         {% else %}
         <span class="d-inline-block d-grid" tabindex="0" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-title="Недостаточно прав">
           <a class="btn btn-outline-dark fs-5 btn-back disabled" href="">Изменить бригады</a> 

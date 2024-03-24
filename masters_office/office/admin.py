@@ -217,7 +217,7 @@ class PersonalAdmin(admin.ModelAdmin):
     )
     list_display_links = ('first_name', 'last_name', 'middle_name')
     list_filter = ('energy_district', 'position')
-    list_editable = ('foreman',)
+    list_editable = ('foreman', 'energy_district')
 
 
 @admin.register(Position)

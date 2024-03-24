@@ -9,7 +9,7 @@ handler403 = 'core.views.csrf_failure'
 
 urlpatterns = [
     path('', include('office.urls', namespace='office')),
-    path('admin/', admin.site.urls),
+    path('admin-mo/', admin.site.urls),
     path('auth/', include('users.urls', namespace='users')),
     path('auth/', include('django.contrib.auth.urls')),
     path('about/', include('about.urls', namespace='about')),

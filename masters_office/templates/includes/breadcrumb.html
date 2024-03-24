@@ -1,31 +1,55 @@
-{% load breadcrumb %}
-{% get_breadcrumb as crumb %}
 <div class="container">
-{% if crumb.path %}
-<nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
-    <ol class="breadcrumb">
-      {% if 'cabinet' in crumb.path %}
-      <li class="breadcrumb-item"><a href="{% url 'office:index' %}">На главную</a></li>
+  <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+    <ul class="breadcrumb">
+      <li class="breadcrumb-item">
+        <a href="{% url 'office:index' %}">
+          Главная
+        </a>
+      </li>
+      {% if second_level %}
+        <li class="breadcrumb-item">
+          {% if second_level_href %}
+            <a href="/{{ second_level_href }}/">
+              {{ second_level }}
+            </a>
+          {% else %}
+            {{ second_level }}
+          {% endif %}
+        </li>
       {% endif %}
-      {% if 'journals' in crumb.path or 'brigades' in crumb.path or 'employees' in crumb.path %}
-      <li class="breadcrumb-item"><a href="{% url 'office:cabinet' %}">Кабинет</a></li>
+      {% if third_level %}
+        <li class="breadcrumb-item">
+          {% if third_level_href %}
+            <a href="/{{ third_level_href }}/">
+              {{ third_level }}
+            </a>
+          {% else %}
+            {{ third_level }}
+          {% endif %}                
+        </li>
       {% endif %}
-      {% if crumb.path|length > 2 and 'journals' in crumb.path%}
-      <li class="breadcrumb-item"><a href="{% url 'office:journals' %}">Журналы</a></li>
+      {% if fourth_level %}
+        <li class="breadcrumb-item">
+          {% if fourth_level_href %}
+            <a href="/{{ fourth_level_href }}/">
+              {{ fourth_level }}
+            </a>
+          {% else %}
+            {{ fourth_level }}
+          {% endif %}                
+        </li>
+      {% endif %}        
+      {% if fifth_level %}
+        <li class="breadcrumb-item">
+          {% if fifth_level_href %}
+            <a href="/{{ fifth_level_href }}/">
+              {{ fifth_level }}
+            </a>
+          {% else %}
+            {{ fifth_level }}
+          {% endif %}                
+        </li>
       {% endif %}
-      {% if crumb.kwargs.slug_district in crumb.path %}
-      <li class="breadcrumb-item"><a href="{% url 'office:districts' %}">Районы</a></li>
-      {% endif %}
-      {% if 'create-post-walking' in crumb.path or 'edit-post-walking' in crumb.path %}
-      <li class="breadcrumb-item"><a href="{% url 'office:journal_walk' crumb.kwargs.slug_district %}">Журнал обходов тепловых сетей</a></li>
-      {% endif %}
-      {% if 'create-post-repair' in crumb.path or 'edit-post-repair' in crumb.path %}
-      <li class="breadcrumb-item"><a href="{% url 'office:journal_repair_work' %}">Журнал ремонтных работ</a></li>
-      {% endif %}
-      {% if 'create-post-order' in crumb.path or 'edit-post-order' in crumb.path %}
-      <li class="breadcrumb-item"><a href="{% url 'office:journal_order' %}">Журнал учета работ по нарядам и распоряжениям</a></li>
-      {% endif %}
-    </ol>
-</nav>
-{% endif %}
+    </ul>
+  </nav>
 </div>

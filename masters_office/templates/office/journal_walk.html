@@ -6,6 +6,7 @@
 
 {% block content %}
 
+{% include '../includes/breadcrumb.html' with second_level=breadcrumbs.title_second second_level_href=breadcrumbs.url.second_level_href third_level=breadcrumbs.title_third third_level_href=breadcrumbs.url.third_level_href fourth_level=breadcrumbs.title_fourth fourth_level_href=breadcrumbs.url.fourth_level_href fifth_level=breadcrumbs.title_current %}
 
 {% include 'office/includes/messages.html' %}
 
@@ -13,11 +14,11 @@
   <h1 class="text-center fw-light">Журнал обходов тепловых сетей</h1>
   <h2 class="text-center fw-light">{{ district }}</h2>
   <br>
-  {% if page_obj %}
   <div class="d-grid gap-2 col-2 mx-auto">
     <a class="btn btn-outline-dark btn-lg fs-3" href="{% url 'office:create_post_walking' district.slug %}">Новая запись</a>
     <a class="btn btn-outline-dark fs-5 btn-back" href="{% url 'office:districts' %}">Назад к районам</a>
   </div>
+  {% if page_obj %}
 
   <div class="row row-cols-md-2">
     <!-- Окно фильтрации -->

@@ -6,6 +6,8 @@
 
 {% block content %}
 
+{% include '../includes/breadcrumb.html' with second_level=breadcrumbs.title_second second_level_href=breadcrumbs.url.second_level_href third_level=breadcrumbs.title_third third_level_href=breadcrumbs.url.third_level_href fourth_level=breadcrumbs.title_current %}
+
 {% include 'office/includes/messages.html' %}
 
 <section class="section-journal_order">

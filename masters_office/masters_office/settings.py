@@ -75,25 +75,36 @@ POSTS_ORDER_TABLE_TEMPLATE = os.path.join(BASE_DIR, 'templates/office/includes/t
 
 WSGI_APPLICATION = 'masters_office.wsgi.application'
 
-if DEBUG:
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-        }
-    }
-else:
-    DATABASES = {
+
+DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.getenv('POSTGRES_DB', 'django'),
-        'USER': os.getenv('POSTGRES_USER', 'django'),
-        'PASSWORD': os.getenv('POSTGRES_PASSWORD', ''),
-        'HOST': os.getenv('DB_HOST', ''),
-        'PORT': os.getenv('DB_PORT', 5432)
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': os.getenv('POSTGRES_DB', 'django'),
+#         'USER': os.getenv('POSTGRES_USER', 'django'),
+#         'PASSWORD': os.getenv('POSTGRES_PASSWORD', ''),
+#         'HOST': os.getenv('DB_HOST', ''),
+#         'PORT': os.getenv('DB_PORT', 5432)
+#     }
+# }
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.mysql',
+#         'NAME': os.getenv('MYSQL_NAME', 'django'),
+#         'USER': os.getenv('MYSQL_USER', 'django'),
+#         'PASSWORD': os.getenv('MYSQL_PASSWORD', ''),
+#         'HOST': os.getenv('MYSQL_HOST', ''),
+#         'PORT': os.getenv('MYSQL_PORT', 5432),
+#         'OPTIONS': {'charset': 'utf8mb4'},
+#     }
+# }
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -334,3 +345,5 @@ CKEDITOR_5_CONFIGS = {
         }
     }
 }
+
+from .local_settings import *

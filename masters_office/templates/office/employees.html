@@ -5,6 +5,9 @@
   Сотрудники
 {% endblock %}
 {% block content %}
+
+{% include '../includes/breadcrumb.html' with second_level=breadcrumbs.title_second %}
+
 <section class="section-employees">
   <br>
   <h1 class="text-center fw-light">Сотрудники</h1>

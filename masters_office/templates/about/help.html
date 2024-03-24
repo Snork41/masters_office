@@ -5,12 +5,13 @@
 
 {% block content %}
 <img src="{% static '/gif/HELP.gif' %}" alt="HELP.GIF" class="mx-auto d-block">
-<div class="container mx-auto p-5">
-  <div class="card shadow">
-    <div class="card-body p-5" style="font-size: 1.5em;">
-      {{ about.content|safe }}
+{% if about %}
+  <div class="container mx-auto p-5">
+    <div class="card shadow">
+      <div class="card-body p-5" style="font-size: 1.5em;">
+        {{ about.content|safe }}
+      </div>
     </div>
   </div>
-</div>
-
+{% endif %}
 {% endblock content %}

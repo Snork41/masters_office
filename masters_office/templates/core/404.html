@@ -1,12 +1,20 @@
 {% extends 'base.html' %}
+
 {% block title %}Error 404{% endblock %}
+
 {% block content %}
 <div class="col-4 mx-auto">
   <div class="card shadow">
     <div class="card-body mx-auto text-center">
-      <p style="font-size: 2em; text-align: center;">ОЙ!</p> 
-      <p style="font-size: 1.5em; text-align: center;">Страницы с адресом {{ path }} не существует :(</p> 
-      <a class="link-opacity-50-hover text-decoration-none" href="{% url 'office:index' %}" style="font-size: 1.5em;">Вернуться на главную страницу проекта</a>
+      <p style="font-size: 2em; text-align: center;">
+        ОЙ!
+      </p> 
+      <p style="font-size: 1.5em; text-align: center;">
+        Страницы с адресом {{ path }} не существует :(
+      </p> 
+      <a class="link-opacity-50-hover text-decoration-none" href="{% url 'office:index' %}" style="font-size: 1.5em;">
+        Вернуться на главную страницу проекта
+      </a>
     </div>
   </div>
 </div>

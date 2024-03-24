@@ -21,6 +21,7 @@ from .validators import (CheckEnergyDistrictMixin,
                          get_filtered_energy_district,
                          validate_date_fields_post,
                          validate_fields_post_walking)
+from .utils import get_breadcrumb_url
 
 logger = logging.getLogger(__name__)
 
@@ -32,9 +33,28 @@ class HomePageView(TemplateView):
 class CabinetView(LoginRequiredMixin, TemplateView):
     template_name = 'office/cabinet.html'
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        context['breadcrumbs'] = {
+            'url': get_breadcrumb_url(self.request.path), 
+            'title_second': 'Кабинет',
+        }
+        return context
+
 
 class JournalsListView(LoginRequiredMixin, TemplateView):
     template_name = 'office/journals.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        context['breadcrumbs'] = {
+            'url': get_breadcrumb_url(self.request.path), 
+            'title_second': 'Кабинет',
+            'title_current': 'Журналы'
+        }
+        return context
 
 
 class DistrictsListView(LoginRequiredMixin, ListView):
@@ -44,6 +64,17 @@ class DistrictsListView(LoginRequiredMixin, ListView):
 
     def get_queryset(self):
         return District.objects.filter(energy_district=self.request.user.energy_district)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        context['breadcrumbs'] = {
+            'url': get_breadcrumb_url(self.request.path), 
+            'title_second': 'Кабинет',
+            'title_third': 'Журналы',
+            'title_current': 'Журнал обходов тепловых сетей'
+        }
+        return context
 
 
 class JournalWalkView(LoginRequiredMixin, CheckEnergyDistrictMixin, FilterView):
@@ -61,6 +92,14 @@ class JournalWalkView(LoginRequiredMixin, CheckEnergyDistrictMixin, FilterView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['district'] = get_object_or_404(District, slug=self.kwargs.get('slug_district'))
+
+        context['breadcrumbs'] = {
+            'url': get_breadcrumb_url(self.request.path), 
+            'title_second': 'Кабинет',
+            'title_third': 'Журналы',
+            'title_fourth': 'Журнал обходов тепловых сетей',
+            'title_current': context['district'].title
+        }
         return context
 
 
@@ -241,6 +280,11 @@ class BrigadesListView(LoginRequiredMixin, ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['energy_district'] = self.request.user.energy_district
+
+        context['breadcrumbs'] = {
+            'url': get_breadcrumb_url(self.request.path), 
+            'title_second': 'Бригады',
+        }
         return context
 
 
@@ -259,6 +303,11 @@ class EmployeesListView(LoginRequiredMixin, SingleTableMixin, FilterView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['energy_district'] = self.request.user.energy_district
+
+        context['breadcrumbs'] = {
+            'url': get_breadcrumb_url(self.request.path), 
+            'title_second': 'Сотрудники',
+        }
         return context
 
 
@@ -278,6 +327,13 @@ class JournalRepairWorkView(LoginRequiredMixin, FilterView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['energy_district'] = self.request.user.energy_district
+
+        context['breadcrumbs'] = {
+            'url': get_breadcrumb_url(self.request.path), 
+            'title_second': 'Кабинет',
+            'title_third': 'Журналы',
+            'title_current': 'Журнал ремонтных работ'
+        }
         return context
 
 
@@ -369,6 +425,13 @@ class JournalOrderView(LoginRequiredMixin, SingleTableMixin, FilterView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['energy_district'] = self.request.user.energy_district
+
+        context['breadcrumbs'] = {
+            'url': get_breadcrumb_url(self.request.path), 
+            'title_second': 'Кабинет',
+            'title_third': 'Журналы',
+            'title_current': 'Журнал учета работ по нарядам и распоряжениям'
+        }
         return context
 
 

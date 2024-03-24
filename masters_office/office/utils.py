@@ -59,3 +59,24 @@ class ResolutionBooleanWidget(BooleanWidget):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.choices = (("", _("All")), ("false", _("Yes")), ("true", _("No")))
+
+
+def get_breadcrumb_url(path):
+    """Получение хлебных крошек."""
+    path_list = list(filter(lambda x: x, path.split('/')))
+    second_level_href = ''
+    third_level_href = ''
+    fourth_level_href = ''
+
+    if len(path_list) > 0:
+        second_level_href = path_list[0]
+    if len(path_list) > 1:
+        third_level_href = path_list[1]
+    if len(path_list) > 2:
+        fourth_level_href = path_list[2]
+
+    return {
+        'second_level_href': second_level_href,
+        'third_level_href': f'{second_level_href}/{third_level_href}',
+        'fourth_level_href': f'{second_level_href}/{third_level_href}/{fourth_level_href}',
+    }

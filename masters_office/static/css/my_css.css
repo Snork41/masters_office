@@ -6,6 +6,7 @@
 body {
     background-color: rgb(255, 255, 255);
     padding-top: 4%;
+    overflow-y: scroll;   
 }
 
 /* tooltip */
@@ -136,10 +137,11 @@ body {
     font-weight: normal;
     text-decoration: none;
     color: #222;
+    transition: color .2s linear;
 }
 
 .breadcrumb a:hover {
-    font-weight: bold;
+    color: #c93e3e;
 }
 
 .next-button {
@@ -170,14 +172,36 @@ a.table-head-posts-order, span.table-head-posts-order {
 }
 
 /* Кнопки */
+
+.button {
+    display: flex;
+    width: 100%;
+    border-radius: 8px;
+    padding: 10px 20px;
+    color: black;
+    text-decoration: none;
+    border: 1px solid;
+    font-size: 1.25rem;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    background-color: #ffffff;
+    transition: color .4s, background-color .4s;
+}
+
+.button:hover {
+    color: #ffffff;
+    background-color: black;
+    border-color: black;
+}
+
 a.btn.btn-lg {
     margin-bottom: 0%;
 }
 
 a.btn.btn-lg:hover,
 a.btn.btn-back:hover {
-    font-size: 130%;
-    scale: 1.05;
+
 }
 
 /* Ошибки при заполнении формы поста обхода */
@@ -210,18 +234,19 @@ i {
 /* Карточки в index.html и cabinet.html */
 .card.card-in-cabinet:hover,
 .card.card-in-index:hover {
-    scale: 1.05;
     background-color: black;
 }
 
 .card.card-in-cabinet,
 .card.card-in-cabinet-disabled {
+    transition: background-color .3s linear;
     height: 290;
     border-color: #000000;
 }
 
 .card.card-in-index,
 .card.card-in-index-disabled {
+    transition: background-color .3s linear;
     border-color: #000000;
 }
 
