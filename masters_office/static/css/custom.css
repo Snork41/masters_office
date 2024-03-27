@@ -5,9 +5,29 @@
 
 body {
     background-color: rgb(255, 255, 255);
-    padding-top: 4%;
+    padding-top: 3.5rem;
     overflow-y: scroll;   
 }
+
+/* формы */
+.filter-form .form-select,
+.filter-form input {
+    border: none;
+}
+.filter-form .form-select,
+.filter-form input,
+.filter-form button,
+.filter-form a {
+    border-radius: 0;
+}
+
+.form-select:focus,
+.form-control:focus {
+    border-color: unset;
+    outline: 0;
+    box-shadow: 0 0 0 .25rem rgba(33,37,41,.25);
+}
+/* /формы */
 
 /* tooltip */
 [data-popper-placement="bottom"] {
@@ -321,13 +341,17 @@ i {
 }
 
 .row-table-posts-order {
-    padding: 3%;;
+    padding: 1rem;
 }
 .row-table-posts-order .card-header {
     text-align: center;
 }
 .row-table-posts-order .card-header .btn {
     font-size: larger;
+}
+.row-table-posts-order th{
+    text-align: center;
+    align-content: center;
 }
 /*<----- END journal_order.html ----->*/
 

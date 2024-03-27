@@ -502,6 +502,7 @@ class PostOrderEditView(LoginRequiredMixin, UpdateView):
         messages.success(
             self.request, mark_safe(
                 f'Запись № {self.object.number_post} ({self.object.order} № {self.object.number_order}) успешно изменена.'
+                f' <a href="edit-post-order/{self.object.id}/">Редактировать запись</a>'
             )
         )
         return reverse('office:journal_order')

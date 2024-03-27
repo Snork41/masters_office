@@ -48,35 +48,26 @@ class PersonalTable(tables.Table):
 class PostOrderTable(tables.Table):
     number_post = tables.Column(
         verbose_name='№',
-        attrs={'td': {'class': 'text-center', 'style': 'width: 10%'}}
+        attrs={'td': {'class': 'text-center'}}
     )
-    district = tables.Column(
-        attrs={'td': {'class': 'text-center', 'style': 'width: 10%'}}
-    )
+    district = tables.Column()
     order = tables.Column(
-        verbose_name='Оформление работ',
-        attrs={'td': {'class': 'text-center', 'style': 'width: 10%'}}
+        verbose_name='Оформление работ'
     )
     number_order = tables.Column(
-        verbose_name='Номер',
-        attrs={'td': {'class': 'text-center', 'style': 'width: 5%'}}
+        verbose_name='Номер'
     )
-    description = tables.Column(
-        attrs={'td': {'style': 'width: 100%'}}
-    )
+    description = tables.Column()
     date_start_working = tables.Column(
-        verbose_name='Работа начата',
-        attrs={'td': {'style': 'width: 10%'}}
+        verbose_name='Работа начата'
     )
     redact = tables.Column(
         verbose_name='Автор (изменить)',
         empty_values=(),
         orderable=False,
-        attrs={'td': {'class': 'text-center', 'style': 'width: 10%'}}
+        attrs={'td': {'class': 'text-center'}}
     )
-    is_deleted = tables.Column(
-        attrs={'td': {'class': 'text-center', 'style': 'width: 10%'}}
-    )
+    is_deleted = tables.Column()
 
     class Meta:
         model = PostOrder

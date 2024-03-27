@@ -17,8 +17,22 @@ $('.scroll-to-top').click(function(event) {
     $('html, body').animate({scrollTop: 0}, 300);
 });
 
-  
+
 // for bootstrap Toast show
 // const toastContent = document.querySelector('.toast');
 // const toast = new bootstrap.Toast(toastContent);
 // toast.show();
+
+
+// Кнопка "Пометить на удаление"
+document.addEventListener('DOMContentLoaded', function () {
+    let button = document.querySelector('.btn-delete-post');
+
+    button.addEventListener('click', function () {
+        if (button.textContent.toLowerCase().includes("пометить")) {
+            button.textContent = "Помечено на удаление";
+        } else {
+            button.textContent = "Пометить на удаление";
+        }
+    });
+});

@@ -23,7 +23,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django_extensions',
-    'debug_toolbar',
+    # 'debug_toolbar',
     'mptt',
     'django_bootstrap5',
     'django_filters',
@@ -46,7 +46,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'debug_toolbar.middleware.DebugToolbarMiddleware',
+    # 'debug_toolbar.middleware.DebugToolbarMiddleware',
 ]
 
 ROOT_URLCONF = 'masters_office.urls'
@@ -240,7 +240,7 @@ ORDER = [('Наряд', 'Наряд'), ('Распоряжение', 'Распо�
 # Количество записей (пагинация) на страницах журнала:
 AMOUNT_POSTS_WALK = 5  # обходов
 AMOUNT_POSTS_REPAIR_WORK = 10  # ремонтных работ
-AMOUNT_POSTS_ORDER = 50  # учета работ по нарядам и распоряжениям
+AMOUNT_POSTS_ORDER = 15  # учета работ по нарядам и распоряжениям
 
 
 # django-tables2 css

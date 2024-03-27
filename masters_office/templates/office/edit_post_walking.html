@@ -42,7 +42,9 @@
                 <div class="col-12">{{ form.transfer|as_crispy_field }}</div>
               <div class="col-6 d-grid gap-2">
                 {{ form.is_deleted }}
-                <label class="btn btn-outline-danger btn-lg" for="btn-check-deleted-outlined">Пометить на удаление</label>
+                <label class="btn btn-outline-danger btn-lg btn-delete-post" for="btn-check-deleted-outlined">
+                  {% if post.is_deleted %}Помечено на удаление{% else %}Пометить на удаление{% endif %}
+                </label>
               </div>
               <div class="col-6 d-grid gap-2 ">
                 <button type="submit" class="btn btn-outline-dark btn-lg">Сохранить</button>

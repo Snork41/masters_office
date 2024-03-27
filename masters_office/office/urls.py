@@ -30,7 +30,7 @@ urlpatterns = [
         'cabinet/journals/journal-order/create-post-order/',
         views.PostOrderCreateView.as_view(), name='create_post_order'),
     path(
-        'cabinet/journals/journal-repair/edit-post-order/<int:post_id>/',
+        'cabinet/journals/journal-order/edit-post-order/<int:post_id>/',
         views.PostOrderEditView.as_view(), name='edit_post_order'),
     path(
         'cabinet/journals/journal-walk/',
