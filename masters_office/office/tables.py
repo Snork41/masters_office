@@ -86,7 +86,7 @@ class PostOrderTable(tables.Table):
         )
         attrs = {
             'class': 'table table-bordered table-hover',
-            'thead': {'class': 'table-light sticky-top sticky-offset'}
+            'thead': {'class': 'table-light sticky-top sticky-offset-table'}
         }
 
     def render_redact(self, value, *args, **kwargs):

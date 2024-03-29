@@ -93,6 +93,7 @@ class JournalWalkView(LoginRequiredMixin, CheckEnergyDistrictMixin, FilterView):
         context = super().get_context_data(**kwargs)
         context['district'] = get_object_or_404(District, slug=self.kwargs.get('slug_district'))
 
+        context['title'] = 'Журнал обходов тепловых сетей'
         context['breadcrumbs'] = {
             'url': get_breadcrumb_url(self.request.path), 
             'title_second': 'Кабинет',
@@ -426,6 +427,7 @@ class JournalOrderView(LoginRequiredMixin, SingleTableMixin, FilterView):
         context = super().get_context_data(**kwargs)
         context['energy_district'] = self.request.user.energy_district
 
+        context['title'] = 'Журнал учета работ по нарядам и распоряжениям'
         context['breadcrumbs'] = {
             'url': get_breadcrumb_url(self.request.path), 
             'title_second': 'Кабинет',

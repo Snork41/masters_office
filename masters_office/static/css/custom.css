@@ -2,12 +2,21 @@
     font-family: 'Montserrat';
     src: url('/static/fonts/Montserrat/Montserrat-Regular.ttf') format('truetype');
 }
-
+/*<-------- Общие -------->*/
 body {
     background-color: rgb(255, 255, 255);
     padding-top: 3.5rem;
-    overflow-y: scroll;   
+    overflow-y: auto;   
 }
+
+.btn-dark {
+    border-radius: 0;
+}
+
+.form-floating {
+    margin-bottom: 0.5rem !important;
+}
+/*<-------- /Общие -------->*/
 
 /* формы */
 .filter-form .form-select,
@@ -16,8 +25,7 @@ body {
 }
 .filter-form .form-select,
 .filter-form input,
-.filter-form button,
-.filter-form a {
+.filter-form button {
     border-radius: 0;
 }
 
@@ -82,10 +90,10 @@ body {
     height: 30px;
     margin-right: 20px;
 }
-
 .img-bell img:hover {
     filter: contrast(50%);
 }
+/* /Колокольчик уведомлений */
 
 /* Уведомления на колокольчике */
 .peending {
@@ -101,22 +109,22 @@ body {
     margin-left: 10px;
     background-color: red;
 }
+/* /Уведомления на колокольчике */
 
 /* Бургер кнопка */
 .navbar-toggler {
     background-color: transparent;
     color: transparent;
 }
-
 .navbar-toggler-icon {
     background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba(255, 215, 0, 1.00)' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
 }
-
 .navbar-toggler:focus,
 .navbar-toggler:hover {
     background-color: none;
     border-color: transparent;
 }
+/* /Бургер кнопка */
 
 .post-detail {
     font-size: 1.5em;
@@ -127,17 +135,25 @@ body {
     margin-top: 5em;
 }
 
+/* Пагинация */
+.pagination .page-link {
+    border-radius: 0 !important;
+}
+.pagination .page-item:first-child .page-link {
+    border-radius: 0 !important;
+}
+.pagination .page-item:last-child .page-link {
+    border-radius: 0 !important;
+}
 .pagination .page-item .page-link {
     color: black;
     border-color: rgb(126, 126, 126);
 }
-
 .pagination .page-item.active .page-link {
     background: rgb(0, 0, 0);
     color: rgb(255, 255, 255);
     border-color: rgb(5, 5, 5);
 }
-
 .pagination li a:focus,
 .pagination li a:hover,
 .pagination li span:focus,
@@ -147,22 +163,23 @@ body {
     border-color: #000000;
     box-shadow: 0 0 0 0.1rem rgba(0, 0, 0, 0);
 }
+/* /Пагинация */
 
+/* Хлебыне крошки */
 .breadcrumb li {
     padding-top: 0.5em;
     padding-left: 0.5em;
 }
-
 .breadcrumb a {
     font-weight: normal;
     text-decoration: none;
     color: #222;
     transition: color .2s linear;
 }
-
 .breadcrumb a:hover {
     color: #c93e3e;
 }
+/* /Хлебыне крошки */
 
 .next-button {
     float: right;
@@ -176,14 +193,13 @@ body {
 .row-table-employees {
     padding: 3%;;
 }
-
 a.table-head-employees, span.table-head-employees {
     font-size: larger;
     text-decoration: none;
     color: #000000;
     text-transform: uppercase;
 }
-
+/* /Таблица сотрудников */
 
 a.table-head-posts-order, span.table-head-posts-order {
     font-size: larger;
@@ -192,7 +208,6 @@ a.table-head-posts-order, span.table-head-posts-order {
 }
 
 /* Кнопки */
-
 .button {
     display: flex;
     width: 100%;
@@ -208,21 +223,15 @@ a.table-head-posts-order, span.table-head-posts-order {
     background-color: #ffffff;
     transition: color .4s, background-color .4s;
 }
-
 .button:hover {
     color: #ffffff;
     background-color: black;
     border-color: black;
 }
-
 a.btn.btn-lg {
     margin-bottom: 0%;
 }
-
-a.btn.btn-lg:hover,
-a.btn.btn-back:hover {
-
-}
+/* /Кнопки */
 
 /* Ошибки при заполнении формы поста обхода */
 .form-error-planned, .form-error-members {
@@ -230,7 +239,7 @@ a.btn.btn-back:hover {
     font-weight: bold;
     display: block;
 }
-
+/* /Ошибки при заполнении формы поста обхода */
 
 /* Стрелка для возврата к верху страницы в журналах */
 .scroll-to-top {
@@ -243,6 +252,7 @@ a.btn.btn-back:hover {
     width: 50px;
     height: 50px;
 }
+/* /Стрелка для возврата к верху страницы в журналах */
 
 /* Иконки контактов */
 i {
@@ -250,41 +260,38 @@ i {
     padding-left: 1em;
     padding-right: 1em;
 }
+/* /Иконки контактов */
 
 /* Карточки в index.html и cabinet.html */
 .card.card-in-cabinet:hover,
 .card.card-in-index:hover {
     background-color: black;
 }
-
 .card.card-in-cabinet,
 .card.card-in-cabinet-disabled {
     transition: background-color .3s linear;
     height: 290;
     border-color: #000000;
 }
-
 .card.card-in-index,
 .card.card-in-index-disabled {
     transition: background-color .3s linear;
     border-color: #000000;
 }
-
 .card-in-cabinet:hover img,
 .card-in-index:hover img {
     filter: invert(100%);
 }
-
 .card-in-cabinet:hover h4,
 .card-in-index:hover h4 {
     color: #ffffff;;
 }
-
 .card.card-in-cabinet-disabled:hover,
 .card.card-in-index-disabled:hover {
     scale: 1.05;
     background-color: rgb(207, 207, 207);
 }
+/* /Карточки в index.html и cabinet.html */
 
 
 /*<-------- brigades.html -------->*/
@@ -297,21 +304,7 @@ i {
 /*<-------- journal_walk.html -------->*/
 /* Прилипание окна фильтрации в журнале обходов */
 .sticky-offset {
-    top: 100px;
-}
-
-.filter-journal-walk {
-    padding-left: 2em;
-}
-.filter-journal-walk .card-header {
-    text-align: center;
-}
-.filter-journal-walk .card-header .btn {
-    font-size: larger;
-}
-
-.filter-journal-walk form .btn-outline-dark {
-    font-size: 15px;
+    top: 10%;
 }
 
 .card-post-walk-in-list {
@@ -329,17 +322,10 @@ i {
     width: 50%;
 }
 
-.section-journal_walk p {
-    color: red;
-}
 /*<----- END journal_walk.html ----->*/
 
 
 /*<-------- journal_order.html -------->*/
-.section-journal_order .no-match {
-    color: red;
-}
-
 .row-table-posts-order {
     padding: 1rem;
 }
@@ -352,6 +338,10 @@ i {
 .row-table-posts-order th{
     text-align: center;
     align-content: center;
+}
+
+.sticky-offset-table {
+    top: 8%;
 }
 /*<----- END journal_order.html ----->*/
 

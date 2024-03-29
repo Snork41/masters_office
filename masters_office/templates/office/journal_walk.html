@@ -1,118 +1,105 @@
 {% extends 'base.html' %}
-{% load django_bootstrap5 %}
+
 {% load static %}
 
-{% block title %} Журнал обходов тепловых сетей {% endblock title %}
+{% block title %} {{ title }} {% endblock title %}
 
 {% block content %}
 
-{% include '../includes/breadcrumb.html' with second_level=breadcrumbs.title_second second_level_href=breadcrumbs.url.second_level_href third_level=breadcrumbs.title_third third_level_href=breadcrumbs.url.third_level_href fourth_level=breadcrumbs.title_fourth fourth_level_href=breadcrumbs.url.fourth_level_href fifth_level=breadcrumbs.title_current %}
-
-{% include 'office/includes/messages.html' %}
+{% url 'office:journal_walk' district.slug as reset_filter %}
+{% url 'office:create_post_walking' district.slug as create__new_post_url %}
 
 <section class="section-journal_walk">
-  <h1 class="text-center fw-light">Журнал обходов тепловых сетей</h1>
-  <h2 class="text-center fw-light">{{ district }}</h2>
-  <br>
-  <div class="d-grid gap-2 col-2 mx-auto">
-    <a class="btn btn-outline-dark btn-lg fs-3" href="{% url 'office:create_post_walking' district.slug %}">Новая запись</a>
-    <a class="btn btn-outline-dark fs-5 btn-back" href="{% url 'office:districts' %}">Назад к районам</a>
-  </div>
-  {% if page_obj %}
+	<div class="row">
 
-  <div class="row row-cols-md-2">
-    <!-- Окно фильтрации -->
-    {% if filter %}
-      <div class="col-lg-2 col-md-8 pt-3 filter-journal-walk">
-        <div class="card shadow sticky-top sticky-offset">
-          <div class="card-header">
-            <span class="btn">ФИЛЬТРАЦИЯ</span>
-          </div>
-          <div class="card-body">
-            <form action="" method="get" class="form form-floating">
-              {% bootstrap_form filter.form layout="floating" %}
-              <div class="text-center">
-                {% bootstrap_button button_type="submit" button_class="btn-outline-dark col-6 m-2" content="Применить" %}
-                <a href="{% url 'office:journal_walk' district.slug %}" class="btn btn-outline-dark col-6" role="button">Сбросить</a>
-              </div>
-            </form>
-          </div>
-        </div>
-      </div>
-    {% endif %}
+		{% include 'office/includes/filter-sidebar.html' with create__new_post_url=create__new_post_url reset_filter=reset_filter %}
 
-    <!-- Список записей -->
-      <div class="col-lg-8 col-md-12">
-          {% include 'includes/paginator.html' %}
-            {% for post in page_obj %}
-            <div class="card card-post-walk-in-list shadow border-0">
-              <div class="card-body fs-4">
-                <table class="table table-hover">
-                  <caption>Автор: {{ post.author.get_full_name }} ({{ post.author }})</caption>
-                  <thead>
-                    {% if post.is_deleted %}
-                    <span class="border border-danger">ЗАПИСЬ ПОМЕЧЕНА НА УДАЛЕНИЕ</span>
-                    {% endif %}
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td class="fs-5">Номер записи:</td>
-                      <td class="fs-4">{{ post.number_post }}</td>
-                    </tr>
-                    <tr>
-                      <td class="fs-5">Дата обхода:</td>
-                      <td class="fs-4">{{ post.walk_date|date:"d.m.Y" }}</td>
-                    </tr>
-                    <tr>
-                      <td class="fs-5">Причина обхода:</td>
-                      <td class="fs-5">{% if post.planned %} Плановый {% endif %}{% if post.not_planned %} Внеплановый {% endif %}</td>
-                    </tr>
-                    <tr>
-                      <td class="fs-5">Ф.И.О. обходчиков:</td>
-                      <td>
-                        <ol class="list-group list-group-flush">
-                          {% for member in post.members.all %}
-                            <li class="list-group-item fs-5">{{ member }}</li>
-                          {% endfor %}    
-                        </ol>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td class="fs-5">Участок теплотрассы, задание мастера:</td>
-                      <td class="fs-5">{{ post.task|truncatechars:15 }}</td>
-                    </tr>
-                    <tr>
-                      <td class="fs-5">Замечания, выявленные при обходе:</td>
-                      <td class="fs-5">{{ post.text|truncatechars:15 }}</td>
-                    </tr>
-                  </tbody>            
-                </table>
-                <div class="btn-group" role="group">
-                  <a type="button d-inline" class="btn btn-light btn-outline-dark btn-md" href="{{ post.get_absolute_url }}">Подробная информация</a>
-                  {% if post.author.id == user.id %}
-                  <a type="button" class="btn btn-light btn-outline-dark btn-md" href="{% url 'office:edit_post_walking' district.slug post.id %}">Редактировать запись</a>
-                  {% else %}
-                  <span class="border border-black border-start-0 rounded-end" tabindex="0" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-title="Вы не автор записи!">
-                  <button type="button" class="btn btn-light btn-outline-dark btn-md border-0 d-inline" disabled>Редактировать запись</button>
-                  </span>
-                  {% endif %}
-                </div>
-              </div>
-            </div>
-            {% endfor %}
-  {% elif request.GET %}
-            <p class="text-center fs-1">Совпадений не найдено.</p>
-            <div class="d-grid gap-2 col-2 mx-auto">
-              <a class="btn btn-outline-dark btn-lg fs-3" href="{% url 'office:journal_walk' district.slug %}">Назад</a>
-            </div>
-            {% else %}
-            <p class="text-center fs-1">Записей нет.</p>
-  {% endif %}
-    </div>
-  </div>
+		<div class="col-10">
+			{% include '../includes/breadcrumb.html' with inside_journal=True second_level=breadcrumbs.title_second second_level_href=breadcrumbs.url.second_level_href third_level=breadcrumbs.title_third third_level_href=breadcrumbs.url.third_level_href fourth_level=breadcrumbs.title_fourth fourth_level_href=breadcrumbs.url.fourth_level_href fifth_level=breadcrumbs.title_current %}
 
-    <!-- Стрелка возврата вверх -->
-  <a href="#" class="scroll-to-top"><img src="{% static 'img/row_up.png' %}" alt="Scroll To Top"></a>
+			{% include 'office/includes/messages.html' %}
+
+			<div class="my-4">
+				<h1 class="text-center fw-light">
+					{{ title }}
+				</h1>
+				<h2 class="text-center fw-light">
+					{{ district }}
+				</h2>
+			</div>
+
+			{% if page_obj %}				
+				{% for post in page_obj %}
+					<div class="card card-post-walk-in-list shadow border-0">
+						<div class="card-body fs-4">
+							<table class="table table-hover">
+								<caption>Автор: {{ post.author.get_full_name }} ({{ post.author }})</caption>
+								<thead>
+									{% if post.is_deleted %}
+										<span class="border border-danger">ЗАПИСЬ ПОМЕЧЕНА НА УДАЛЕНИЕ</span>
+									{% endif %}
+								</thead>
+								<tbody>
+									<tr>
+										<td class="fs-5">Номер записи:</td>
+										<td class="fs-4">{{ post.number_post }}</td>
+									</tr>
+									<tr>
+										<td class="fs-5">Дата обхода:</td>
+										<td class="fs-4">{{ post.walk_date|date:"d.m.Y" }}</td>
+									</tr>
+									<tr>
+										<td class="fs-5">Причина обхода:</td>
+										<td class="fs-5">{% if post.planned %} Плановый {% endif %}{% if post.not_planned %} Внеплановый {% endif %}</td>
+									</tr>
+									<tr>
+										<td class="fs-5">Ф.И.О. обходчиков:</td>
+										<td>
+											<ol class="list-group list-group-flush">
+												{% for member in post.members.all %}
+													<li class="list-group-item fs-5">{{ member }}</li>
+												{% endfor %}    
+											</ol>
+										</td>
+									</tr>
+									<tr>
+										<td class="fs-5">Участок теплотрассы, задание мастера:</td>
+										<td class="fs-5">{{ post.task|truncatechars:15 }}</td>
+									</tr>
+									<tr>
+										<td class="fs-5">Замечания, выявленные при обходе:</td>
+										<td class="fs-5">{{ post.text|truncatechars:15 }}</td>
+									</tr>
+								</tbody>            
+							</table>
+							<div class="btn-group" role="group">
+								<a type="button d-inline" class="btn btn-light btn-outline-dark btn-md" href="{{ post.get_absolute_url }}">Подробная информация</a>
+								{% if post.author.id == user.id %}
+									<a type="button" class="btn btn-light btn-outline-dark btn-md" href="{% url 'office:edit_post_walking' district.slug post.id %}">Редактировать запись</a>
+								{% else %}
+									<span class="border border-black border-start-0 rounded-end" tabindex="0" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-title="Вы не автор записи!">
+										<button type="button" class="btn btn-light btn-outline-dark btn-md border-0 d-inline" disabled>Редактировать запись</button>
+									</span>
+								{% endif %}
+							</div>
+						</div>
+					</div>
+				{% endfor %}
+			{% elif request.GET %}
+				<p class="text-center fs-1">
+					Совпадений не найдено.
+				</p>
+			{% else %}
+				<p class="text-center fs-1">
+					Записей нет.
+				</p>
+			{% endif %}
+
+		<!-- Стрелка возврата вверх -->
+		<a href="#" class="scroll-to-top"><img src="{% static 'img/row_up.png' %}" alt="Scroll To Top"></a>
+	</div>
+	
+	</div><!-- row -->
 </section>
 
 {% endblock content %}

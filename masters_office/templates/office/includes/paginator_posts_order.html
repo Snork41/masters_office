@@ -1,0 +1,37 @@
+{% load django_tables2 %}
+{% load i18n %}
+{% load static %}
+
+{% if table.page and table.paginator.num_pages > 1 %}
+
+<div class="previous w-50 text-center btn btn-dark {% if not table.page.has_previous %}disabled{% endif %}">
+    <a href="{% if table.page.has_previous %}{% querystring table.prefixed_page_field=table.page.previous_page_number %}{% endif %}" class="page-link">
+        <span aria-hidden="true">&laquo;</span>
+        предыдущая
+    </a>
+</div>
+
+<nav aria-label="Table navigation" class="w-100">
+    <ul class="pagination justify-content-center my-2">
+    {% if table.page.has_previous or table.page.has_next %}
+
+    {% for p in table.page|table_page_range:table.paginator %}
+        <li class="page-item{% if table.page.number == p %} active{% endif %}">
+            <a class="page-link" {% if p != '...' %}href="{% querystring table.prefixed_page_field=p %}"{% endif %}>
+                {{ p }}
+            </a>
+        </li>
+    {% endfor %}
+
+    {% endif %}
+    </ul>
+</nav>
+
+<div class="next w-50 text-center btn btn-dark {% if not table.page.has_next %}disabled{% endif %}">
+    <a href="{% if table.page.has_next %}{% querystring table.prefixed_page_field=table.page.next_page_number %}{% endif %}" class="page-link">
+        следующая
+        <span aria-hidden="true">&raquo;</span>
+    </a>
+</div>
+
+{% endif %}

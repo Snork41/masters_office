@@ -54,11 +54,11 @@ def filter_author(request):
     return User.objects.filter(energy_district=request.user.energy_district)
 
 
-class ResolutionBooleanWidget(BooleanWidget):
-    """Виджет для фильтрации резолюций записей обходов тепловых сетей."""
+class PostBooleanWidget(BooleanWidget):
+    """Виджет для фильтрации булевых полей."""
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.choices = (("", _("All")), ("false", _("Yes")), ("true", _("No")))
+        self.choices = (("", _("All")), ("false", _("No")), ("true", _("Yes")))
 
 
 def get_breadcrumb_url(path):

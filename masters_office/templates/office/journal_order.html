@@ -1,49 +1,31 @@
 {% extends 'base.html' %}
 {% load static %}
 {% load render_table from django_tables2 %}
-{% load django_bootstrap5 %}
-{% block title %} Журнал учета работ по нарядам и распоряжениям {% endblock title %}
+
+{% block title %} {{ title }} {% endblock title %}
 
 {% block content %}
 
+{% url 'office:journal_order' as reset_filter %}
+{% url 'office:create_post_order' as create__new_post_url %}
+
 <section class="section-journal_order">
 	<div class="row">
-		<div class="col-2 ps-4 pe-3" style="background-color: #c6c7c8;">
-			<div class="sticky-top sticky-offset">
-				{% if filter %}
-					<form action="" method="get" class="form form-floating filter-form">
-						{% bootstrap_form filter.form layout="floating" %}
-						<div class="d-flex justify-content-around pb-5 gap-2">
-							<button type="submit" class="btn btn-dark w-100">Применить</button>
-							<a href="{% url 'office:journal_order' %}" class="btn btn-dark w-100" role="button">Сбросить</a>
-						</div>
-					</form>
-				{% endif %}
-			</div>
-		</div>
+
+		{% include 'office/includes/filter-sidebar.html' with journal_order=True create__new_post_url=create__new_post_url reset_filter=reset_filter %}
 
 		<div class="col-10">
 			{% include '../includes/breadcrumb.html' with inside_journal=True second_level=breadcrumbs.title_second second_level_href=breadcrumbs.url.second_level_href third_level=breadcrumbs.title_third third_level_href=breadcrumbs.url.third_level_href fourth_level=breadcrumbs.title_current %}
 			
 			{% include 'office/includes/messages.html' %}
 
-			<h1 class="text-center fw-light">
-				Журнал учета работ по нарядам и распоряжениям
-			</h1>
-			<h2 class="text-center fw-light">
-				{{ energy_district }}
-			</h2>
-
-			<div class="d-grid gap-2 col-2 mx-auto pt-3">
-				{% if not posts %}
-					{% if request.GET %}
-						<p class="text-center fs-2 no-match">Совпадений не найдено.</p>
-					{% else %}
-						<p class="text-center fs-1">Записей нет.</p>
-					{% endif %}
-				{% endif %}
-				<a class="btn btn-outline-dark btn-lg fs-3" href="{% url 'office:create_post_order' %}">Новая запись</a>
-				<a class="btn btn-outline-dark fs-5 btn-back" href="{% url 'office:journals' %}">Назад к журналам</a>
+			<div class="my-4">
+				<h1 class="text-center fw-light">
+					{{ title }}
+				</h1>
+				<h2 class="text-center fw-light">
+					{{ energy_district }}
+				</h2>
 			</div>
 
 			<div class="row row-table-posts-order">
@@ -51,6 +33,12 @@
 					{% render_table table %}
 				</div>
 			</div>
+
+			{% if not posts and request.GET %}
+				<p class="text-center fs-2">
+					Совпадений не найдено.
+				</p>
+			{% endif %}
 
 			<!-- Стрелка возврата вверх -->
 			<a href="#" class="scroll-to-top"><img src="{% static 'img/row_up.png' %}" alt="Scroll To Top"></a>

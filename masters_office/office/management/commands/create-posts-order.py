@@ -22,12 +22,16 @@ class Command(BaseCommand):
             last_exist_post = PostOrder.objects.order_by('-number_post').first()
             district = District.objects.first()
             foreman = Personal.objects.filter(foreman=True).first()
-            order = last_exist_post.order
-            number_order = last_exist_post.number_order
+            if last_exist_post:
+                order = last_exist_post.order
+                number_order = last_exist_post.number_order
+            else:
+                order = 'Наряд'
+                number_order = 0
             increment = 1
             author=User.objects.first()
     
-            for new_post in range(last_exist_post.number_post + 1, last_exist_post.number_post + 1 + count):
+            for new_post in range(number_order + 1, number_order + 1 + count):
                 records.append(
                     PostOrder(
                         number_post=new_post,

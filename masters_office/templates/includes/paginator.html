@@ -1,40 +1,37 @@
 {% load filter_pagination_posts %}
+{% load django_tables2 %}
+{% load static %}
 
-<nav aria-label="Page navigation" class="my-3" >
-{% if page_obj.has_other_pages %}
+{% if page_obj and page_obj.paginator.num_pages > 1 %}
 
-  <ul class="pagination justify-content-start flex-wrap">
-    {% if page_obj.has_previous %}
-      <li class="page-item"><a class="page-link" href="?{% get_pagination_with_f page=1 %}">Первая</a></li>
-      <li class="page-item">
-        <a class="page-link" href="?{% get_pagination_with_f page=page_obj.previous_page_number %}">
-          <
-        </a>
-      </li>
-    {% endif %}
-    {% for i in page_obj.paginator.page_range %}
-        {% if page_obj.number == i %}
-          <li class="page-item active">
-            <span class="page-link">{{ i }}</span>
-          </li>
-        {% elif i >= page_obj.number|add:-3 and i <= page_obj.number|add:3 %}
-          <li class="page-item">
-            <a class="page-link" href="?{% get_pagination_with_f page=i %}">{{ i }}</a>
-          </li>
-        {% endif %}
-    {% endfor %}
-    {% if page_obj.has_next %}
-      <li class="page-item">
-        <a class="page-link" href="?{% get_pagination_with_f page=page_obj.next_page_number %}">
-        >
-        </a>
-      </li>
-      <li class="page-item">
-        <a class="page-link" href="?{% get_pagination_with_f page=page_obj.paginator.num_pages %}">
-          Последняя
-        </a>
-      </li>
-    {% endif %}    
-  </ul>
+<div class="w-50 text-center btn btn-dark {% if not page_obj.has_previous %}disabled{% endif %}">
+	<a href="{% if page_obj.has_previous %}?{% get_pagination_with_f page=page_obj.previous_page_number %}{% endif %}" class="page-link">
+		<span aria-hidden="true">&laquo;</span>
+		предыдущая
+	</a>
+</div>
+
+<nav aria-label="Page navigation" class="w-100" >
+	<ul class="pagination justify-content-center my-2">
+	{% if page_obj.has_previous or page_obj.has_next %}
+
+	{% for p in page_obj|table_page_range:page_obj.paginator %}
+		<li class="page-item{% if page_obj.number == p %} active{% endif %}">
+			<a class="page-link" {% if p != '...' %}href="?{% get_pagination_with_f page=p %}"{% endif %}>
+				{{ p }}
+			</a>
+		</li>
+	{% endfor %}
+
+	{% endif %}
+	</ul>
 </nav>
+
+<div class="w-50 text-center btn btn-dark {% if not page_obj.has_next %}disabled{% endif %}">
+	<a href="{% if page_obj.has_next %}?{% get_pagination_with_f page=page_obj.next_page_number %}{% endif %}" class="page-link">
+		следующая
+		<span aria-hidden="true">&raquo;</span>
+	</a>
+</div>
+
 {% endif %}

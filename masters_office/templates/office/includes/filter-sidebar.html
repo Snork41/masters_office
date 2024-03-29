@@ -1,0 +1,30 @@
+{% load django_bootstrap5 %}
+
+<div class="col-2 ps-4 pe-3" style="background-color: #c6c7c8; padding-top: 20px;">
+    <div class="sticky-top sticky-offset">
+        {% if filter %}
+            <form action="" method="get" class="form form-floating filter-form">
+                {% bootstrap_form filter.form layout="floating" %}
+                <div class="d-flex justify-content-around mb-4 gap-2">
+                    <button type="submit" class="btn btn-dark w-100">Применить</button>
+                    <a href="{{ reset_filter }}" class="btn btn-dark w-100" role="button">Сбросить</a>
+                </div>
+            </form>
+        {% endif %}
+        <div class="d-flex justify-content-around flex-wrap mb-4 gap-2">
+            <a class="btn btn-dark fs-4 w-100" href="{{ create__new_post_url }}">Новая запись</a>
+            <a class="btn btn-dark fs-5 w-100" href="{% url 'office:journals' %}">Назад к журналам</a>
+        </div>
+
+        <!-- пагинация из django-tables2 -->
+        <div class="d-flex flex-wrap justify-content-center pb-4">
+            {% if journal_order %}
+                {% include 'office/includes/paginator_posts_order.html' %}
+            {% else %}
+                {% include 'includes/paginator.html' %}
+            {% endif %}
+        </div>
+
+
+    </div>
+</div>
