@@ -23,28 +23,31 @@ class PostWalkingFilter(FilterSet):
     author = ModelChoiceFilter(field_name='author', queryset=filter_author)
     planned = BooleanFilter(
         field_name='planned',
-        lookup_expr='isnull',
         label='Плановый',
         widget=PostBooleanWidget
     )
     not_planned = BooleanFilter(
         field_name='not_planned',
-        lookup_expr='isnull',
         label='Внеплановый',
         widget=PostBooleanWidget
     )
     resolution = BooleanFilter(
         field_name='resolution',
-        lookup_expr='isnull',
+        method='filter_resolution',
         label='С резолюцией',
         widget=PostBooleanWidget
     )
     is_deleted = BooleanFilter(
         field_name='is_deleted',
-        lookup_expr='isnull',
         label='Удаленная запись',
         widget=PostBooleanWidget
     )
+
+    def filter_resolution(self, queryset, name, value):
+        """Фильтрует выбор записи в зависимости от наличия резолюции."""
+        if value:
+            return PostWalking.objects.filter(resolution__isnull=False)
+        return PostWalking.objects.filter(resolution__isnull=True)
 
     class Meta:
         model = PostWalking
@@ -82,12 +85,7 @@ class PostOrderFilter(FilterSet):
     district = ModelChoiceFilter(field_name='district', queryset=filter_district)
     foreman = ModelChoiceFilter(field_name='foreman', queryset=filter_foreman)
     author = ModelChoiceFilter(field_name='author', queryset=filter_author)
-    is_deleted = BooleanFilter(
-        field_name='is_deleted',
-        lookup_expr='isnull',
-        label='Удаленная запись',
-        widget=PostBooleanWidget
-    )
+    is_deleted = BooleanFilter(field_name='is_deleted', label='Удаленная запись', widget=PostBooleanWidget)
 
     class Meta:
         model = PostOrder
