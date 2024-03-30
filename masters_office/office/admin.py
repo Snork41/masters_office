@@ -2,9 +2,10 @@ from django.contrib import admin
 from django.contrib import messages
 from django.shortcuts import get_object_or_404
 
+from simple_history.admin import SimpleHistoryAdmin
+
 from .forms import PostWalkingForm, PostRepairWorkForm, PostOrderForm
-from .models import (PostWalking,
-                     Personal, District, Position,
+from .models import (PostWalking, Personal, District, Position,
                      EnergyDistrict, Brigade, Resolution, PostRepairWork, PostOrder, StaticBlock)
 
 
@@ -37,7 +38,7 @@ class HasResolutionFilter(admin.SimpleListFilter):
 
 
 @admin.register(EnergyDistrict)
-class EnergyDistrictAdmin(admin.ModelAdmin):
+class EnergyDistrictAdmin(SimpleHistoryAdmin):
     list_display = (
         'id',
         'title',
@@ -45,7 +46,7 @@ class EnergyDistrictAdmin(admin.ModelAdmin):
 
 
 @admin.register(PostOrder)
-class PostOrderAdmin(admin.ModelAdmin):
+class PostOrderAdmin(SimpleHistoryAdmin):
     form = PostOrderForm
     list_display = (
         'number_post',
@@ -80,7 +81,7 @@ class PostOrderAdmin(admin.ModelAdmin):
 
 
 @admin.register(PostRepairWork)
-class PostRepairWorkAdmin(admin.ModelAdmin):
+class PostRepairWorkAdmin(SimpleHistoryAdmin):
     form = PostRepairWorkForm
     list_display = (
         'number_post',
@@ -123,7 +124,7 @@ class ResolutionInline(admin.TabularInline):
 
 
 @admin.register(PostWalking)
-class PostWalkingAdmin(admin.ModelAdmin):
+class PostWalkingAdmin(SimpleHistoryAdmin):
     form = PostWalkingForm
     inlines = (ResolutionInline,)
     list_display = (
@@ -174,7 +175,7 @@ class PostWalkingAdmin(admin.ModelAdmin):
 
 
 @admin.register(Brigade)
-class BrigadeAdmin(admin.ModelAdmin):
+class BrigadeAdmin(SimpleHistoryAdmin):
     list_display = (
         'number',
         'master',
@@ -189,7 +190,7 @@ class BrigadeAdmin(admin.ModelAdmin):
 
 
 @admin.register(District)
-class DistrictAdmin(admin.ModelAdmin):
+class DistrictAdmin(SimpleHistoryAdmin):
     list_display = (
         'pk',
         'title',
@@ -204,7 +205,7 @@ class DistrictAdmin(admin.ModelAdmin):
 
 
 @admin.register(Personal)
-class PersonalAdmin(admin.ModelAdmin):
+class PersonalAdmin(SimpleHistoryAdmin):
     list_display = (
         'tab_number',
         'last_name',
@@ -221,7 +222,7 @@ class PersonalAdmin(admin.ModelAdmin):
 
 
 @admin.register(Position)
-class PositionAdmin(admin.ModelAdmin):
+class PositionAdmin(SimpleHistoryAdmin):
     list_display = (
         'name_position',
         'walker',
@@ -232,7 +233,7 @@ class PositionAdmin(admin.ModelAdmin):
 
 
 @admin.register(Resolution)
-class ResolutionAdmin(admin.ModelAdmin):
+class ResolutionAdmin(SimpleHistoryAdmin):
     list_display = (
         'id',
         'author',

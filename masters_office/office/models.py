@@ -3,7 +3,9 @@ from django.contrib import admin
 from django.contrib.auth import get_user_model
 from django.db import models
 from django.urls import reverse
+
 from django_ckeditor_5.fields import CKEditor5Field
+from simple_history.models import HistoricalRecords
 
 User = get_user_model()
 
@@ -28,6 +30,8 @@ class EnergyDistrict(models.Model):
         max_length=35,
         unique=True
     )
+
+    history = HistoricalRecords()
 
     class Meta:
         verbose_name = 'Энергорайон'
@@ -60,6 +64,8 @@ class District(models.Model):
         verbose_name='Энергорайон'
     )
 
+    history = HistoricalRecords()
+
     class Meta:
         verbose_name = 'Источник тепла'
         verbose_name_plural = 'Источники тепла'
@@ -78,6 +84,8 @@ class Position(models.Model):
     walker = models.BooleanField(
         verbose_name='Может участвовать в обходах'
     )
+
+    history = HistoricalRecords()
 
     class Meta:
         verbose_name = 'Должность'
@@ -132,6 +140,8 @@ class Personal(models.Model):
         default=False
     )
 
+    history = HistoricalRecords()
+
     class Meta:
         verbose_name = 'Работник'
         verbose_name_plural = 'Работники'
@@ -167,6 +177,8 @@ class Brigade(models.Model):
         related_name='brigades',
         verbose_name='Члены бригады'
     )
+
+    history = HistoricalRecords()
 
     class Meta:
         verbose_name = 'Бригада'
@@ -258,6 +270,8 @@ class PostWalking(models.Model):
         verbose_name='Редактировано'
     )
 
+    history = HistoricalRecords()
+
     class Meta:
         verbose_name = 'Запись в журнале обхода'
         verbose_name_plural = 'Записи в журналах обходов'
@@ -310,6 +324,8 @@ class Resolution(models.Model):
         verbose_name='Резолюция просмотрена',
         default=False
     )
+
+    history = HistoricalRecords()
 
     class Meta:
         verbose_name = 'Резолюция'
@@ -398,6 +414,8 @@ class PostRepairWork(models.Model):
         default=False,
         verbose_name='Редактировано'
     )
+
+    history = HistoricalRecords()
 
     class Meta:
         verbose_name = 'Запись в журнале ремонтных работ'
@@ -488,6 +506,8 @@ class PostOrder(models.Model):
         default=False,
         verbose_name='Удаленная запись'
     )
+
+    history = HistoricalRecords()
 
     class Meta:
         verbose_name = 'Запись в журнале учета работ по нарядам и распоряжениям'
