@@ -6,7 +6,8 @@
 body {
     background-color: rgb(255, 255, 255);
     padding-top: 3.5rem;
-    overflow-y: auto;   
+    overflow-y: auto;
+    overflow-x: hidden;   
 }
 
 .btn-dark {
@@ -201,10 +202,16 @@ a.table-head-employees, span.table-head-employees {
 }
 /* /Таблица сотрудников */
 
-a.table-head-posts-order, span.table-head-posts-order {
-    font-size: larger;
+a.table-head-posts-order,
+span.table-head-posts-order  {
+    font-size: 16px;
     text-decoration: none;
     color: #000000;
+    
+}
+a.table-head-posts-order:hover,
+span.table-head-posts-order:hover {
+    color: #c93e3e;
 }
 
 /* Кнопки */
@@ -307,21 +314,33 @@ i {
     top: 10%;
 }
 
-.card-post-walk-in-list {
-    margin-bottom: 2%;
+.table-posts-walk .post-walk-num {
+    text-align: center;
+    width: 10%;
 }
-.card-post-walk-in-list caption,
-.card-post-walk-in-list thead {
-    text-align: end;
+.table-posts-walk .post-walk-date {
+    text-align: center;
+    width: 10%;
 }
-.card-post-walk-in-list .border-danger {
-    color: red;
-    padding: 5px;
+.table-posts-walk .post-walk-reason {
+    width: 15%;
 }
-.card-post-walk-in-list .fs-5 {
-    width: 50%;
+.table-posts-walk .post-walk-members {
+    width: 20%;
 }
-
+.table-posts-walk .post-walk-area {
+    width: 25%;
+}
+.table-posts-walk .post-walk-comment {
+    width: 20%;
+}
+.remote-post td,
+.remote-post tbody th {
+    background-color: rgba(255, 0, 0, 0.2);
+}
+.post-walk-author {
+    color: rgba(33, 37, 41, 0.75);
+}
 /*<----- END journal_walk.html ----->*/
 
 

@@ -28,61 +28,47 @@
 				</h2>
 			</div>
 
-			{% if page_obj %}				
+			{% if page_obj %}
+			<div class="container">			
 				{% for post in page_obj %}
-					<div class="card card-post-walk-in-list shadow border-0">
-						<div class="card-body fs-4">
-							<table class="table table-hover">
-								<caption>Автор: {{ post.author.get_full_name }} ({{ post.author }})</caption>
-								<thead>
-									{% if post.is_deleted %}
-										<span class="border border-danger">ЗАПИСЬ ПОМЕЧЕНА НА УДАЛЕНИЕ</span>
-									{% endif %}
-								</thead>
-								<tbody>
-									<tr>
-										<td class="fs-5">Номер записи:</td>
-										<td class="fs-4">{{ post.number_post }}</td>
-									</tr>
-									<tr>
-										<td class="fs-5">Дата обхода:</td>
-										<td class="fs-4">{{ post.walk_date|date:"d.m.Y" }}</td>
-									</tr>
-									<tr>
-										<td class="fs-5">Причина обхода:</td>
-										<td class="fs-5">{% if post.planned %} Плановый {% endif %}{% if post.not_planned %} Внеплановый {% endif %}</td>
-									</tr>
-									<tr>
-										<td class="fs-5">Ф.И.О. обходчиков:</td>
-										<td>
-											<ol class="list-group list-group-flush">
-												{% for member in post.members.all %}
-													<li class="list-group-item fs-5">{{ member }}</li>
-												{% endfor %}    
-											</ol>
-										</td>
-									</tr>
-									<tr>
-										<td class="fs-5">Участок теплотрассы, задание мастера:</td>
-										<td class="fs-5">{{ post.task|truncatechars:15 }}</td>
-									</tr>
-									<tr>
-										<td class="fs-5">Замечания, выявленные при обходе:</td>
-										<td class="fs-5">{{ post.text|truncatechars:15 }}</td>
-									</tr>
-								</tbody>            
-							</table>
-							<div class="btn-group" role="group">
-								<a type="button d-inline" class="btn btn-light btn-outline-dark btn-md" href="{{ post.get_absolute_url }}">Подробная информация</a>
-								{% if post.author.id == user.id %}
-									<a type="button" class="btn btn-light btn-outline-dark btn-md" href="{% url 'office:edit_post_walking' district.slug post.id %}">Редактировать запись</a>
-								{% else %}
-									<span class="border border-black border-start-0 rounded-end" tabindex="0" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-title="Вы не автор записи!">
-										<button type="button" class="btn btn-light btn-outline-dark btn-md border-0 d-inline" disabled>Редактировать запись</button>
-									</span>
-								{% endif %}
-							</div>
+					<table class="table {% if not post.is_deleted %}table-hover {% endif %}table-posts-walk caption-top {% if post.is_deleted %}remote-post{% endif %}">
+						<thead>
+							<tr>
+								<th scope="col" class="post-walk-num">Номер записи</th>
+								<th scope="col" class="post-walk-date">Дата обхода</th>
+								<th scope="col" class="post-walk-reason">Причина обхода</th>
+								<th scope="col" class="post-walk-members">Ф.И.О. обходчиков</th>
+								<th scope="col" class="post-walk-area">Участок теплотрассы</th>
+								<th scope="col" class="post-walk-comment">Замечания</th>
+							</tr>
+						</thead>
+						<tbody class="table-group-divider">
+							<tr>
+								<th scope="row" class="align-top text-center">{{ post.number_post }}</th>
+								<td class="align-top text-center">{{ post.walk_date|date:"d.m.Y" }}</td>
+								<td class="align-top">{% if post.planned %} Плановый {% endif %}{% if post.not_planned %} Внеплановый {% endif %}</td>
+								<td class="align-top">
+									{% for member in post.members.all %}
+										<div>{{ member }}</div>
+									{% endfor %}
+								</td>
+								<td class="align-top">{{ post.task|truncatechars:20 }}</td>
+								<td class="align-top">{{ post.text|truncatechars:20 }}</td>
+							</tr>
+						</tbody>
+					</table>
+					<div class="row mb-5">
+						<div class="btn-group col-4" role="group">
+							<a type="button d-inline" class="btn btn-light btn-outline-dark btn-md rounded-0" href="{{ post.get_absolute_url }}">Подробная информация</a>
+							{% if post.author.id == user.id %}
+								<a type="button" class="btn btn-light btn-outline-dark btn-md rounded-0" href="{% url 'office:edit_post_walking' district.slug post.id %}">Редактировать запись</a>
+							{% else %}
+								<span class="border border-black border-start-0 rounded-end" tabindex="0" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-title="Вы не автор записи!">
+									<button type="button" class="btn btn-light btn-outline-dark btn-md border-0 d-inline" disabled>Редактировать запись</button>
+								</span>
+							{% endif %}
 						</div>
+						<div class="text-end col-8 post-walk-author">Автор: {{ post.author.get_full_name }} ({{ post.author }})</div>
 					</div>
 				{% endfor %}
 			{% elif request.GET %}
@@ -93,11 +79,13 @@
 				<p class="text-center fs-1">
 					Записей нет.
 				</p>
+
+			</div>
 			{% endif %}
 
-		<!-- Стрелка возврата вверх -->
-		<a href="#" class="scroll-to-top"><img src="{% static 'img/row_up.png' %}" alt="Scroll To Top"></a>
-	</div>
+			<!-- Стрелка возврата вверх -->
+			<a href="#" class="scroll-to-top"><img src="{% static 'img/row_up.png' %}" alt="Scroll To Top"></a>
+		</div>
 	
 	</div><!-- row -->
 </section>
