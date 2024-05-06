@@ -6,7 +6,7 @@ def add_test_user(apps, schema_editor):
     User = apps.get_model('users', 'CustomUser')
     User.objects.create_user(
         username='Testuser',
-        password='testuser12345',
+        password='testuser12345123',
         first_name='Тестовый',
         last_name='Пользователь',
         email='testuser@testuser.testuser',

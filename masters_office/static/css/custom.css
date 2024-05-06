@@ -17,6 +17,13 @@ body {
 .form-floating {
     margin-bottom: 0.5rem !important;
 }
+
+.errorList {
+    color: #dc3545;
+}
+.errorList li {
+    list-style-type: none
+}
 /*<-------- /Общие -------->*/
 
 /* формы */
