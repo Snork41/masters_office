@@ -4,26 +4,28 @@
 {% block title %} Контакты {% endblock title %}
 
 {% block content %}
-<img src="{% static '/gif/contacts.gif' %}" alt="CONTACTS.GIF" class="mx-auto d-block" style="scale: 150%; padding-top: 1.5em; padding-bottom: 1.5em;">
+<div class="mt-5">
+	<img src="{% static '/gif/contacts.gif' %}" alt="CONTACTS.GIF" class="mx-auto d-block" style="scale: 150%; padding-top: 1.5em; padding-bottom: 1.5em;">
+</div>
 <div class="col-4 p-5 mx-auto">
-  <div class="card shadow">
-    <h5 class="card-header">
-      Контакты
-    </h5>
-    <div class="card-body mx-auto text-center">
-      <a class="link-opacity-50-hover text-decoration-none" href="https://github.com/Snork41/masters_office" target="_blank" style="font-size: 1.5em;">
-        > Ссылка на проект <
-      </a>
-      <p style="font-size: 1.5em; text-align: center;"> 
-        davleevkam@gmail.com
-      </p> 
-      <p>
-        <a class="link-opacity-50-hover text-reset" href="https://t.me/Snork41" target="_blank"><i class="bi bi-telegram"></i></a>
-        <a class="link-opacity-50-hover text-reset" href="https://github.com/Snork41" target="_blank"><i class="bi bi-github"></i></a>
-        <a class="link-opacity-50-hover text-reset" href="https://vk.com/id19900774" target="_blank"><i><img src="{% static 'img/vk-small.png' %}" style="scale: 0.8; text-align: start;"></i></a>     
-        <a class="link-opacity-50-hover text-reset" href="https://instagram.com/snork_i?igshid=MzMyNGUyNmU2YQ==" target="_blank"><i class="bi bi-instagram"></i></a>
-      </p>
-    </div>
-  </div>
+	<div class="card shadow">
+		<h5 class="card-header">
+			Контакты
+		</h5>
+		<div class="card-body mx-auto text-center">
+			<a class="link-opacity-50-hover text-decoration-none" href="https://github.com/Snork41/masters_office" target="_blank" style="font-size: 1.5em;">
+				> Ссылка на проект <
+			</a>
+			<p style="font-size: 1.5em; text-align: center;"> 
+				davleevkam@gmail.com
+			</p> 
+			<p>
+				<a class="link-opacity-50-hover text-reset" href="https://t.me/Snork41" target="_blank"><i class="bi bi-telegram"></i></a>
+				<a class="link-opacity-50-hover text-reset" href="https://github.com/Snork41" target="_blank"><i class="bi bi-github"></i></a>
+				<a class="link-opacity-50-hover text-reset" href="https://vk.com/id19900774" target="_blank"><i><img src="{% static 'img/vk-small.png' %}" style="scale: 0.8; text-align: start;"></i></a>     
+				<a class="link-opacity-50-hover text-reset" href="https://instagram.com/snork_i?igshid=MzMyNGUyNmU2YQ==" target="_blank"><i class="bi bi-instagram"></i></a>
+			</p>
+		</div>
+	</div>
 </div>
 {% endblock content %}

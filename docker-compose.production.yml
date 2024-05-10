@@ -1,7 +1,7 @@
 version: '3.3'
 
 volumes:
-  pg_data:
+  pg_data_production:
   static:
 
 services:
@@ -9,18 +9,19 @@ services:
     image: postgres:13.10
     env_file: .env
     volumes:
-      - pg_data:/var/lib/postgresql/data
+      - pg_data_production:/var/lib/postgresql/data
 
   backend:
-    build: ./masters_office/
+    image: maxsnork/masters_office
     env_file: .env
     depends_on:
       - db
     volumes:
-      - static:/staticfiles/
-  
+      - static:/staticfiles
+
   gateway:
-    build: ./gateway/
+    image: maxsnork/masters_office_gateway
+    env_file: .env
     volumes:
       - static:/staticfiles/
     ports:

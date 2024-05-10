@@ -9,11 +9,11 @@ SECRET_KEY = config("SECRET_KEY", default="from_.env")
 
 DEBUG = False
 
-ALLOWED_HOSTS = config("ALLOWED_HOSTS", default="*", cast=Csv())
+ALLOWED_HOSTS = config("ALLOWED_HOSTS", cast=Csv())
 
-INTERNAL_IPS = [
-    "127.0.0.1",
-]
+# INTERNAL_IPS = [
+#     "127.0.0.1",
+# ]
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -23,7 +23,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django_extensions',
-    'debug_toolbar',
+    # 'debug_toolbar',
     'mptt',
     'django_bootstrap5',
     'django_filters',
@@ -48,7 +48,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'simple_history.middleware.HistoryRequestMiddleware',
-    'debug_toolbar.middleware.DebugToolbarMiddleware',
+    # 'debug_toolbar.middleware.DebugToolbarMiddleware',
 ]
 
 ROOT_URLCONF = 'masters_office.urls'
@@ -81,33 +81,15 @@ WSGI_APPLICATION = 'masters_office.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': os.getenv('POSTGRES_DB', 'django'),
+        'USER': os.getenv('POSTGRES_USER', 'django'),
+        'PASSWORD': os.getenv('POSTGRES_PASSWORD', ''),
+        'HOST': os.getenv('DB_HOST', ''),
+        'PORT': os.getenv('DB_PORT', 5432)
     }
 }
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql',
-#         'NAME': os.getenv('POSTGRES_DB', 'django'),
-#         'USER': os.getenv('POSTGRES_USER', 'django'),
-#         'PASSWORD': os.getenv('POSTGRES_PASSWORD', ''),
-#         'HOST': os.getenv('DB_HOST', ''),
-#         'PORT': os.getenv('DB_PORT', 5432)
-#     }
-# }
-
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.mysql',
-#         'NAME': os.getenv('MYSQL_NAME', 'django'),
-#         'USER': os.getenv('MYSQL_USER', 'django'),
-#         'PASSWORD': os.getenv('MYSQL_PASSWORD', ''),
-#         'HOST': os.getenv('MYSQL_HOST', ''),
-#         'PORT': os.getenv('MYSQL_PORT', 5432),
-#         'OPTIONS': {'charset': 'utf8mb4'},
-#     }
-# }
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -130,15 +112,14 @@ LANGUAGE_CODE = 'ru'
 TIME_ZONE = 'Europe/Moscow'
 USE_I18N = True
 USE_L10N = True
-USE_TZ = False
+USE_TZ = True
 
 
 AUTH_USER_MODEL = 'users.CustomUser'
 
 
 STATIC_URL = '/static/'
-STATIC_ROOT = BASE_DIR / 'collected_static'
-# STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+STATIC_ROOT = BASE_DIR / 'staticfiles'
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 
 MEDIA_URL = '/media/'
@@ -150,15 +131,11 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 LOGIN_URL = 'users:login'
 LOGIN_REDIRECT_URL = 'office:index'
-# LOGOUT_REDIRECT_URL = 'office:index'
+LOGOUT_REDIRECT_URL = 'office:index'
 
 
-# Восстановление паролей
-if DEBUG:
-    # Эмуляция почты (отправка в консоль)
-    EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
-else:
-    EMAIL_BACKEND = "mailer.backend.DbBackend"
+# # Восстановление паролей
+EMAIL_BACKEND = "mailer.backend.DbBackend"
 
 EMAIL_HOST = config("EMAIL_HOST", cast=str)
 EMAIL_PORT = config("EMAIL_PORT", cast=int)
@@ -168,11 +145,13 @@ EMAIL_USE_SSL = config("EMAIL_USE_SSL", cast=bool)
 EMAIL_HOST_USER = config("EMAIL_HOST_USER", cast=str)
 EMAIL_HOST_PASSWORD = config("EMAIL_HOST_PASSWORD", cast=str)
 DEFAULT_FROM_EMAIL = config("DEFAULT_FROM_EMAIL", cast=str)
-# /Восстановление паролей
+# # /Восстановление паролей
 
 
 CSRF_FAILURE_VIEW = 'core.views.csrf_failure'
-
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
+CSRF_TRUSTED_ORIGINS = config("CSRF_TRUSTED_ORIGINS", cast=Csv())
 
 LOGGING = {
     'version': 1,
@@ -233,10 +212,21 @@ LOGGING = {
 MAX_CHAR_TITLE = 15
 
 # Разряд в должности
-RANK = [(1, 1), (2, 2), (3, 3), (4, 4), (5, 5), (6, 6), (7, 7)]
+RANK = [
+    (1, 1),
+    (2, 2),
+    (3, 3),
+    (4, 4),
+    (5, 5),
+    (6, 6),
+    (7, 7)
+    ]
 
 # Работы по *** (в журнале ремонтных работ)
-ORDER = [('Наряд', 'Наряд'), ('Распоряжение', 'Распоряжение')]
+ORDER = [
+    ('Наряд', 'Наряд'),
+    ('Распоряжение', 'Распоряжение')
+]
 
 # Количество записей (пагинация) на страницах журнала:
 AMOUNT_POSTS_WALK = 5  # обходов
@@ -352,4 +342,4 @@ CKEDITOR_5_CONFIGS = {
     }
 }
 
-from .local_settings import *
+# from .local_settings import *
