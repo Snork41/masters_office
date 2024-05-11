@@ -118,6 +118,9 @@ class PostWalkingCreateView(LoginRequiredMixin, CheckEnergyDistrictMixin, Create
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+
+        context['link_back'] = reverse('office:journal_walk', kwargs={'slug_district': self.kwargs['slug_district']})
+
         return get_filtered_energy_district(self, context)
 
     def form_valid(self, form):
@@ -166,6 +169,9 @@ class PostWalkingEditView(LoginRequiredMixin, CheckEnergyDistrictMixin, UpdateVi
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+
+        context['link_back'] = reverse('office:journal_walk', kwargs={'slug_district': context['object'].district.slug})
+
         return get_filtered_energy_district(self, context)
 
     def form_valid(self, form):
@@ -345,6 +351,9 @@ class PostRepairWorkCreateView(LoginRequiredMixin, CreateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+
+        context['link_back'] = reverse('office:journal_repair_work')
+
         return get_filtered_energy_district(self, context)
 
     def form_valid(self, form):
@@ -386,6 +395,9 @@ class PostRepairWorkEditView(LoginRequiredMixin, UpdateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+
+        context['link_back'] = reverse('office:journal_repair_work')
+
         return get_filtered_energy_district(self, context)
 
     def form_valid(self, form):
@@ -444,6 +456,9 @@ class PostOrderCreateView(LoginRequiredMixin, CreateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+
+        context['link_back'] = reverse('office:journal_order')
+
         return get_filtered_energy_district(self, context)
 
     def form_valid(self, form):
@@ -485,6 +500,9 @@ class PostOrderEditView(LoginRequiredMixin, UpdateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+
+        context['link_back'] = reverse('office:journal_order')
+
         return get_filtered_energy_district(self, context)
 
     def form_valid(self, form):

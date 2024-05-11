@@ -1,55 +1,55 @@
 <div class="container mt-2 {% if inside_journal %}ms-0{% endif %}">
-  <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
-    <ul class="breadcrumb">
-      <li class="breadcrumb-item">
-        <a href="{% url 'office:index' %}">
-          Главная
-        </a>
-      </li>
-      {% if second_level %}
-        <li class="breadcrumb-item">
-          {% if second_level_href %}
-            <a href="/{{ second_level_href }}/">
-              {{ second_level }}
-            </a>
-          {% else %}
-            {{ second_level }}
-          {% endif %}
-        </li>
-      {% endif %}
-      {% if third_level %}
-        <li class="breadcrumb-item">
-          {% if third_level_href %}
-            <a href="/{{ third_level_href }}/">
-              {{ third_level }}
-            </a>
-          {% else %}
-            {{ third_level }}
-          {% endif %}                
-        </li>
-      {% endif %}
-      {% if fourth_level %}
-        <li class="breadcrumb-item">
-          {% if fourth_level_href %}
-            <a href="/{{ fourth_level_href }}/">
-              {{ fourth_level }}
-            </a>
-          {% else %}
-            {{ fourth_level }}
-          {% endif %}                
-        </li>
-      {% endif %}        
-      {% if fifth_level %}
-        <li class="breadcrumb-item">
-          {% if fifth_level_href %}
-            <a href="/{{ fifth_level_href }}/">
-              {{ fifth_level }}
-            </a>
-          {% else %}
-            {{ fifth_level }}
-          {% endif %}                
-        </li>
-      {% endif %}
-    </ul>
-  </nav>
+	<nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+		<ul class="breadcrumb">
+			<li class="breadcrumb-item">
+				<a href="{% url 'office:index' %}">
+					Главная
+				</a>
+			</li>
+			{% if second_level %}
+				<li class="breadcrumb-item">
+					{% if second_level_href %}
+					<a href="/{{ second_level_href }}/">
+						{{ second_level }}
+					</a>
+					{% else %}
+						{{ second_level }}
+					{% endif %}
+				</li>
+			{% endif %}
+			{% if third_level %}
+				<li class="breadcrumb-item">
+					{% if third_level_href %}
+					<a href="/{{ third_level_href }}/">
+						{{ third_level }}
+					</a>
+					{% else %}
+						{{ third_level }}
+					{% endif %}                
+				</li>
+			{% endif %}
+			{% if fourth_level %}
+				<li class="breadcrumb-item">
+					{% if fourth_level_href %}
+					<a href="/{{ fourth_level_href }}/">
+						{{ fourth_level }}
+					</a>
+					{% else %}
+						{{ fourth_level }}
+					{% endif %}                
+				</li>
+			{% endif %}        
+			{% if fifth_level %}
+				<li class="breadcrumb-item">
+					{% if fifth_level_href %}
+					<a href="/{{ fifth_level_href }}/">
+						{{ fifth_level }}
+					</a>
+					{% else %}
+						{{ fifth_level }}
+					{% endif %}                
+				</li>
+			{% endif %}
+		</ul>
+	</nav>
 </div>

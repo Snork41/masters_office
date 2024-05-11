@@ -1,19 +1,21 @@
 {% extends 'base.html' %}
+
 {% block title %}
   Источники
 {% endblock %}
+
 {% block content %}
 
 {% include '../includes/breadcrumb.html' with second_level=breadcrumbs.title_second second_level_href=breadcrumbs.url.second_level_href third_level=breadcrumbs.title_third third_level_href=breadcrumbs.url.third_level_href fourth_level=breadcrumbs.title_current %}
 
 <section class="section-districts pb-3">
-  <br>
-  <h1 class="text-center fw-light">Открываем журнал района...</h1>
-  <br>
-  <div class="d-grid gap-2 col-4 mx-auto">
-    {% for district in districts %}
-      <a href="{% url 'office:journal_walk' district.slug %}" class="btn btn-outline-dark btn-lg" role="button">{{ district }}</a>
-    {% endfor %}
-  </div>
+	<h1 class="text-center fw-light">
+		Открываем журнал района...
+	</h1>
+	<div class="d-grid gap-2 col-8 col-lg-6 col-xl-4 mx-auto my-5">
+		{% for district in districts %}
+			<a href="{% url 'office:journal_walk' district.slug %}" class="btn btn-outline-dark btn-lg" role="button">{{ district }}</a>
+		{% endfor %}
+	</div>
 </section>
 {% endblock %}

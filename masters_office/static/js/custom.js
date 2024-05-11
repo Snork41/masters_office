@@ -27,12 +27,13 @@ $('.scroll-to-top').click(function(event) {
 // Кнопка "Пометить на удаление"
 document.addEventListener('DOMContentLoaded', function () {
     let button = document.querySelector('.btn-delete-post');
-
-    button.addEventListener('click', function () {
-        if (button.textContent.toLowerCase().includes("пометить")) {
-            button.textContent = "Помечено на удаление";
-        } else {
-            button.textContent = "Пометить на удаление";
-        }
-    });
+    if (button !== null) {
+        button.addEventListener('click', function () {
+            if (button.textContent.toLowerCase().includes("пометить")) {
+                button.textContent = "Помечено на удаление";
+            } else {
+                button.textContent = "Пометить на удаление";
+            }
+        });
+    }
 });

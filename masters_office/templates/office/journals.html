@@ -7,29 +7,29 @@
 {% include '../includes/breadcrumb.html' with second_level=breadcrumbs.title_second second_level_href=breadcrumbs.url.second_level_href third_level=breadcrumbs.title_current %}
 
 <section class="section-journals pb-3">
-  <br>
-  <h1 class="text-center fw-light">ЖУРНАЛЫ</h1>
-  <br>
-  <div class="d-grid gap-2 col-4 mx-auto">
-    <a href="{% url 'office:journal_order' %}" class="button" role="button">Журнал учета работ по нарядам и распоряжениям</a>
-    <a href="{% url 'office:districts' %}" class="button" role="button">Журнал обходов тепловых сетей</a>
-    <a href="{% url 'office:journal_repair_work' %}" class="button" role="button">Журнал ремонтных работ</a>
-    <span class="d-inline-block d-grid" tabindex="-1" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-title="Упс! Раздел в разработке">
-      <button class="btn btn-outline-dark btn-lg disabled" type="button">Журнал дефектов оборудования</button>
-    </span>
-    <span class="d-inline-block d-grid" tabindex="-1" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-title="Упс! Раздел в разработке">
-      <button class="btn btn-outline-dark btn-lg disabled" type="button">Журнал регистрации инструктажей</button>
-    </span>
-    <span class="d-inline-block d-grid" tabindex="-1" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-title="Упс! Раздел в разработке">
-      <button class="btn btn-outline-dark btn-lg disabled" type="button">Журнал учета проверки знаний норм и правил</button>
-    </span>
-    <span class="d-inline-block d-grid" tabindex="-1" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-title="Упс! Раздел в разработке">
-      <button class="btn btn-outline-dark btn-lg disabled" type="button">Журнал проработки директивных материалов</button>
-    </span> 
-    <span class="d-inline-block d-grid" tabindex="-1" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-title="Упс! Раздел в разработке">
-      <button class="btn btn-outline-dark btn-lg disabled" type="button">...и еще много журналов...</button>
-    </span> 
-  </div>
+	<h1 class="text-center fw-light">
+		ЖУРНАЛЫ
+	</h1>
+	<div class="d-grid gap-2 col-8 col-lg-6 col-xl-4 mx-auto my-5">
+		<a href="{% url 'office:journal_order' %}" class="button" role="button">Журнал учета работ по нарядам и распоряжениям</a>
+		<a href="{% url 'office:districts' %}" class="button" role="button">Журнал обходов тепловых сетей</a>
+		<a href="{% url 'office:journal_repair_work' %}" class="button" role="button">Журнал ремонтных работ</a>
+		<span class="d-inline-block d-grid" tabindex="-1" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-title="Упс! Раздел в разработке">
+			<button class="btn btn-outline-dark btn-lg disabled" type="button">Журнал дефектов оборудования</button>
+		</span>
+		<span class="d-inline-block d-grid" tabindex="-1" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-title="Упс! Раздел в разработке">
+			<button class="btn btn-outline-dark btn-lg disabled" type="button">Журнал регистрации инструктажей</button>
+		</span>
+		<span class="d-inline-block d-grid" tabindex="-1" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-title="Упс! Раздел в разработке">
+			<button class="btn btn-outline-dark btn-lg disabled" type="button">Журнал учета проверки знаний норм и правил</button>
+		</span>
+		<span class="d-inline-block d-grid" tabindex="-1" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-title="Упс! Раздел в разработке">
+			<button class="btn btn-outline-dark btn-lg disabled" type="button">Журнал проработки директивных материалов</button>
+		</span> 
+		<span class="d-inline-block d-grid" tabindex="-1" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-title="Упс! Раздел в разработке">
+			<button class="btn btn-outline-dark btn-lg disabled" type="button">...и еще много журналов...</button>
+		</span> 
+	</div>
 </section>
 
 {% endblock content %}

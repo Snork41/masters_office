@@ -2,35 +2,34 @@
 
 <!DOCTYPE>
 <html lang="ru">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="icon" href="{% static 'img/fav/favicon.png' %}" type="image">
-    <title>
-      {% block title %}Кабинет мастера{% endblock title %}
-    </title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
-    <link rel="stylesheet" href="{% static 'css/custom.css' %}">
-    <link rel="stylesheet" href="{% static 'css/select_multiple.css' %}">
-    
-  </head>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="icon" href="{% static 'img/fav/favicon.png' %}" type="image">
+	<title>
+		{% block title %}Кабинет мастера{% endblock title %}
+	</title>
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+	<link rel="stylesheet" href="{% static 'css/custom.css' %}">
+	<link rel="stylesheet" href="{% static 'css/select_multiple.css' %}">
+</head>
 
-  <body class="mt-3">
+<body class="mt-3">
 
-    {% include 'includes/header.html' %}    
+	{% include 'includes/header.html' %}    
 
-    <main>
-      {% block content %}{% endblock content %}
-    </main>
+	<main>
+		{% block content %}{% endblock content %}
+	</main>
 
-    {% comment %} {% include 'includes/footer.html' %} {% endcomment %}
+	{% comment %} {% include 'includes/footer.html' %} {% endcomment %}
 
-    {% block scripts %}
-      <script src="{% static 'js/jquery-3.7.1.js' %}"></script>
-      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
-      <script src="{% static 'js/custom.js' %}"></script>
-    {% endblock scripts %}
-  </body>
+	<script src="{% static 'js/jquery-3.7.1.js' %}"></script>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+	<script src="{% static 'js/custom.js' %}"></script>
+	{% block scripts %}
+	{% endblock scripts %}
+</body>
 
 </html>

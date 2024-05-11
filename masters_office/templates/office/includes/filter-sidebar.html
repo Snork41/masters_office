@@ -6,14 +6,22 @@
             <form action="" method="get" class="form form-floating filter-form">
                 {% bootstrap_form filter.form layout="floating" %}
                 <div class="d-flex justify-content-around mb-4 gap-2">
-                    <button type="submit" class="btn btn-dark w-100">Применить</button>
-                    <a href="{{ reset_filter }}" class="btn btn-dark w-100" role="button">Сбросить</a>
+                    <button type="submit" class="btn btn-dark w-100">
+                        Применить
+                    </button>
+                    <a href="{{ reset_filter }}" class="btn btn-dark w-100" role="button">
+                        Сбросить
+                    </a>
                 </div>
             </form>
         {% endif %}
         <div class="d-flex justify-content-around flex-wrap mb-4 gap-2">
-            <a class="btn btn-dark fs-4 w-100" href="{{ create__new_post_url }}">Новая запись</a>
-            <a class="btn btn-dark fs-5 w-100" href="{% url 'office:journals' %}">Назад к журналам</a>
+            <a class="btn btn-dark fs-4 w-100" href="{{ create__new_post_url }}">
+                Новая запись
+            </a>
+            <a class="btn btn-dark fs-5 w-100" href="{% url 'office:journals' %}">
+                Назад к журналам
+            </a>
         </div>
 
         <!-- пагинация из django-tables2 -->
@@ -24,7 +32,6 @@
                 {% include 'includes/paginator.html' %}
             {% endif %}
         </div>
-
 
     </div>
 </div>

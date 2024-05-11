@@ -1,22 +1,25 @@
 {% if user.is_staff %}
-<p>
-<p>
-  <button class="btn btn-outline-dark" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
-    Добавить резолюцию:
-  </button>
-</p>
-<div class="collapse" id="collapseExample">
-  <div class="card my-4">
-    <h5 class="card-header">Создание резолюции:</h5>
-    <div class="card-body">
-      <form method="post" action="{% url 'office:resolution_form' district.slug post.id %}">
-        {% csrf_token %}      
-        <div class="form-group mb-2">
-          {{ form.text }}          
-        </div>
-        <button type="submit" class="btn btn-outline-dark">Сохранить</button>
-      </form>
-    </div>
-  </div>
-</div>
+	<p>
+		<button class="btn btn-outline-dark" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+			Добавить резолюцию:
+		</button>
+	</p>
+	<div class="collapse" id="collapseExample">
+		<div class="card my-4">
+			<h5 class="card-header">
+				Создание резолюции:
+			</h5>
+			<div class="card-body">
+				<form method="post" action="{% url 'office:resolution_form' district.slug post.id %}">
+					{% csrf_token %}      
+					<div class="form-group mb-2">
+						{{ form.text }}          
+					</div>
+					<button type="submit" class="btn btn-outline-dark">
+						Сохранить
+					</button>
+				</form>
+			</div>
+		</div>
+	</div>
 {% endif %}

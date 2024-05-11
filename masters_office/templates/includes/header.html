@@ -1,86 +1,88 @@
 {% load static %}
 
-  <header>
-    <nav class="navbar navbar-expand-lg bg-dark fixed-top pb-3">
-      <div class="container">
-        <a class="navbar-brand me-auto img-logo" href="{% url 'office:index' %}">
-          <img src="{% static 'img/logo.png' %}" alt="logo">          
-        </a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarToggler" aria-controls="navbarToggler" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse justify-content-end" id="navbarToggler">
-          <ul class="navbar-nav">
-            {% if user.is_active %}
-            <li class="nav-item">
-              <div class="navbar-username">
-                {{ user.username }} ({{ user.energy_district }})
-              </div>
-            </li>
-            <li class="nav-item">
-              <a class="img-bell text-reset" href="" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
-                <img src="{% static 'img/bell.png' %}" alt="bell">
-                {% if notifications_count > 0 %}
-                  <span class="peending">
-                    {{ notifications_count }}
-                  </span>
-                {% endif %}
-              </a>
-            </li>
-            {% endif %}
-            <li class="nav-item">
-              <a class="nav-link" href="{% url 'about:help' %}" data-bs-toggle="tooltip" data-bs-title="О сайте" data-bs-placement="bottom">
-                <img class="img-about" src="{% static 'img/about.png' %}" alt="about">
-              </a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="{% url 'about:contacts' %}" data-bs-toggle="tooltip" data-bs-title="Контакты" data-bs-placement="bottom">
-                <img class="img-contacts" src="{% static 'img/contacts.png' %}" alt="contacts">
-              </a>
-            </li>
-            {% if user.is_active %}
-              <li class="nav-item">
-                <a class="nav-link" href="{% url 'logout' %}" data-bs-toggle="tooltip" data-bs-title="Выйти из кабинета" data-bs-placement="bottom">
-                  <img class="img-logout" src="{% static 'img/logout.png' %}" alt="logout">
-                </a>
-              </li>
-            {% endif %}
-          </ul>
-        </div>
-      </div>
-    </nav>
+<header>
+	<nav class="navbar navbar-expand-lg bg-dark fixed-top pb-3">
+		<div class="container">
+			<a class="navbar-brand me-auto img-logo" href="{% url 'office:index' %}">
+				<img src="{% static 'img/logo.png' %}" alt="logo">          
+			</a>
+			<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarToggler" aria-controls="navbarToggler" aria-expanded="false" aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+			<div class="collapse navbar-collapse justify-content-end" id="navbarToggler">
+				<ul class="navbar-nav">
+					{% if user.is_active %}
+					<li class="nav-item">
+						<div class="navbar-username">
+							{{ user.username }} ({{ user.energy_district }})
+						</div>
+					</li>
+					<li class="nav-item">
+						<a class="img-bell text-reset" href="" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+							<img src="{% static 'img/bell.png' %}" alt="bell">
+							{% if notifications_count > 0 %}
+								<span class="peending">
+									{{ notifications_count }}
+								</span>
+							{% endif %}
+						</a>
+					</li>
+					{% endif %}
+					<li class="nav-item">
+						<a class="nav-link" href="{% url 'about:help' %}" data-bs-toggle="tooltip" data-bs-title="О сайте" data-bs-placement="bottom">
+							<img class="img-about" src="{% static 'img/about.png' %}" alt="about">
+						</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="{% url 'about:contacts' %}" data-bs-toggle="tooltip" data-bs-title="Контакты" data-bs-placement="bottom">
+							<img class="img-contacts" src="{% static 'img/contacts.png' %}" alt="contacts">
+						</a>
+					</li>
+					{% if user.is_active %}
+						<li class="nav-item">
+							<a class="nav-link" href="{% url 'logout' %}" data-bs-toggle="tooltip" data-bs-title="Выйти из кабинета" data-bs-placement="bottom">
+								<img class="img-logout" src="{% static 'img/logout.png' %}" alt="logout">
+							</a>
+						</li>
+					{% endif %}
+				</ul>
+			</div>
+		</div>
+	</nav>
 
-<!-- Модальное окно -->
-  <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h1 class="modal-title fs-5" id="staticBackdropLabel">
-            Уведомления
-          </h1>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
-        </div>
-        <div class="modal-body">
-          {% if notifications %}
-            {% for notification in notifications %}
-              <p>
-                {{ notification.post_walking }} - добавлена резолюция
-                <a href="{{ notification.post_walking.get_absolute_url }}">
-                  просмотреть
-                </a>
-              </p>
-              {% if not forloop.last %}
-                <hr>
-              {% endif %}
-            {% endfor %}
-          {% else %}
-            Новых уведомлений нет
-          {% endif %}
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Закрыть</button>
-        </div>
-      </div>
-    </div>
-  </div>
+	<!-- Модальное окно -->
+	<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+		<div class="modal-dialog modal-lg">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h1 class="modal-title fs-5" id="staticBackdropLabel">
+						Уведомления
+					</h1>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
+				</div>
+				<div class="modal-body">
+					{% if notifications %}
+						{% for notification in notifications %}
+							<p>
+								{{ notification.post_walking }} - добавлена резолюция
+								<a href="{{ notification.post_walking.get_absolute_url }}">
+									просмотреть
+								</a>
+							</p>
+							{% if not forloop.last %}
+								<hr>
+							{% endif %}
+						{% endfor %}
+					{% else %}
+						Новых уведомлений нет
+					{% endif %}
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+						Закрыть
+					</button>
+				</div>
+			</div>
+		</div>
+	</div>
 </header>

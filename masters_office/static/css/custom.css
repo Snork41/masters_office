@@ -24,6 +24,10 @@ body {
 .errorList li {
     list-style-type: none
 }
+
+.container {
+    position: relative;
+}
 /*<-------- /Общие -------->*/
 
 /* формы */
@@ -277,33 +281,43 @@ i {
 /* /Иконки контактов */
 
 /* Карточки в index.html и cabinet.html */
-.card.card-in-cabinet:hover,
-.card.card-in-index:hover {
+.card-in-cabinet:hover,
+.card-in-index:hover {
+    color: #ffffff;
     background-color: black;
 }
-.card.card-in-cabinet,
-.card.card-in-cabinet-disabled {
-    transition: background-color .3s linear;
-    height: 290;
-    border-color: #000000;
-}
-.card.card-in-index,
-.card.card-in-index-disabled {
+.card-in-cabinet,
+.card-in-cabinet-disabled,
+.card-in-index,
+.card-in-index-disabled {
     transition: background-color .3s linear;
     border-color: #000000;
+    border: 1px solid;
+    border-radius: 5px;
 }
 .card-in-cabinet:hover img,
 .card-in-index:hover img {
     filter: invert(100%);
 }
-.card-in-cabinet:hover h4,
-.card-in-index:hover h4 {
-    color: #ffffff;;
-}
-.card.card-in-cabinet-disabled:hover,
-.card.card-in-index-disabled:hover {
+.card-in-cabinet-disabled:hover,
+.card-in-index-disabled:hover {
     scale: 1.05;
     background-color: rgb(207, 207, 207);
+}
+.card-title {
+    font-weight: 600;
+    font-size: 24px;
+}
+
+@media (max-width: 1399px) {
+    .card-title {
+        font-size: 22px;
+    }
+}
+@media (max-width: 1199px) {
+    .card-title {
+        font-size: 18px;
+    }
 }
 /* /Карточки в index.html и cabinet.html */
 

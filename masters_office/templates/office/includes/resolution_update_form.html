@@ -1,25 +1,33 @@
 {% if user.is_staff %}
-<button type="button" class="btn btn-outline-dark my-3" data-bs-toggle="modal" data-bs-target="#resolutionModal" >Редактировать резолюцию</button>
-<div class="modal fade" id="resolutionModal" tabindex="-1" aria-labelledby="resolutionModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h1 class="modal-title fs-6" id="resolutionModalLabel">Редактировать резолюцию</h1>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
-      </div>
-      <div class="modal-body">
-        <form id="resolution-text" method="post" action="{% url 'office:resolution_update_form' district.slug post.id resolution.id %}">
-        {% csrf_token %}      
-          <div class="mb-3">
-            {{ form.text }}
-          </div>
-        </form>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-outline-dark" data-bs-dismiss="modal">Закрыть</button>
-        <button type="submit" form="resolution-text" class="btn btn-outline-dark">Сохранить</button>
-      </div>
-    </div>
-  </div>
-</div>
+	<button type="button" class="btn btn-outline-dark my-3" data-bs-toggle="modal" data-bs-target="#resolutionModal">
+		Редактировать резолюцию
+	</button>
+	<div class="modal fade" id="resolutionModal" tabindex="-1" aria-labelledby="resolutionModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h1 class="modal-title fs-6" id="resolutionModalLabel">
+						Редактировать резолюцию
+					</h1>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
+				</div>
+				<div class="modal-body">
+					<form id="resolution-text" method="post" action="{% url 'office:resolution_update_form' district.slug post.id resolution.id %}">
+						{% csrf_token %}      
+						<div class="mb-3">
+							{{ form.text }}
+						</div>
+					</form>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-outline-dark" data-bs-dismiss="modal">
+						Закрыть
+					</button>
+					<button type="submit" form="resolution-text" class="btn btn-outline-dark">
+						Сохранить
+					</button>
+				</div>
+			</div>
+		</div>
+	</div>
 {% endif %}

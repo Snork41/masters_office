@@ -8,49 +8,77 @@
 
 {% block content %}
 <section class="section-create_post_walking">
-  <div class="container py-5">
-    <div class="row justify-content-center">
-      <div class="col-md-10 p-5">
-        <div class="card shadow">
-          <div class="card-header text-center fs-4">
-              Новая запись в журнале обходов
-          </div>
-          <div class="card-body">
-            <form method="post" enctype="multipart/form-data">
-              {% csrf_token %}
-              <div class="form-error">{{ form.non_field_errors }}</div>
-                <div class="row gy-3">
-                  <div class="col-6">{{ form.district|as_crispy_field }}</div>
-                  <div class="col-6">{{ form.walk_date|as_crispy_field }}</div>
-                  <div class="col-12 form-error form-error-planned text-center">{{ form.errors.planned }}</div>
-                  <div class="col-6 d-grid gap-2">
-                    {{ form.planned }}
-                    <label class="btn btn-outline-dark" for="btn-check-planned-outlined">Плановый</label>
-                  </div>
-                  <div class="col-6 d-grid gap-2">
-                    {{ form.not_planned }}
-                    <label class="btn btn-outline-dark" for="btn-check-not-planned-outlined">Внеплановый</label>
-                  </div>
-                  <div class="col-12 form-error form-error-members text-center">{{ form.errors.members }}</div>
-                    <div class="col-12 mw-100 d-flex" style="margin-bottom: 3%;">
-                      {{ form.members }}
-                    </div>
-                    {{ form.media }}
-                  <script type="text/javascript" src="{% url 'office:jsi18n' %}"></script>
-                  <div class="col-12"> {{ form.task|as_crispy_field }}</div>
-                  <div class="col-12"> {{ form.text|as_crispy_field }}</div>
-                  <div class="col-6">{{ form.plan|as_crispy_field }}</div>
-                  <div class="col-6">{{ form.fix_date|as_crispy_field }}</div>
-                  <div class="col-12">{{ form.transfer|as_crispy_field }}</div>
-                </div>
-              <div class="d-grid gap-2 col-2 mx-auto">
-                <button type="submit" class="btn btn-outline-dark btn-lg">Добавить</button>
-              </div>
-            </form>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+	<div class="container py-5">
+
+		{% include 'office/includes/arrow-back.html' %}
+
+		<div class="row justify-content-center">
+			<div class="col-md-10 p-5">
+				<div class="card shadow">
+					<div class="card-header text-center fs-4">
+						Новая запись в журнале обходов
+					</div>
+					<div class="card-body">
+						<form method="post" enctype="multipart/form-data">
+							{% csrf_token %}
+							<div class="form-error">
+								{{ form.non_field_errors }}
+							</div>
+							<div class="row gy-3">
+								<div class="col-6">
+									{{ form.district|as_crispy_field }}
+								</div>
+								<div class="col-6">
+									{{ form.walk_date|as_crispy_field }}
+								</div>
+								<div class="col-12 form-error form-error-planned text-center">
+									{{ form.errors.planned }}
+								</div>
+								<div class="col-6 d-grid gap-2">
+									{{ form.planned }}
+									<label class="btn btn-outline-dark" for="btn-check-planned-outlined">Плановый</label>
+								</div>
+								<div class="col-6 d-grid gap-2">
+									{{ form.not_planned }}
+									<label class="btn btn-outline-dark" for="btn-check-not-planned-outlined">Внеплановый</label>
+								</div>
+								<div class="col-12 form-error form-error-members text-center">
+									{{ form.errors.members }}
+								</div>
+								<div class="col-12 mw-100 d-flex" style="margin-bottom: 3%;">
+									{{ form.members }}
+								</div>
+								{{ form.media }}
+								<div class="col-12">
+									{{ form.task|as_crispy_field }}
+								</div>
+								<div class="col-12">
+									{{ form.text|as_crispy_field }}
+								</div>
+								<div class="col-6">
+									{{ form.plan|as_crispy_field }}
+								</div>
+								<div class="col-6">
+									{{ form.fix_date|as_crispy_field }}
+								</div>
+								<div class="col-12">
+									{{ form.transfer|as_crispy_field }}
+								</div>
+							</div>
+							<div class="d-grid gap-2 col-2 mx-auto">
+								<button type="submit" class="btn btn-outline-dark btn-lg">
+									Добавить
+								</button>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 </section>
 {% endblock %}
+
+{% block scripts %}
+    <script type="text/javascript" src="{% url 'office:jsi18n' %}"></script>
+{% endblock scripts %}

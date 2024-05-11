@@ -1,75 +1,83 @@
 {% extends 'base.html' %}
+
 {% block title %}
   Бригады
 {% endblock %}
+
 {% block content %}
 
 {% include '../includes/breadcrumb.html' with second_level=breadcrumbs.title_second %}
 
 <section class="section-brigades">
-  <br>
-  <h1 class="text-center fw-light">Бригады</h1>
-  <h2 class="text-center fw-light"> {{ energy_district }} </h1>
-  <br>
-  <div class="container">
-    <div class="row justify-content-center">
-      <div class="col-2 text-end">
-        <a class="btn btn-outline-dark fs-5 btn-back" href="{% url 'office:cabinet' %}">В кабинет</a>
-      </div>
-      <div class="col-2">
-        {% if user.is_staff or user.is_superuser %}
-        <a class="btn btn-outline-dark fs-5 btn-back" href="/admin-mo/office/brigade" target="_blank">Изменить бригады</a> 
-        {% else %}
-        <span class="d-inline-block d-grid" tabindex="0" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-title="Недостаточно прав">
-          <a class="btn btn-outline-dark fs-5 btn-back disabled" href="">Изменить бригады</a> 
-        {% endif %}    
-        </span>
-      </div>
-  </div>
-  </div>
-  <br>
-  {% if brigades %}
-  <div class="d-grid gap-2 col-6 mx-auto">
-    {% for brigade in brigades %}
-    <div class="card">
-      <div class="card-header">
-        <div class="fs-5">Бригада мастера {{ brigade.master.get_full_name }}</div>
-      </div>
-      <div class="card-body">
-        <table class="table table-hover">
-          <thead>
-            <tr>
-              <th scope="col"></th>
-              <th scope="col">Фамилия</th>
-              <th scope="col">Имя</th>
-              <th scope="col">Отчество</th>
-              <th scope="col">Должность</th>
-              <th scope="col">Разряд</th>
-            </tr>
-          </thead>
-          {% for member in brigade.members.all %}
-          <tbody>    
-            <tr>
-              <th scope="row">{% if member == brigade.brigadier %}Бригадир{% endif %}</th>
-              <td>{{ member.last_name }}</td>
-              <td>{{ member.first_name }}</td>
-              <td>{{ member.middle_name }}</td>
-              <td>{{ member.position }}</td>
-              <td>{%if member.rank %}{{ member.rank }}{% else %} --- {% endif %}</td>
-            </tr>
-          </tbody>
-          {% endfor %}
-        </table>
-      </div>
-    </div>
-  {% endfor %}
-  </div>
-  {% else %}
-  <div class="text-center fw-light fs-4 mx-auto">
-  Упс!<br>
-  Сформированные бригады отсутствуют. <br>Создать бригады можно через административную панель.
-  </div>
-  {% endif %}
+	<div class="container">
+		<h1 class="text-center fw-light">
+			Бригады
+		</h1>
+		<h2 class="text-center fw-light">
+			{{ energy_district }}
+		</h2>		
+		<div class="row justify-content-center my-4 flex-column flex-lg-row gap-3 align-items-center">
+			<a class="btn btn-outline-dark fs-5 btn-back" href="{% url 'office:cabinet' %}">
+				В кабинет
+			</a>
+			{% if user.is_staff or user.is_superuser %}
+				<a class="btn btn-outline-dark fs-5 btn-back" href="/admin-mo/office/brigade" target="_blank">
+					Изменить бригады
+				</a> 
+			{% else %}
+				<span class="d-inline-block d-grid" tabindex="0" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-title="Недостаточно прав">
+					<a class="btn btn-outline-dark fs-5 btn-back disabled" href="">
+						Изменить бригады
+					</a> 
+				</span>
+			{% endif %}				
+		</div>
+
+		{% if brigades %}
+			<div class="d-grid gap-5 mx-auto">
+				{% for brigade in brigades %}
+					<div class="card">
+						<div class="card-header">
+							<div class="fs-5">
+								Бригада мастера {{ brigade.master.get_full_name }}
+							</div>
+						</div>
+						<div class="card-body">
+							<table class="table table-hover">
+								<thead>
+									<tr>
+										<th scope="col"></th>
+										<th scope="col">Фамилия</th>
+										<th scope="col">Имя</th>
+										<th scope="col">Отчество</th>
+										<th scope="col">Должность</th>
+										<th scope="col">Разряд</th>
+									</tr>
+								</thead>
+								{% for member in brigade.members.all %}
+									<tbody>    
+										<tr>
+											<th scope="row">{% if member == brigade.brigadier %}Бригадир{% endif %}</th>
+											<td>{{ member.last_name }}</td>
+											<td>{{ member.first_name }}</td>
+											<td>{{ member.middle_name }}</td>
+											<td>{{ member.position }}</td>
+											<td>{%if member.rank %}{{ member.rank }}{% else %} --- {% endif %}</td>
+										</tr>
+									</tbody>
+								{% endfor %}
+							</table>
+						</div>
+					</div>
+				{% endfor %}
+			</div>
+		{% else %}
+			<div class="text-center fw-light fs-4 mx-auto">
+				Упс!<br>
+				Сформированные бригады отсутствуют. <br>Создать бригады можно через административную панель.
+			</div>
+		{% endif %}
+	</div>
 </section>
 
 {% endblock %}

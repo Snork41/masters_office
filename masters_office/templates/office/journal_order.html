@@ -19,7 +19,7 @@
 			
 			{% include 'office/includes/messages.html' %}
 
-			<div class="my-5">
+			<div>
 				<h1 class="text-center fw-light">
 					{{ title }}
 				</h1>
@@ -28,7 +28,7 @@
 				</h2>
 			</div>
 
-			<div class="row row-table-posts-order">
+			<div class="row row-table-posts-order my-5">
 				<div class="col-12">
 					{% render_table table %}
 				</div>
@@ -40,8 +40,8 @@
 				</p>
 			{% endif %}
 
-			<!-- Стрелка возврата вверх -->
-			<a href="#" class="scroll-to-top"><img src="{% static 'img/row_up.png' %}" alt="Scroll To Top"></a>
+			{% include 'includes/arrow-up.html' %}
+
 		</div>
 	</div><!-- row -->
 </section>
