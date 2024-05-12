@@ -37,3 +37,38 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 });
+
+// Удаление уведомления по нажатию на крестик
+document.addEventListener("DOMContentLoaded", function() {
+    const deleteButtons = document.querySelectorAll('.delete-btn');
+    const countNotifications = document.querySelector('.peending');
+    const modalNotificationsNontent = document.querySelector('.modal-notifications-content');
+
+    deleteButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            const notificationId = this.getAttribute('data-notification-id');
+            let formData = new FormData();
+            formData.append('id', notificationId);
+
+            fetch('core/view_notification/', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    this.closest('.row').remove();
+                    let newCountNotifications = parseInt(countNotifications.textContent) - 1
+                    if (newCountNotifications === 0) {
+                        countNotifications.remove()
+                        modalNotificationsNontent.textContent = 'Новых уведомлений нет'
+                    } else {
+                        countNotifications.textContent = newCountNotifications                        
+                    }
+                } else {
+                    alert(data.message);
+                }
+            });
+        });
+    });
+});

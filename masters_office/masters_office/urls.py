@@ -13,6 +13,7 @@ urlpatterns = [
     path('auth/', include('users.urls', namespace='users')),
     path('auth/', include('django.contrib.auth.urls')),
     path('about/', include('about.urls', namespace='about')),
+    path('core/', include('core.urls', namespace='core')),
     # path("__debug__/", include("debug_toolbar.urls")),
 ]
 

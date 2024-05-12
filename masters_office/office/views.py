@@ -1,5 +1,3 @@
-import logging
-
 from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -11,19 +9,22 @@ from django.views.generic import (CreateView, DetailView, FormView, ListView,
 from django_filters.views import FilterView
 from django_tables2 import SingleTableMixin
 
+from core.services import create_notification,  view_notification, create_notification_view_resolution
 from .filters import PersonalFilter, PostRepairWorkFilter, PostWalkingFilter, PostOrderFilter
 from .forms import (PostOrderForm, PostRepairWorkForm, PostWalkingForm,
                     ResolutionForm)
+from .logging import (log_post_walking_create, log_post_walking_edit, log_resolution_create,
+                      log_resolution_edit, log_post_repair_work_create, log_post_repair_work_edit,
+                      log_post_order_create, log_post_order_edit)
 from .models import (Brigade, District, Personal, PostOrder, PostRepairWork,
                      PostWalking, Resolution)
+from .services import view_resolution
 from .tables import PersonalTable, PostOrderTable
 from .validators import (CheckEnergyDistrictMixin,
                          get_filtered_energy_district,
                          validate_date_fields_post,
                          validate_fields_post_walking)
 from .utils import get_breadcrumb_url
-
-logger = logging.getLogger(__name__)
 
 
 class HomePageView(TemplateView):
@@ -133,10 +134,8 @@ class PostWalkingCreateView(LoginRequiredMixin, CheckEnergyDistrictMixin, Create
         return super().form_valid(form)
 
     def get_success_url(self):
-        logger.info(
-            f'PostWalking (pk: {self.object.id}) was created. '
-            f'User: {(self.object.author.username).upper()}'
-        )
+        log_post_walking_create(post=self.object)
+
         messages.success(
             self.request, mark_safe(
                 f'Запись № {self.object.number_post} успешно добавлена.'
@@ -184,10 +183,8 @@ class PostWalkingEditView(LoginRequiredMixin, CheckEnergyDistrictMixin, UpdateVi
         return super().form_valid(form)
 
     def get_success_url(self):
-        logger.info(
-            f'PostWalking (pk: {self.object.id}) was edited. '
-            f'User: {(self.object.author.username).upper()}'
-        )
+        log_post_walking_edit(post=self.object)
+
         messages.success(
             self.request, mark_safe(
                 f'Запись № {self.object.number_post} успешно изменена.'
@@ -213,10 +210,12 @@ class PostWalkingDetailView(LoginRequiredMixin, CheckEnergyDistrictMixin, Detail
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['district'] = context['post'].district
+
         context['resolution'] = context['post'].resolution.first()
-        if context['resolution'] and not context['resolution'].viewed and context['post'].district.master == self.request.user:
-            Resolution.objects.filter(id=context['resolution'].id).update(viewed=True)
-            context['resolution'].viewed = True
+        if context['resolution'] and not context['resolution'].viewed and context['post'].author == self.request.user:
+            view_resolution(resolution=context['resolution'])
+            view_notification(post=context['post'])
+            create_notification_view_resolution(resolution=context['resolution'], from_user=self.request.user)
         return context
 
 
@@ -232,11 +231,14 @@ class ResolutionAddView(LoginRequiredMixin, CheckEnergyDistrictMixin, CreateView
             resolution.post_walking_id = self.kwargs.get('post_id')
             resolution.save()
             messages.success(self.request, 'Резолюция успешно добавлена.')
-            logger.info(
-                f'Resolution (id: {resolution.id}) was added. '
-                f'Text: {resolution.text}. '
-                f'User: {(resolution.author.username).upper()}'
+
+            log_resolution_create(resolution=resolution)
+
+            create_notification(
+                post_id=self.kwargs.get('post_id'),
+                title='Новая резолюция',
             )
+
             return super().form_valid(form)
         return self.form_invalid(form=form, message=True)
 
@@ -261,12 +263,18 @@ class ResolutionEditView(LoginRequiredMixin, CheckEnergyDistrictMixin, UpdateVie
 
     def form_valid(self, form):
         messages.success(self.request, 'Резолюция успешно изменена.')
-        logger.info(
-            f'Resolution (id: {self.object.id}) was changed. '
-            f'New text: {self.object.text}. '
-            f'User: {(self.request.user.username).upper()}'
+        log_resolution_edit(
+            resolution=self.object,
+            username=self.request.user.username
         )
+
         self.object.viewed = False
+
+        create_notification(
+            post_id=self.kwargs.get('post_id'),
+            title='Измененная резолюция',
+        )
+
         return super().form_valid(form)
 
     def form_invalid(self, form):
@@ -366,10 +374,8 @@ class PostRepairWorkCreateView(LoginRequiredMixin, CreateView):
         return super().form_valid(form)
 
     def get_success_url(self):
-        logger.info(
-            f'PostRepairWork (pk: {self.object.id}) was created. '
-            f'User: {(self.object.author.username).upper()}'
-        )
+        log_post_repair_work_create(post=self.object)
+
         messages.success(
             self.request, mark_safe(
                 f'Запись № {self.object.number_post} успешно добавлена.'
@@ -410,10 +416,8 @@ class PostRepairWorkEditView(LoginRequiredMixin, UpdateView):
         return super().form_valid(form)
 
     def get_success_url(self):
-        logger.info(
-            f'PostRepairWork (pk: {self.object.id}) was edited. '
-            f'User: {(self.object.author.username).upper()}'
-        )
+        log_post_repair_work_edit(post=self.object)
+
         messages.success(
             self.request, mark_safe(
                 f'Запись № {self.object.number_post} успешно изменена.'
@@ -471,10 +475,8 @@ class PostOrderCreateView(LoginRequiredMixin, CreateView):
         return super().form_valid(form)
 
     def get_success_url(self):
-        logger.info(
-            f'PostOrder (pk: {self.object.id}) was created. '
-            f'User: {(self.object.author.username).upper()}'
-        )
+        log_post_order_create(post=self.object)
+
         messages.success(
             self.request, mark_safe(
                 f'Запись № {self.object.number_post} ({self.object.order} № {self.object.number_order}) успешно добавлена.'
@@ -515,10 +517,8 @@ class PostOrderEditView(LoginRequiredMixin, UpdateView):
         return super().form_valid(form)
 
     def get_success_url(self):
-        logger.info(
-            f'PostOrder (pk: {self.object.id}) was edited. '
-            f'User: {(self.object.author.username).upper()}'
-        )
+        log_post_order_edit(post=self.object)
+
         messages.success(
             self.request, mark_safe(
                 f'Запись № {self.object.number_post} ({self.object.order} № {self.object.number_order}) успешно изменена.'

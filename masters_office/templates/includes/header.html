@@ -50,39 +50,6 @@
 		</div>
 	</nav>
 
-	<!-- Модальное окно -->
-	<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-		<div class="modal-dialog modal-lg">
-			<div class="modal-content">
-				<div class="modal-header">
-					<h1 class="modal-title fs-5" id="staticBackdropLabel">
-						Уведомления
-					</h1>
-					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
-				</div>
-				<div class="modal-body">
-					{% if notifications %}
-						{% for notification in notifications %}
-							<p>
-								{{ notification.post_walking }} - добавлена резолюция
-								<a href="{{ notification.post_walking.get_absolute_url }}">
-									просмотреть
-								</a>
-							</p>
-							{% if not forloop.last %}
-								<hr>
-							{% endif %}
-						{% endfor %}
-					{% else %}
-						Новых уведомлений нет
-					{% endif %}
-				</div>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
-						Закрыть
-					</button>
-				</div>
-			</div>
-		</div>
-	</div>
+	{% include 'includes/modal_notifications.html'  %}
+
 </header>

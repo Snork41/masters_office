@@ -1,0 +1,47 @@
+{% load static %}
+
+<!-- Модальное окно -->
+<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="staticBackdropLabel">
+                    Уведомления
+                </h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
+            </div>
+            <div class="modal-body modal-notifications-content">
+                {% if notifications %}
+                    {% for notification in notifications %}
+                        <div class="row">
+                            <div class="col-6">
+                                {{ notification.time_create|date:'d.m.Y H:i' }}
+                            </div>
+                            <div class="col-6 text-end">
+                                <img class="delete-btn" data-notification-id="{{ notification.id }}" src="{% static 'img/delete.svg' %}" alt="" style="max-width: 16px; cursor: pointer;">
+                            </div>
+                            <div class="col-12">
+                                {{ notification.content }}
+                                {% if notification.link %}
+                                    <a href="{{ notification.link }}">
+                                        просмотреть
+                                    </a>
+                                {% endif %}
+                                </div>
+                                {% if not forloop.last %}
+                                    <hr>
+                                {% endif %}
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    Новых уведомлений нет
+                {% endif %}
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                    Закрыть
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

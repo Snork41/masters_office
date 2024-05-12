@@ -81,17 +81,6 @@ POSTS_ORDER_TABLE_TEMPLATE = os.path.join(BASE_DIR, 'templates/office/includes/t
 WSGI_APPLICATION = 'masters_office.wsgi.application'
 
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql',
-#         'NAME': os.getenv('POSTGRES_DB', 'django'),
-#         'USER': os.getenv('POSTGRES_USER', 'django'),
-#         'PASSWORD': os.getenv('POSTGRES_PASSWORD', ''),
-#         'HOST': os.getenv('DB_HOST', ''),
-#         'PORT': os.getenv('DB_PORT', 5432)
-#     }
-# }
-
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
@@ -167,59 +156,59 @@ SESSION_COOKIE_SECURE = True
 CSRF_COOKIE_SECURE = True
 CSRF_TRUSTED_ORIGINS = config("CSRF_TRUSTED_ORIGINS", cast=Csv())
 
-# LOGGING = {
-#     'version': 1,
-#     'disable_existing_loggers': False,
-#     'formatters': {
-#         'action_formatter': {
-#             'format': '{levelname}: {asctime} {filename} "{message}"',
-#             'style': '{',
-#         },
-#         'request_formatter': {
-#             'format': '{levelname} {asctime} {module} {filename} {message}',
-#             'style': '{',
-#         },
-#     },
-#     'handlers': {
-#         'action_file': {
-#             'level': 'DEBUG',
-#             'class': 'logging.handlers.RotatingFileHandler',
-#             'encoding': 'utf-8',
-#             'maxBytes': 20000,
-#             'backupCount': 3,
-#             'delay': True,
-#             'filename': os.path.join(BASE_DIR, 'logs/action_file.log'),
-#             'formatter': 'action_formatter',
-#         },
-#         'request_file': {
-#             'level': 'DEBUG',
-#             'class': 'logging.handlers.RotatingFileHandler',
-#             'encoding': 'utf-8',
-#             'maxBytes': 1000000,
-#             'backupCount': 2,
-#             'delay': True,
-#             'filename': os.path.join(BASE_DIR, 'logs/request_file.log'),
-#             'formatter': 'request_formatter',
-#         },
-#         'console': {
-#             'level': 'DEBUG',
-#             'class': 'logging.StreamHandler',
-#             'formatter': 'action_formatter',
-#         },
-#     },
-#     'loggers': {
-#         'office': {
-#             'handlers': ['action_file'],
-#             'level': 'DEBUG',
-#             'propagate': True,
-#         },
-#         'django.request': {
-#             'handlers': ['request_file'],
-#             'level': 'WARNING',
-#             'propagate': True,
-#         },
-#     },
-# }
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'action_formatter': {
+            'format': '{levelname}: {asctime} {filename} "{message}"',
+            'style': '{',
+        },
+        'request_formatter': {
+            'format': '{levelname} {asctime} {module} {filename} {message}',
+            'style': '{',
+        },
+    },
+    'handlers': {
+        'action_file': {
+            'level': 'DEBUG',
+            'class': 'logging.handlers.RotatingFileHandler',
+            'encoding': 'utf-8',
+            'maxBytes': 20000,
+            'backupCount': 3,
+            'delay': True,
+            'filename': os.path.join(BASE_DIR, 'logs/action_file.log'),
+            'formatter': 'action_formatter',
+        },
+        'request_file': {
+            'level': 'DEBUG',
+            'class': 'logging.handlers.RotatingFileHandler',
+            'encoding': 'utf-8',
+            'maxBytes': 1000000,
+            'backupCount': 2,
+            'delay': True,
+            'filename': os.path.join(BASE_DIR, 'logs/request_file.log'),
+            'formatter': 'request_formatter',
+        },
+        'console': {
+            'level': 'DEBUG',
+            'class': 'logging.StreamHandler',
+            'formatter': 'action_formatter',
+        },
+    },
+    'loggers': {
+        'office': {
+            'handlers': ['action_file'],
+            'level': 'DEBUG',
+            'propagate': True,
+        },
+        'django.request': {
+            'handlers': ['request_file'],
+            'level': 'WARNING',
+            'propagate': True,
+        },
+    },
+}
 
 
 # Количество символов в тайтле поста
