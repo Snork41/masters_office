@@ -1,15 +1,15 @@
 version: '3.3'
 
 volumes:
-  pg_data_production:
+  mysql_data_production:
   static:
 
 services:
   db:
-    image: postgres:13.10
+    image: mysql:8.0
     env_file: .env
     volumes:
-      - pg_data_production:/var/lib/postgresql/data
+      - mysql_data_production:/var/lib/mysql
 
   backend:
     image: maxsnork/masters_office

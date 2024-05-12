@@ -1,5 +1,6 @@
 from django.contrib.auth import get_user_model
 from django.test import Client, TestCase
+from django.urls import reverse
 
 from office.models import (District, EnergyDistrict, Personal, Position,
                            PostOrder, PostRepairWork, PostWalking, Resolution)
@@ -33,7 +34,7 @@ from .consts import (ADD_RESOLUTION_URL, ADRESS_REPAIR, ADRESS_REPAIR_2,
                      TRANSFER_WLK__IN_EDIT_POST, UPDATE_RESOLUTION_URL,
                      USERNAME, USERNAME_BOSS, USERNAME_SECOND_ENERGY_DISCRICT,
                      WALK_DATE, WALK_DATE_IN_EDIT_POST, WALK_DATE_NOT_VALID,
-                     EDIT_POST_ORDER_URL)
+                     EDIT_POST_ORDER_URL, UPDATE_RESOLUTION_REVERSE)
 
 User = get_user_model()
 
@@ -169,6 +170,17 @@ class PostFormTests(TestCase):
         resolution_before = Resolution.objects.all().first()
         form_data = {'text': RESOLUTION_WALK_2}
         self.boss_client.post(UPDATE_RESOLUTION_URL, data=form_data)
+        self.boss_client.post(
+            reverse(
+                UPDATE_RESOLUTION_REVERSE,
+                kwargs={
+                    'slug_district': SLUG_DISTRICT,
+                    'post_id': POST_WLK_NUMBER,
+                    'resolution_id': resolution_before.id
+                }
+            ),
+            data=form_data
+        )
         resolution_after = Resolution.objects.all().first()
         self.assertEqual(resolution_before.id, resolution_after.id)
         self.assertNotEqual(resolution_before.text, resolution_after.text)

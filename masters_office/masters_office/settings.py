@@ -5,9 +5,9 @@ from decouple import config, Csv
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = config("SECRET_KEY", default="from_.env")
+SECRET_KEY = config("SECRET_KEY", default='from_.env')
 
-DEBUG = False
+DEBUG = config("DEBUG", default=False, cast=bool)
 
 ALLOWED_HOSTS = config("ALLOWED_HOSTS", cast=Csv())
 
@@ -23,15 +23,17 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django_extensions',
+
+    'about.apps.AboutConfig',
+    'office.apps.OfficeConfig',
+    'users.apps.UsersConfig',
+    'core.apps.CoreConfig',
+
     # 'debug_toolbar',
     'mptt',
     'django_bootstrap5',
     'django_filters',
     'django_tables2',
-    'about.apps.AboutConfig',
-    'office.apps.OfficeConfig',
-    'users.apps.UsersConfig',
-    'core.apps.CoreConfig',
     'crispy_forms',
     'crispy_bootstrap5',
     'django_ckeditor_5',
@@ -79,14 +81,26 @@ POSTS_ORDER_TABLE_TEMPLATE = os.path.join(BASE_DIR, 'templates/office/includes/t
 WSGI_APPLICATION = 'masters_office.wsgi.application'
 
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': os.getenv('POSTGRES_DB', 'django'),
+#         'USER': os.getenv('POSTGRES_USER', 'django'),
+#         'PASSWORD': os.getenv('POSTGRES_PASSWORD', ''),
+#         'HOST': os.getenv('DB_HOST', ''),
+#         'PORT': os.getenv('DB_PORT', 5432)
+#     }
+# }
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.getenv('POSTGRES_DB', 'django'),
-        'USER': os.getenv('POSTGRES_USER', 'django'),
-        'PASSWORD': os.getenv('POSTGRES_PASSWORD', ''),
-        'HOST': os.getenv('DB_HOST', ''),
-        'PORT': os.getenv('DB_PORT', 5432)
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': config('MYSQL_DATABASE', default='django'),
+        'USER': config('MYSQL_USER', default='django'),
+        'PASSWORD': config('MYSQL_PASSWORD', default=''),
+        'HOST': config('MYSQL_HOST', default=''),
+        'PORT': config('MYSQL_PORT', default=3306, cast=int),
+        'OPTIONS': {'charset': 'utf8mb4'},
     }
 }
 
@@ -342,4 +356,4 @@ CKEDITOR_5_CONFIGS = {
     }
 }
 
-from .local_settings import *
+# from .local_settings import *

@@ -47,7 +47,8 @@ from .consts import (ADD_RESOLUTION_URL, ADRESS_REPAIR, ADRESS_REPAIR_2,
                      TRANSFER_WLK, TRANSFER_WLK_SED, UPDATE_RESOLUTION_URL,
                      USERNAME, USERNAME_AUTHOR,
                      USERNAME_SECOND_ENERGY_DISCRICT, WALK_DATE, WALK_DATE_SED,
-                     EDIT_POST_ORDER_URL, CABINET_URL)
+                     EDIT_POST_ORDER_URL, CABINET_URL, EDIT_POST_ORDER_REVERSE,
+                     EDIT_POST_REPAIR_REVERSE, UPDATE_RESOLUTION_REVERSE, RESOLUTION_ID)
 
 User = get_user_model()
 
@@ -320,7 +321,15 @@ class OfficeViewsTest(TestCase):
 
     def test_post_walking_edit_page_show_correct_context(self):
         """Шаблон edit_post_walking сформирован с правильным контекстом."""
-        response = self.authorized_client.get(EDIT_POST_WLK_URL)
+        response = self.authorized_client.get(
+            reverse(
+                EDIT_POST_WLK_REVERSE,
+                kwargs={
+                    'slug_district': SLUG_DISTRICT,
+                    'post_id': self.post_walking.id
+                }
+            )
+        )
         form_fields = {
             'district': forms.fields.ChoiceField,
             'planned': forms.fields.BooleanField,
@@ -407,7 +416,16 @@ class OfficeViewsTest(TestCase):
 
     def test_resolution_update_form_show_correct_context(self):
         """Шаблон resolution_update_form сформирован с правильным контекстом."""
-        response = self.authorized_client.get(UPDATE_RESOLUTION_URL)
+        response = self.authorized_client.get(
+            reverse(
+                UPDATE_RESOLUTION_REVERSE,
+                kwargs={
+                    'slug_district': SLUG_DISTRICT,
+                    'post_id': self.post_walking.id,
+                    'resolution_id': self.resolution.id
+                }
+            )
+        )
         form_fields = {
             'text': forms.fields.CharField,
         }
@@ -462,7 +480,14 @@ class OfficeViewsTest(TestCase):
 
     def test_post_repair_edit_page_show_correct_context(self):
         """Шаблон edit_post_repair сформирован с правильным контекстом."""
-        response = self.authorized_client.get(EDIT_POST_REPAIR_URL)
+        response = self.authorized_client.get(
+            reverse(
+                EDIT_POST_REPAIR_REVERSE,
+                kwargs={
+                    'post_id': self.post_repair.id
+                }
+            )
+        )
         form_fields = {
             'district': forms.fields.ChoiceField,
             'order': forms.fields.ChoiceField,
@@ -504,7 +529,15 @@ class OfficeViewsTest(TestCase):
 
     def test_post_order_edit_page_show_correct_context(self):
         """Шаблон edit_post_order сформирован с правильным контекстом."""
-        response = self.authorized_client.get(EDIT_POST_ORDER_URL)
+        response = self.authorized_client.get(
+            reverse(
+                EDIT_POST_ORDER_REVERSE,
+                kwargs={
+                    'post_id': self.post_order.id
+                }
+            )
+        )
+
         form_fields = {
             'district': forms.fields.ChoiceField,
             'order': forms.fields.ChoiceField,

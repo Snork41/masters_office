@@ -68,7 +68,7 @@ class PostWalkingForm(forms.ModelForm):
         css = {
             'all': [os.path.join(settings.BASE_DIR, 'static/css/select_multiple.css')],
         }
-        js = ('/admin/jsi18n',)
+        # js = ('/admin-mo/jsi18n',)
 
     def save(self, username=None, commit=True, *args, **kwargs):
         obj = super().save(commit=False, *args, **kwargs)
@@ -185,7 +185,7 @@ class PostOrderForm(forms.ModelForm):
         css = {
             'all': [os.path.join(settings.BASE_DIR, 'static/css/select_multiple.css')],
         }
-        js = ('/admin/jsi18n',)
+        # js = ('/admin-mo/jsi18n',)
 
     def save(self, username=None, *args, commit=True, **kwargs):
         obj = super().save(commit=False, *args, **kwargs)
